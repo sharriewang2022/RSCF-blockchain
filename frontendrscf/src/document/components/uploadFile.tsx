@@ -1,6 +1,6 @@
 import React from 'react';
 
-Class Document extends React.Component {
+class Document extends React.Component {
     constructor(props:any) {
         super(props);
 
@@ -11,35 +11,49 @@ Class Document extends React.Component {
         this.handleUploadFile = this.handleUploadFile.bind(this);
     }
 
-    handleUploadFile(ev) {
-        ev.preventDefault();
+    uploadInputRef = React.useRef<HTMLInputElement>(null);
+    
 
-        const data = new FormData();
-        data.append('file', this.uploadInput.files[0]);
-        data.append('filename', this.uploadInput.files[0].name);
+    handleUploadFile(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        const files = this.uploadInputRef.current?.files;
+        if (files) {
+            // get the `FormData` for the whole form
+            const formData = new FormData(e.currentTarget);
+             // logs a `File` object
+             const avatar = formData.get("avaInput"); // type is `string | File | null`
+             if ( avatar instanceof File ) {
+               console.log("we have a file", avatar); // type is now just `File`
+             }
+            formData.append('file', files[0]);
+            formData.append('filename', files[0].name);
 
-        console.log(this.uploadInput.files[0].name);
+            console.log("upload fileName is : " + files[0].name);
 
-        fetch('http://localhost:5000/upload', {
-            method: 'POST',
-            body: data,
-        }).then((response) => {
-            response.json().then((body) => {
-                this.setState({ fileURL: `http://localhost:5000/${body.file}` });
+            fetch('http://localhost:8000/upload', {
+                method: 'POST',
+                body: formData,
+            }).then((response) => {
+                response.json().then((body) => {
+                    this.setState({ fileURL: `http://localhost:8000/${body.file}` });
+                });
             });
-        });
+        }
     }
 
     render() {
         return (
-            <form onSubmit={this.handleUploadImage}>
+            <form onSubmit={this.handleUploadFile}>
                 <div>
-                    <input ref={(ref) => { this.uploadInput = ref; }} type="file" />
+                {/* onInput={(e: React.FormEvent<HTMLFormElement>) => {this.handleUploadFile(e);}}  */}
+                    <input id="avaInput" ref={  this.uploadInputRef }  type="file" />
                 </div>
                 <br />
                 <div>
-                    <button onClick = { this.handleUploadFile }>Upload</button>
+                    <button type = "submit">Upload</button>
                 </div>
+
+                
             </form>
         );
     }

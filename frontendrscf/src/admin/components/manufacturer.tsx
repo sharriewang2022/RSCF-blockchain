@@ -5,7 +5,7 @@ import {useAuth} from '../../contexts/authContext';
 import UpdateProfile from "../../login/components/updateProfile";
 import {useNavigate, Route} from "react-router-dom"; 
 import {TrackProduct} from "../../trace/components/trackProduct";
-import {AddProduct} from "../../product/components/addProduct" ;
+import {Product} from "../../product/components/product" ;
 import "./navbar.scss";
 import {About} from "./about";
 import {Nav ,Navbar , NavDropdown,Container} from "react-bootstrap";
@@ -68,7 +68,7 @@ export function Manufacturer(props:any){
             <Container>
                 <Route path = "/home/profile" Component = {UpdateProfile}></Route>
                 <Route path = "/home/trackproduct" Component = {TrackProduct}></Route>
-                <Route path = "/home/addproduct" Component = {AddProduct}></Route>
+                <Route path = "/home/addproduct" Component = {Product}></Route>
                 <About open = {open} setOpen = {setOpen}/>
             </Container>
             </div>

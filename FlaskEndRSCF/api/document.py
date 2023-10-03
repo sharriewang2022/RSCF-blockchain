@@ -1,12 +1,49 @@
-from flask import Flask, jsonify, request
+# https://gist.githubusercontent.com/radtech/a6165b28d4486bf7f15795fafaeb155f/raw/4187883018f0e7a9f7d8d89c2f6787f4a9a12837/FileUpload.py
+
+from flask import Flask, jsonify, request, flash, redirect, url_for, session
 from util.mySqlDB import mySqlDB
 from util.redisUtil import redisUtil
-
+import os
+from werkzeug.utils import secure_filename
+from flask_cors import CORS, cross_origin
+import logging
 from datetime import datetime
 import uuid
 
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
+
+UPLOAD_FOLDER = '/path/to/the/uploads'
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+
+logging.basicConfig(level=logging.INFO)
+
+logger = logging.getLogger('Supply chain document')
+
+if __name__ == "__main__":
+    app.secret_key = os.urandom(24)
+    app.run(debug=True,host="0.0.0.0",use_reloader=False)
+
+flask_cors.CORS(app, expose_headers='Authorization')
+
+
+@app.route('/upload', methods=['POST'])
+def fileUpload():
+    target=os.path.join(UPLOAD_FOLDER,'test_docs')
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    logger.info("welcome to upload`")
+    file = request.files['file'] 
+    filename = secure_filename(file.filename)
+    destination="/".join([target, filename])
+    file.save(destination)
+    session['uploadFilePath']=destination
+    response="Whatever you wish too return"
+    return response
+
+
 
 
 @app.route("/allDocuments", methods=["GET"])
