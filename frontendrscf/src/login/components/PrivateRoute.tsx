@@ -45,7 +45,7 @@ export default function PrivateRoute( {...rest}){
     return (
         <Route
             {...rest}
-            path = ":userRole" element =  roleRoute[userRole]      
+            // path = ":userRole" element = roleRoute[userRole]      
         />
     )
 }

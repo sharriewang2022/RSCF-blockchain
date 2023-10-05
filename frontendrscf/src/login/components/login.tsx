@@ -66,7 +66,7 @@ const validationSchema = yup.object({
             background:"#EDF5E1 !important",
         }
   }))
-export function Login() {
+function LoginView() {
 
     const {login} = useAuth()
     const [err,setErr] = useState(0)
@@ -117,7 +117,7 @@ export function Login() {
           setOpenErr(false);
       };
 
-        return (<div style = {{
+      return (<div style = {{
           position:"absolute",
             top:"0",
             left:"0",
@@ -231,5 +231,6 @@ export function Login() {
        </Paper>
        </Container>
        </div>)
-
 }
+
+export default LoginView;
