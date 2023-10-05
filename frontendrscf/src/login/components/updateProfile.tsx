@@ -29,12 +29,12 @@ const validationSchema = yup.object({
       .string()
       .min(8, 'Password should be of minimum 8 characters length'),
     passwordConfirmation: yup.string()
-      .oneOf([yup.ref('password'), null], 'Passwords must match')
+      .oneOf([yup.ref('password')], 'Passwords must match')
   });
 
 function Alert(props: any) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
+}
 
 const Roles = [
     "administrator",
@@ -103,7 +103,8 @@ export default  function UpdateProfile(props: any) {
         const promises: any[] = []
 
 
-        function submitValues(values: { email: string; password: string; Role: string; address: string; Username: string; }){
+        function submitValues(values: { email: string; password: string; Role: string; address: string; 
+                            Username: string; passwordConfirmation:string}){
             if(values.email !== currentUser?.email && values.email) {
                 promises.push(updatemail(values.email))
             }
@@ -145,26 +146,28 @@ export default  function UpdateProfile(props: any) {
                 Username:'',
                 email: '',
                 password: '',
+                Role: '',
+                address: '',
                 passwordConfirmation: '',
               },
             validationSchema: validationSchema,
             onSubmit: submitValues
             })
-        const dbRef = database.ref();
+         
+        // const dbRef = database.ref();
 
+        // get current user information from database
         if(currentUser){
-            dbRef.child("users").child(currentUser.uid).get().then((snapshot) => {
-            if(snapshot.exists()){
-                setCUserName(snapshot.val().username ? snapshot.val().username : "no User Name")
-                setCrole(snapshot.val().role ? snapshot.val().role : "no Role found")
-                setCAddr(snapshot.val().waddress ? snapshot.val().waddress : "no address found")
-            }else {
-                setErr(0)
-                setOpenErr(true)
-            }
-        })
-    }
-
+            // dbRef.child("users").child(currentUser.uid).get().then((snapshot) => {
+            //  if(snapshot.exists()){
+            setCUserName(currentUser.userName)
+            setCrole(currentUser.role ? currentUser.role : "no Role found")
+            setCAddr(currentUser.waddress ? currentUser.waddress : "no address found")
+        }else {
+            setErr(0)
+            setOpenErr(true)
+        }
+        
     const handleClose = (event: React.FormEvent, reason:string) => {
         if (reason === 'clickaway') {
           return;
@@ -259,7 +262,6 @@ export default  function UpdateProfile(props: any) {
                         <i className="fas fa-pencil-alt" onClick ={showUser} style = {{paddingLeft: "100px"}}></i>
                     </Grid>
 
-
                     <Grid item xs = {6}>
                     {isEmail?<TextField
                     id = "email"
@@ -269,19 +271,18 @@ export default  function UpdateProfile(props: any) {
                     variant="outlined"
                     size="small"
                     InputLabelProps = {{
-                        className : style.label,
-                        
-                     }}
-                     InputProps={{
-                         classes: {
+                        className : style.label,                        
+                    }}
+                    InputProps={{
+                        classes: {
                            notchedOutline: style.notchedOutline,
                            input : style.input
                          }
-                       }}
-                       value={formik.values.email}
-                       onChange = {formik.handleChange}
-                      error={formik.touched.email && Boolean(formik.errors.email)}
-                      helperText={formik.touched.email && formik.errors.email}
+                        }}
+                        value={formik.values.email}
+                        onChange = {formik.handleChange}
+                        error={formik.touched.email && Boolean(formik.errors.email)}
+                        helperText={formik.touched.email && formik.errors.email}
                     />:<Typography variant = "h4">{currentUser?.email}</Typography>}
                     </Grid>
                     <Grid item xs = {6}>
@@ -314,12 +315,11 @@ export default  function UpdateProfile(props: any) {
                         />:<Typography variant = "h4">Password</Typography>}
                     </Grid>
                     <Grid item xs = {6}>
-                            <i className="fas fa-pencil-alt" onClick ={showPass}
+                        <i className="fas fa-pencil-alt" onClick ={showPass}
                            style = {{paddingLeft: "100px"}}></i>
                     </Grid>
 
-
-                            {isPass?<><Grid item xs = {6}><TextField
+                    {isPass?<><Grid item xs = {6}><TextField
                             id = "passwordConfirmation"
                             name = "passwordConfirmation"
                             label = "Confirm Password"

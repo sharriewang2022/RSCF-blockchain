@@ -19,7 +19,7 @@ const request = (option: { url: RequestInfo | URL; method: any; data: any; }) =>
         })
         .catch((err) => {
           console.warn('fetch error =====>', err);
-          message.error('网络请求失败', 2);
+          message.error('fail', 2);
           return null;
         });
 

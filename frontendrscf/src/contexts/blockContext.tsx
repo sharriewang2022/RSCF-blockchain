@@ -1,18 +1,21 @@
 import React,{useContext, useEffect, useState } from "react";
 import Web3 from "web3";
-import supplyChain from '../abis/supplyChain.json'
+import supply from '../abis/supplyChain.json'
 import {Navigate} from "react-router-dom"
 
-const blockContext  = React.createContext();
+interface Props {
+  children: JSX.Element
+}
+const blockContext  = React.createContext(null);
 
 
 export function useBlock(){
     return useContext(blockContext);
 }
 
-export function BlockProvider({children}){
+export function BlockProvider({children}: Props){
     const [account , setAccount] = useState();
-    const [supplyChain ,setsupplyChain] = useState();
+    const [supplyChain ,setsupplyChain] = useState(supply);
     const [isMetamask, setIsMetamask] = useState(false);
     const [web3,setWeb3] = useState();
  
@@ -27,10 +30,20 @@ export function BlockProvider({children}){
     }
     },[])
 
+    // re-register MetaMask provider whenever network changes
+    useEffect(() => {
+      if(window.ethereum){
+      window.ethereum.on("chainChanged", (network) => {
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
+          setProvider(provider)
+        });
+      }
+    }, [provider]);
+
     async function loadWeb3() {
         if (window.ethereum) {
           setIsMetamask(true)
-        window.web3 = new Web3(window.ethereum)
+          window.web3 = new Web3(window.ethereum)
           await window.ethereum.enable()
         }
         else if (window.web3) {
@@ -58,7 +71,10 @@ export function BlockProvider({children}){
             console.log(chain)
       }
 
-      function addProduct(name){
+      function addProduct(name:string){
+        if(supplyChain == undefined){
+          return;
+        }
         return supplyChain.methods.addProduct(name).send({from : account})
       }
 
@@ -88,7 +104,6 @@ export function BlockProvider({children}){
           trackProduct,
           fetchOwner,
           fetchLocations
-
       }
       return(
           <blockContext.Provider value = {value}>

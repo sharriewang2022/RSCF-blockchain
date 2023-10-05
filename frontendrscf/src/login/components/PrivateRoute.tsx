@@ -19,29 +19,33 @@ export default function PrivateRoute( {...rest}){
         "undefined":<div>Loading..</div>    
     }
 
+    const permissions = {
+        admin: ["navigation", "usermgmt", "profile"],
+        user: ["profile"],
+        manager: ["usermgmt"]
+    }
+
     const {currentUser} = useAuth() 
-    const [userRole,setUserRole] = useLocalStorage("role", " ")
+    const [userRole,setUserRole] = useLocalStorage("role", "")
 
     async function fetchRole(){
         if(currentUser){
-        await database.ref("users/" + currentUser.uid).child("role").get().then((snapshot: ) =>{
-            if(snapshot.exists()){
-            setUserRole(snapshot.val())}
-    })
-}
+            await database.ref("users/" + currentUser.uid).child("role").get().then((snapshot:any) =>{
+                if(snapshot.exists()){
+                    setUserRole(snapshot.val())
+                }
+            })
+        }
     }
 
     React.useEffect(()=>{
         fetchRole()
     },[currentUser,userRole])
+
     return (
         <Route
             {...rest}
-            render = {props => {
-                if(window.ethereum){
-                return currentUser ? roleRoute[userRole]: <Navigate to = "/login"/>}
-        }
-        }>    
-        </Route>
+            path = ":userRole" element =  roleRoute[userRole]      
+        />
     )
 }

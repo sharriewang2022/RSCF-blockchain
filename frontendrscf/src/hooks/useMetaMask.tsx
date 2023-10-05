@@ -14,10 +14,10 @@ const metamaskStream =  ({
 // });
 
 declare global {
-  interface Window {
-    ethereum?: ExternalProvider;
-  }
-}
+//   interface Window {
+//     ethereum?: ExternalProvider;
+//   }
+ }
 export const useMetaMask = () => {
   const ethereum = global?.window?.ethereum;
   if (!ethereum || !ethereum.isMetaMask) return;
