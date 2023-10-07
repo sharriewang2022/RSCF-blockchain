@@ -1,6 +1,6 @@
 import Web3 from "web3";
 
-const web3Util = () =>
+const web3Load = () =>
   new Promise((resolve, reject) => {
     // Wait for loading completion to avoid race conditions with web3 injection timing.
     window.addEventListener("load", async () => {
@@ -35,4 +35,17 @@ const web3Util = () =>
     });
   });
 
-export default web3Util;
+  // const loadWeb3 = async () => {
+  //   if (window.ethereum) {
+  //     window.web3 = new Web3(window.ethereum);
+  //     await window.ethereum.enable();
+  //   } else if (window.web3) {
+  //     window.web3 = new Web3(window.web3.currentProvider);
+  //   } else {
+  //     window.alert(
+  //       "Non-Ethereum browser like MetaMask detected!"
+  //     );
+  //   }
+  // };
+
+export default web3Load;

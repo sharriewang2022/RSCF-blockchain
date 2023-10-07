@@ -54,7 +54,7 @@ export interface UserType {
     userName:string
     userPassword:string
     role:string
-    email:string
+    userEmail:string
     uid: string
     waddress: string
 }

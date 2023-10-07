@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { TransitionProps } from '@material-ui/core/transitions'
 import PropTypes from 'prop-types';
 import {useBlock} from "../../contexts/blockContext";
-import QRCode from "qrcode.react";
 import {QrReader} from 'react-qr-reader';
 import MuiAlert from '@material-ui/lab/Alert';
 import {
@@ -23,11 +22,6 @@ import {
   DialogContentText,
 } from '@material-ui/core';
 
-
-// const Transition = React.forwardRef(function Transition(props, ref) {
-//     return <Slide direction="up" ref={ref} {...props} />;
-//   });
-
   const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
       children?: React.ReactElement;
@@ -41,9 +35,8 @@ import {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
 
-function TabPanel(props:any) {
-    const { children, value, index, ...other } = props;
-  
+  function TabPanel(props:any) {
+    const { children, value, index, ...other } = props;  
     return (
       <div
         role="tabpanel"
@@ -177,7 +170,7 @@ function VerticalTabs(props:any) {
           props.setOpenErr(true)
         }
   }
-    return (
+  return (
       <div className={classes.root}>
         <Tabs
           orientation="vertical"
@@ -192,58 +185,58 @@ function VerticalTabs(props:any) {
             <Grid container spacing = {3} style = {{
                 paddingTop:"0px"
             }}>
-                <Grid container xs = {12} justifyContent= "center" alignItems= "center">
-                    <Typography variant = "h5" style = {{
-                        fontWeight:"320",
-                        marginTop:"20px"
-                    }}>Enter Product details:</Typography>
-                </Grid>
+              <Grid container xs = {12} justifyContent= "center" alignItems= "center">
+                  <Typography variant = "h5" style = {{
+                      fontWeight:"320",
+                      marginTop:"20px"
+                  }}>Enter Product details:</Typography>
+              </Grid>
 
-                <Grid item xs = {12} justifyContent= "center" alignItems= "center">
-                   <Divider className = {classes.divide} style = {{
-                   }}></Divider> 
-                </Grid>
+              <Grid item xs = {12} justifyContent= "center" alignItems= "center">
+                  <Divider className = {classes.divide} style = {{
+                  }}></Divider> 
+              </Grid>
 
-                <Grid container xs = {12} justifyContent= "center" alignItems= "center" style = {{
-                    marginTop:"10px"
-                }}>
-          
-                </Grid>
-                <Grid container xs = {12} justifyContent= "center" alignItems= "center" style = {{
-                    marginTop:"25px"
-                }}>
-                <TextField
-                    label = "Product Name"
-                    type = "text"
-                    variant="outlined"
-                    size="small"
-                    InputLabelProps = {{
-                       className : classes.label,
-                       
+              <Grid container xs = {12} justifyContent= "center" alignItems= "center" style = {{
+                  marginTop:"10px"
+              }}>
+        
+              </Grid>
+              <Grid container xs = {12} justifyContent= "center" alignItems= "center" style = {{
+                  marginTop:"25px"
+              }}>
+              <TextField
+                  label = "Product Name"
+                  type = "text"
+                  variant="outlined"
+                  size="small"
+                  InputLabelProps = {{
+                      className : classes.label,
+                      
+                  }}
+                  InputProps={{
+                      classes: {
+                        notchedOutline: classes.notchedOutline,
+                        input : classes.input
+                      }
                     }}
-                    InputProps={{
-                        classes: {
-                          notchedOutline: classes.notchedOutline,
-                          input : classes.input
-                        }
-                      }}
-                      onChange = {(e: React.ChangeEvent<HTMLTextAreaElement>) => setName(e.target.value)}
-                    required/>
-                </Grid>
+                    onChange = {(e: React.ChangeEvent<HTMLTextAreaElement>) => setName(e.target.value)}
+                  required/>
+              </Grid>
 
-                <Grid container xs = {12} justifyContent= "center" alignItems= "center" style = {{
-                    paddingBottom:"20px",
-                    marginTop:"20px"
-                }}>
-                <Button size = "small" onClick = {handleGen}><i className="fas fa-qrcode" style = {{
-                    color:"#EDF5E1",
-                    fontSize:"15px"
-                }}></i><div style = {{
-                    fontSize:"16px",
-                    color:"#EDF5E1",
-                    marginLeft:"2px",
-                }}>Generate QR</div></Button>
-                </Grid>
+              <Grid container xs = {12} justifyContent= "center" alignItems= "center" style = {{
+                  paddingBottom:"20px",
+                  marginTop:"20px"
+              }}>
+              <Button size = "small" onClick = {handleGen}><i className="fas fa-qrcode" style = {{
+                  color:"#EDF5E1",
+                  fontSize:"15px"
+              }}></i><div style = {{
+                  fontSize:"16px",
+                  color:"#EDF5E1",
+                  marginLeft:"2px",
+              }}>Generate QR</div></Button>
+              </Grid>
             </Grid>
         </TabPanel>
         <TabPanel value={value} index={1}>
@@ -252,115 +245,97 @@ function VerticalTabs(props:any) {
           <Grid container justifyContent = "center" style = {{
                   }}>
               <TextField
-                      label = "Enter Product ID"
-                      type = "number"
-                      variant="outlined"
-                      placeholder = { id?id:undefined}
-                      size="small"
-                      fullWidth
-                      InputLabelProps = {{
-                        className : classes.label,
-                        
-                      }}
-                      InputProps={{
-                          classes: {
-                            notchedOutline: classes.notchedOutline,
-                            input : classes.input
-                          }
-                        }}
-                        onChange = {(e) => setId(e.target.value)}
-                      />
-                  </Grid>
-                  <Grid container justifyContent = "center" style = {{
-                  }}>
-                      <span style = {{marginTop:"10px"}}>OR</span>
-                  </Grid>
+                  label = "Enter Product ID"
+                  type = "number"
+                  variant="outlined"
+                  placeholder = { id?id:undefined}
+                  size="small"
+                  fullWidth
+                  InputLabelProps = {{
+                    className : classes.label,
+                    
+                  }}
+                  InputProps={{
+                      classes: {
+                        notchedOutline: classes.notchedOutline,
+                        input : classes.input
+                      }
+                    }}
+                    onChange = {(e) => setId(e.target.value)}
+                  />
+              </Grid>
+              <Grid container justifyContent = "center" style = {{
+              }}>
+              <span style = {{marginTop:"10px"}}>OR</span>
+            </Grid>
 
-         <Button size = "small" onClick = {handleScan}><i className="fas fa-qrcode" style = {{
+          <Button size = "small" onClick = {handleScan}><i className="fas fa-qrcode" style = {{
                     color:"#EDF5E1",
                     fontSize:"15px"
                 }}></i><div style = {{
                     fontSize:"16px",
                     color:"#EDF5E1",
                     marginLeft:"2px",
-                }}>Scan QR</div></Button>
-                 {/* <QrReader
-        onResult={(result:string, error:string) => {
-          if (!!result) {
-            setQrData(result);
-          }
+                }}>Scan QR</div>
+          </Button>                
+        </Grid>
 
-          if (!!error) {
-            console.info(error);
-          }
-        }}
-        style={{ width: '100%' }}
-      />
-      <p>{qrData}</p>
-    </>
-                  
-        <QrReader 
-         ref={qrRef}
-         delay={300}
-        onScan={(result:any) => {
-            try{
+        <QrReader onResult={(result) => {
+          try{
             if(!result){
                 throw({ message: "Please Upload a valid image"})
             }
-            setId(result)
+          }catch(error){
+            console.log('Error')
+          }
+        } 
         }
-        catch(error:any){
-          props.setErr(error.message)
-          props.setOpenErr(true)}
-        }}
-        onError = { (error:any) => { props.setErr(error.message)
-          props.setOpenErr(true)}}
-        legacyMode
-        /> */}
+          constraints={{facingMode: 'environment'}}
+          videoStyle={{ width: '100%' }}         
+        />
+
+        <Grid container justifyContent = "center" style = {{
+             marginTop:"20px"
+         }}>
+        <TextField
+              label = "Update Location"
+              type = "text"
+              variant="outlined"
+              size="small"
+              InputLabelProps = {{
+                  className : classes.label,
+                  
+              }}
+              InputProps={{
+                  classes: {
+                    notchedOutline: classes.notchedOutline,
+                    input : classes.input
+                  }
+                }}
+                onChange = {(e) => setLocat(e.target.value)}
+              />
          </Grid>
 
          <Grid container justifyContent = "center" style = {{
              marginTop:"20px"
          }}>
-             <TextField
-                    label = "Update Location"
-                    type = "text"
-                    variant="outlined"
-                    size="small"
-                    InputLabelProps = {{
-                       className : classes.label,
-                       
-                    }}
-                    InputProps={{
-                        classes: {
-                          notchedOutline: classes.notchedOutline,
-                          input : classes.input
-                        }
-                      }}
-                      onChange = {(e) => setLocat(e.target.value)}
-                    />
-         </Grid>
-
-         <Grid container justifyContent = "center" style = {{
-             marginTop:"20px"
-         }}>
-             <TextField
-                    label = "new Owner"
-                    type = "text"
-                    variant="outlined"
-                    size="small"
-                    InputLabelProps = {{
-                       className : classes.label,
-                       
-                    }}
-                    InputProps={{
-                        classes: {
-                          notchedOutline: classes.notchedOutline,
-                          input : classes.input
-                        }
-                      }}
-                      onChange = {(e) => setAddress(e.target.value)}
-                    />
+        <TextField
+              label = "new Owner"
+              type = "text"
+              variant="outlined"
+              size="small"
+              InputLabelProps = {{
+                  className : classes.label,
+                  
+              }}
+              InputProps={{
+                  classes: {
+                    notchedOutline: classes.notchedOutline,
+                    input : classes.input
+                  }
+                }}
+                onChange = {(e) => setAddress(e.target.value)}
+              />
          </Grid>
 
          <Grid container justifyContent = "center" style = {{
@@ -398,7 +373,7 @@ function GenQR(props:any){
     <DialogTitle id="alert-dialog-slide-title" style = {{
           color: '#EDF5E1',
         }}
->{"Genarated QR code"}</DialogTitle>
+    >{"Genarated QR code"}</DialogTitle>
     <DialogContent>
       <DialogContentText id="alert-dialog-slide-description" style = {{
           color: '#EDF5E1',

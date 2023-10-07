@@ -28,7 +28,7 @@ export const Login: React.FC = () => {
                     loading={isLoading}
                     onClick={() => login({})}
                 >
-                    Sign in with Ethereum
+                   Ethereum Login
                 </Button>
                 <Typography.Text type="secondary">
                     Powered by Auth0

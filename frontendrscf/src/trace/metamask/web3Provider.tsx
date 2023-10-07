@@ -2,7 +2,7 @@ import { AuthBindings } from "@refinedev/core";
 import Web3 from "web3";
 import Web3Modal from "web3modal";
 
-import { getBalance } from "./web3Balance";
+import { getBalance } from "./web3Util";
 
 export const TOKEN_KEY = "refine-auth";
 
@@ -47,10 +47,12 @@ export const authProvider: AuthBindings = {
             redirectTo: "/login",
         };
     },
+
     onError: async (error) => {
         console.error(error);
         return { error };
     },
+
     check: async () => {
         const token = localStorage.getItem(TOKEN_KEY);
         if (token) {
@@ -58,7 +60,6 @@ export const authProvider: AuthBindings = {
                 authenticated: true,
             };
         }
-
         return {
             authenticated: false,
             redirectTo: "/login",

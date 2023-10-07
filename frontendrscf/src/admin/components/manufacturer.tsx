@@ -1,7 +1,7 @@
 /*colors scheme #05386B #379683 #5cdb95 #8ee4af #EDF5E1 */
 
 import React, {useState} from 'react';
-import {useAuth} from '../../contexts/authContext';
+import {useAuth} from '../../contexts/authContext-old';
 import UpdateProfile from "../../login/components/updateProfile";
 import {useNavigate, Route} from "react-router-dom"; 
 import {TrackProduct} from "../../trace/components/trackProduct";

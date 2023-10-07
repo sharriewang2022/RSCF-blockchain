@@ -1,5 +1,5 @@
 import React from 'react';
-import {useAuth} from "../../contexts/authContext";
+import {useAuth} from "../../contexts/authContext-old";
 import {database} from "../../util/firebase";
 import {Navigate, Route } from "react-router-dom"
 import {Manufacturer} from "../../admin/components/manufacturer";

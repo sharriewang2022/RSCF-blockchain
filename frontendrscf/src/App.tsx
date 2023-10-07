@@ -1,5 +1,5 @@
 import { HashRouter as Router } from 'react-router-dom'
-import RouteView from './router'
+import RouteView from './admin/views/routerView'
 
 function App() {
   return (

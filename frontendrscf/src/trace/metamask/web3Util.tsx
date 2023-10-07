@@ -22,3 +22,23 @@ export const getBalance = async (account: string): Promise<string> => {
         }) ;
     });
 };
+
+//When the web3 wallet is compatible with a browser,   send ethereum using the'sendTransaction' function.
+export const sendEthereum = async (
+    sender: string,
+    receiver: string,
+    amount: string,
+) => {
+    try {
+        const params = {
+            from: sender,
+            to: receiver,
+            value: web3.utils.toHex(web3.utils.toWei(amount, "ether")),
+            gas: 39000,
+        };
+        await window.ethereum.enable();
+        return await web3.eth.sendTransaction(params);
+    } catch (error) {
+        new Error("Something went wrong!");
+    }
+};

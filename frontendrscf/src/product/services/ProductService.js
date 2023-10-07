@@ -1,6 +1,7 @@
 import axios from 'axios';
+import SERVER_BASE_URL from '../../config/sysConfig';
 
-const EMPLOYEE_API_BASE_URL = "http://localhost:8082/api/v1/products";
+const EMPLOYEE_API_BASE_URL = SERVER_BASE_URL+"/api/v1/products";
 
 class ProductService {
 
@@ -14,7 +15,6 @@ class ProductService {
 
     getProductById(prod_id){
         return axios.get(EMPLOYEE_API_BASE_URL + '/' + prod_id);
-
     }
 
     updateProduct(products, prod_id){
