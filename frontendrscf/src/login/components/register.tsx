@@ -86,7 +86,7 @@ export function Register(props: UserType) {
                 userName:"",
                 userPassword:"",
                 role:"",
-                email:"",
+                userEmail:"",
                 uid:"",
                 waddress:"",
                 passwordConfirmation:""
@@ -97,7 +97,7 @@ export function Register(props: UserType) {
 
             async function submitValues(values:UserType){
                 try{
-                    await signup(values.email,values.userPassword)                   
+                    await signup(values.userEmail,values.userPassword)                   
                     await writeData(values.userName,values.role,values.uid,values.waddress)
                     setOpen(true);
                     useNavigate.call("./home/trackproduct")                     
@@ -199,10 +199,10 @@ export function Register(props: UserType) {
                     input : style.input
                     }
                 }}
-                value={formik.values.email}
+                value={formik.values.userEmail}
                 onChange = {formik.handleChange}
-                error={formik.touched.email && Boolean(formik.errors.email)}
-                helperText={formik.touched.email && formik.errors.email}
+                error={formik.touched.userEmail && Boolean(formik.errors.userEmail)}
+                helperText={formik.touched.userEmail && formik.errors.userEmail}
             />
             </Grid>
 

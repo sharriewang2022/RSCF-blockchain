@@ -139,7 +139,7 @@ export function TrackProduct(){
     const [err,setErr] = useState("");
     const [openErr,setOpenErr] = useState(false);
     const [locations,setLocations] = useState(["Enter Product ID first"]);
-    const qrRef = useRef<typeof QrReader>(null!);
+    //const qrRef = useRef<typeof QrReader>(null!);
 
     async function handleScan(){
         // qrRef.current.openImageDialog();

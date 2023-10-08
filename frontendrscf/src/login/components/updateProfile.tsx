@@ -105,7 +105,7 @@ export default  function UpdateProfile(props: any) {
 
         function submitValues(values: { email: string; password: string; Role: string; address: string; 
                             Username: string; passwordConfirmation:string}){
-            if(values.email !== currentUser?.email && values.email) {
+            if(values.email !== currentUser?.userEmail && values.email) {
                 promises.push(updatemail(values.email))
             }
     
@@ -283,7 +283,7 @@ export default  function UpdateProfile(props: any) {
                         onChange = {formik.handleChange}
                         error={formik.touched.email && Boolean(formik.errors.email)}
                         helperText={formik.touched.email && formik.errors.email}
-                    />:<Typography variant = "h4">{currentUser?.email}</Typography>}
+                    />:<Typography variant = "h4">{currentUser?.userEmail}</Typography>}
                     </Grid>
                     <Grid item xs = {6}>
                         <i className="fas fa-pencil-alt" onClick ={showEmail} style = {{paddingLeft: "100px"}}></i>

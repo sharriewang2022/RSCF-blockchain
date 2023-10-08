@@ -33,37 +33,37 @@ const validationSchema = yup.object({
   });
 
   const useStyle = makeStyles((theme)=>({
-    root: {
+      root: {
         '& .MuiTextField-root': {
           margin: theme.spacing(1),
           borderColor: "#5cdb95 !important",
           Color: "#EDF5E1 !important"
-        }},
-          input:{
-              color:"#EDF5E1 !important"
-          },
-          label:{
-            color: "#EDF5E1 !important",
-            fontSize:"17px"
-          },
-          notchedOutline:{
-            borderWidth: "2px",
-            borderColor: "#5cdb95 !important",
-            color:"#EDF5E1 !important"
-          },
-          button: {
-            backgroundColor: "#5cdb95",
-            color: "#05386B",
-            justifySelf:"center",
-            marginTop: "20px",
-            marginleft: "100px",
-            "&:hover" :{
-                backgroundColor:"#EDF5E1"
-            }
-        },
-        divide:{
-            background:"#EDF5E1 !important",
+      }},
+      input:{
+          color:"#EDF5E1 !important"
+      },
+      label:{
+        color: "#EDF5E1 !important",
+        fontSize:"17px"
+      },
+      notchedOutline:{
+        borderWidth: "2px",
+        borderColor: "#5cdb95 !important",
+        color:"#EDF5E1 !important"
+      },
+      button: {
+        backgroundColor: "#5cdb95",
+        color: "#05386B",
+        justifySelf:"center",
+        marginTop: "20px",
+        marginleft: "100px",
+        "&:hover" :{
+            backgroundColor:"#EDF5E1"
         }
+    },
+    divide:{
+        background:"#EDF5E1 !important",
+    }
   }))
 function LoginView() {
 
@@ -78,7 +78,7 @@ function LoginView() {
           userName:"",
           userPassword:"",
           role:"",
-          email:"",
+          userEmail:"",
           uid:"",
           waddress:""
         },
@@ -89,7 +89,7 @@ function LoginView() {
     async function handleLogin(values: UserType) {
 
         try{
-        await login(values.email,values.userPassword)
+        await login(values.userEmail,values.userPassword)
             setErr(0) 
             useNavigate.call("./home/trackproduct")
             setOpen(true)
@@ -182,10 +182,10 @@ function LoginView() {
                     input : style.input
                   }
                 }}
-                value={formik.values.email}
+                value={formik.values.userEmail}
                 onChange = {formik.handleChange}
-                error={formik.touched.email && Boolean(formik.errors.email)}
-                helperText={formik.touched.email && formik.errors.email}
+                error={formik.touched.userEmail && Boolean(formik.errors.userEmail)}
+                helperText={formik.touched.userEmail && formik.errors.userEmail}
                 />
                </Grid>
 
