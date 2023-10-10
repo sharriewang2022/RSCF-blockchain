@@ -7,7 +7,7 @@ import type { RootState } from "../store/adminStore";
 
 function RouterView() {
 
-  const routes = useSelector((state:RootState)=>state.auth.routes)
+  const routes = useSelector((state:RootState)=>state.adminReducer.routes)
   //if routes change, update baseRouter then change all the routes
   useEffect(()=>{
     baseRouter[1].children =routes

@@ -123,7 +123,7 @@ export function AuthProvider({children}: Props) {
         }
    }
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged( (user: UserType) => {
+        const unsubscribe = auth.onAuthStateChanged( (user:any) => {
             setCurrentUser(user)
             setLoading(false)
         } )

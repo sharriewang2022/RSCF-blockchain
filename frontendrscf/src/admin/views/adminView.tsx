@@ -14,7 +14,7 @@ import type { RootState } from "../store/adminStore";
 const { Header, Footer, Sider, Content } = Layout;
 function Admin() {
   
-  const menu  = useSelector((state:RootState)=>state.auth.menu)
+  const menu  = useSelector((state:RootState)=>state.adminReducer.menu)
   // create redux action dispath
   const dispath:Dispatch<any> = useDispatch()
   const navigate = useNavigate();

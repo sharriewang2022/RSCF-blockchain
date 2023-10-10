@@ -1,7 +1,7 @@
 const menusListData = [
     {
         "id": 1,
-        "title": "首页",
+        "title": "Home",
         "key": "/home",
         "pagepermisson": 1,
         "grade": 1,
@@ -9,14 +9,14 @@ const menusListData = [
     },
     {
         "id": 2,
-        "title": "用户管理",
+        "title": "User Management",
         "key": "/user-manage",
         "pagepermisson": 1,
         "grade": 1,
         "children": [
             {
                 "id": 3,
-                "title": "添加用户",
+                "title": "add user",
                 "rightId": 2,
                 "key": "/user-manage/add",
                 "grade": 2
@@ -25,16 +25,16 @@ const menusListData = [
     },
     {
         "id": 7,
-        "title": "权限管理",
-        "key": "/right-manage",
+        "title": "Trace Management",
+        "key": "/trace-manage",
         "pagepermisson": 1,
         "grade": 1,
         "children": [
             {
                 "id": 8,
-                "title": "角色列表",
+                "title": "traceProduct",
                 "rightId": 7,
-                "key": "/right-manage/role/list",
+                "key": "/trace-manage/trace",
                 "pagepermisson": 1,
                 "grade": 2
             }
@@ -42,32 +42,32 @@ const menusListData = [
     },
     {
         "id": 14,
-        "title": "新闻管理",
-        "key": "/news-manage",
+        "title": "Product Management",
+        "key": "/product-manage",
         "pagepermisson": 1,
         "grade": 1,
         "children": [
             {
                 "id": 15,
-                "title": "新闻列表",
+                "title": "Product List",
                 "rightId": 14,
-                "key": "/news-manage/list",
+                "key": "/product-manage/list",
                 "grade": 2
             }
         ]
     },
     {
         "id": 21,
-        "title": "审核管理",
-        "key": "/audit-manage",
+        "title": "Order Management",
+        "key": "/order-manage",
         "pagepermisson": 1,
         "grade": 1,
         "children": [
             {
                 "id": 22,
-                "title": "审核新闻",
+                "title": "Add order",
                 "rightId": 21,
-                "key": "/audit-manage/audit",
+                "key": "/order-manage/addOrder",
                 "pagepermisson": 1,
                 "grade": 2
             }
@@ -75,16 +75,16 @@ const menusListData = [
     },
     {
         "id": 24,
-        "title": "发布管理",
-        "key": "/publish-manage",
+        "title": "Category Management",
+        "key": "/category-manage",
         "pagepermisson": 1,
         "grade": 1,
         "children": [
             {
                 "id": 25,
-                "title": "待发布",
+                "title": "Add Category",
                 "rightId": 24,
-                "key": "/publish-manage/unpublished",
+                "key": "/category-manage/addCategory",
                 "pagepermisson": 1,
                 "grade": 2
             }

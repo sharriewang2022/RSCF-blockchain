@@ -1,11 +1,11 @@
 
-import { SET_MENU, SET_ROUTES, SET_TOKEN, SET_USER} from './../redtypes';
-import { getUserMenu, login as loginApi } from "../../api/auth";
+import { SET_MENU, SET_ROUTES, SET_TOKEN, SET_USER} from '../../util/constant';
+import { getUserMenu, login as loginApi } from "../../api/adminApi";
 import type {Dispatch} from 'redux'
 import type { AxiosResponse } from 'axios';
-import type { UserType, LoginResponseType} from './../../types';
+import type { UserType, LoginResponseType} from '../../util/variableTypes';
 import type { ReactNode } from 'react';
-import LazyLoad from '../../utils/LazyLoad';
+import LazyLoad from '../../util/LazyLoad';
 
 // log in api
 // asynchronous login action
@@ -103,7 +103,7 @@ export function getMenus(){
     getUserMenu()
     .then(res=>{
       console.log(res.data.list,"get menu");
-      // run SET_MENU£¬trig reducer and update state
+      // run SET_MENUï¿½ï¿½trig reducer and update state
       dispath({type:SET_MENU,payload:formaterMenu(res.data.list)})
       // update routes in redux
       dispath({type:SET_ROUTES,payload:foramterRoutes(res.data.list)})

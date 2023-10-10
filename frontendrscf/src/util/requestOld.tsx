@@ -1,4 +1,3 @@
-/* global fetch */
 import { message } from 'antd';
 
 const request = (option: { url: RequestInfo | URL; method: any; data: any; }) => fetch(option.url, {
