@@ -288,7 +288,7 @@ function VerticalTabs(props:any) {
           }catch(error){
             console.log('Error')
           }
-        } 
+          } 
         }
           constraints={{facingMode: 'environment'}}
           videoStyle={{ width: '100%' }}         
@@ -351,10 +351,9 @@ function VerticalTabs(props:any) {
     );
   }
 
-
 function GenQR(props:any){
 
-     const handleClose = () => {
+    const handleClose = () => {
         props.setOpen(false);
     };
     return(<Dialog

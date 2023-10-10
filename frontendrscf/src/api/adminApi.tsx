@@ -20,6 +20,13 @@ export function login(data:UserType):Promise<AxiosResponse<ReType>>{
 export function getUserMenu(){
   return request.get("/api/yp/user_permission")
 }
+
+/* get user list */
+export const getUserList = (searchName: string) =>
+  request<UserType>({
+    url: `/api/search/users?q=${searchName}`,
+    method: 'get',
+  });
 // login({name:"abc",password:"des"})
 // .then(res=>{
 //   res.data.

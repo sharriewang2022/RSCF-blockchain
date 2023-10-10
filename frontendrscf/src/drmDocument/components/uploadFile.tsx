@@ -46,7 +46,7 @@ class Document extends React.Component {
             <form onSubmit={this.handleUploadFile}>
                 <div>
                 {/* onInput={(e: React.FormEvent<HTMLFormElement>) => {this.handleUploadFile(e);}}  */}
-                    <input id="avaInput" ref={  this.uploadInputRef }  type="file" />
+                    <input id="avaInput" ref={ this.uploadInputRef }  type="file" />
                 </div>
                 <br />
                 <div>

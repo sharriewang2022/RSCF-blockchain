@@ -65,6 +65,7 @@ const validationSchema = yup.object({
         background:"#EDF5E1 !important",
     }
   }))
+  
 function LoginView() {
 
     const {login} = useAuth()
