@@ -26,7 +26,7 @@ if __name__ == "__main__":
     app.secret_key = os.urandom(24)
     app.run(debug=True,host="0.0.0.0",use_reloader=False)
 
-flask_cors.CORS(app, expose_headers='Authorization')
+CORS(app, expose_headers='Authorization')
 
 
 @app.route('/upload', methods=['POST'])
