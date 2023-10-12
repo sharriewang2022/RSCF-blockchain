@@ -1,10 +1,12 @@
 import { message } from "antd";
-import { SERVER_BASE_URL } from "./constant";
+import { SERVER_BASE_URL } from "../config/sysConfig";
 import axios from "axios";
 
 // npm i --save-dev @types/nprogress
 import NProgress from "nprogress";
-import 'nprogress/nprogress.css'
+import "../styles/nprogress.css";
+// import Nprogress from 'nprogress/nprogress.js';
+
 
 NProgress.settings.showSpinner = false;
 

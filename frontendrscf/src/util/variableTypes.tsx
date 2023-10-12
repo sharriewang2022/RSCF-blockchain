@@ -10,7 +10,7 @@ export interface ProductType {
     size?:number
 }
  
-export type GroupProType = ProductType&{
+export type ActitivyProType = ProductType&{
     groupBuyId?:number|string
     salePrice?:string
     limitBuy?:number
@@ -27,7 +27,7 @@ export interface TagType{
     current?:number
     size?:number
 }
-export interface GroupBuyType {
+export interface OrderPurchaseType {
     id?:number|string
     name?:string
     startTime?:string

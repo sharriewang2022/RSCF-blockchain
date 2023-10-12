@@ -10,7 +10,7 @@ function LazyLoad(url: string) {
                 .then(res => resolve(res))
                 .catch(err => {
                     // fail
-                    resolve(import("../views/" + "ErrorPage"))
+                    resolve(import("./views/" + "ErrorPage"))
                     console.log(err)
                     message = JSON.parse(err);
                 })

@@ -1,6 +1,5 @@
 import React, {Component, useState} from 'react';
 import ipfsClient from 'ipfs-http-client';
-import request from "../../util/request";
 import { IPFS_HOST, IPFS_PORT } from '../../config/sysConfig'
 import './App.css';
 

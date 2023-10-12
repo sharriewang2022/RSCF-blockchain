@@ -4,7 +4,6 @@ import { getUserMenu, login as loginApi } from "../../api/adminApi";
 import type {Dispatch} from 'redux'
 import type { AxiosResponse } from 'axios';
 import type { UserType, LoginResponseType} from '../../util/variableTypes';
-import type { ReactNode } from 'react';
 import LazyLoad from '../../util/LazyLoad';
 
 // log in api
