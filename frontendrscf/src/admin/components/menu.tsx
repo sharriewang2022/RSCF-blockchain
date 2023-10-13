@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Link as RouterLink } from 'react-router-dom';
-import { Link, Button, Box } from '@material-ui/core';
+import { Button, Box } from '@material-ui/core';
 import { useState, useEffect } from 'react';
 
 function Menu() {

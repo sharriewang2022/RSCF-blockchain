@@ -4,7 +4,8 @@ import axios from "axios";
 
 // npm i --save-dev @types/nprogress
 import NProgress from "nprogress";
-import "../styles/nprogress.css";
+// import "../styles/nprogress.css"; 
+import 'nprogress/nprogress.css'
 // import Nprogress from 'nprogress/nprogress.js';
 
 

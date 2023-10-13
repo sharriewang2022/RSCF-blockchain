@@ -3,11 +3,9 @@ import React from 'react';
 class Document extends React.Component {
     constructor(props:any) {
         super(props);
-
         this.state = {
             fileURL: '',
         };
-
         this.handleUploadFile = this.handleUploadFile.bind(this);
     }
 

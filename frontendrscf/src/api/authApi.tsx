@@ -1,8 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { parseCookies } from 'nookies';
-
 import { AuthTokenError } from '../util/authError'
-
 import { signOut } from '../contexts/authContext'
 
 export function setupAPIClient(ctx = undefined){

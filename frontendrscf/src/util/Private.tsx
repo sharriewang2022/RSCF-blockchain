@@ -1,6 +1,6 @@
 import { Navigate} from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import {ReactNode,FC} from 'react'
+import React, {ReactNode,FC} from 'react'
 
 interface Iprops{
   children?:ReactNode

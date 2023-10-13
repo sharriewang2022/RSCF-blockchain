@@ -4,7 +4,7 @@ import {database} from "../../util/firebase";
 import {Navigate, Route } from "react-router-dom"
 import {Manufacturer} from "../../admin/components/manufacturer";
 import {Product} from "../../product/components/product";
-import {Order} from "../../order/components/order";
+import Order from "../../order/components/createOrderPurchase";
 import Document from '../../drmDocument/components/uploadFile';
 import { useLocalStorage} from "../../hooks/useLocalStorage"
 

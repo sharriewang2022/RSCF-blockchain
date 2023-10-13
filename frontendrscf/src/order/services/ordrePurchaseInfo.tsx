@@ -1,4 +1,4 @@
-import { useState,useEffect } from 'react' 
+import  React,{ useState,useEffect } from 'react' 
 import { getTag } from '../../api/orderPurchaseApi'
 import dayjs from 'dayjs'
 import {Card,Button} from 'antd' 
@@ -8,11 +8,10 @@ interface Iprops{
   orderActionInfo:OrderPurchaseType
 }
 function OrderPurchaseInfo(props:Iprops) {
-  // 定义标签
   const [tag,setTag] = useState<TagType>({})
   const orderActionInfo = props.orderActionInfo;
   const state = Number(orderActionInfo.state)
-  // 请求tag数据
+ 
   useEffect(()=>{
     getTag({id:orderActionInfo.tag})
     .then(res=>{
@@ -22,51 +21,51 @@ function OrderPurchaseInfo(props:Iprops) {
   return ( <div>    
     {/* <p>{JSON.stringify(orderActionInfo)}</p> */}
    
-    <Card type='inner' title=" 活动状态">
+    <Card type='inner' title="Order Status">
       <p>{ORDERPURCHASE_STATE[state]}</p>
-      {state<=2?<Button>提前结束</Button>:''}
+      {state<=2?<Button>Finished</Button>:''}
     </Card>
-    <Card type='inner' title="活动信息">
+    <Card type='inner' title="Order Info">
       <p>
-        <span> 活动名称：</span>
+        <span> Order Name: </span>
         <span>{orderActionInfo.name}</span>
       </p>
       <p>
-        <span> 活动名称：</span>
+        <span> Order Time: </span>
         <span>{dayjs(orderActionInfo.startTime).format(DATETIME_FORMAT)} 到 {dayjs(orderActionInfo.endTime).format(DATETIME_FORMAT)}</span>
       </p>
       <p>
-        <span> 广告语：</span>
+        <span> Order Specific: </span>
         <span>{orderActionInfo.slogan}</span>
       </p>
       <p>
-        <span> 预告时间：</span>
+        <span> Order Pretime: </span>
         <span>{dayjs(orderActionInfo.preTime).format(DATETIME_FORMAT)}</span>
       </p>
       <p>
-        <span> 首页展示：</span>
+        <span> Order Home: </span>
         <span>{SHOW_HOME[Number(orderActionInfo.showHome)]}</span>
       </p>
       <p>
-        <span> 标签：</span>
-        <span><img src={tag.pic} alt='标签' width="60" /></span>
+        <span> Tag: </span>
+        <span><img src={tag.pic} alt='tag' width="60" /></span>
       </p>
     </Card>
-    <Card type='inner' title="活动规则">
+    <Card type='inner' title="Order Rules">
       <p>
-          <span> 顾客类型：</span>
+          <span> Customer Type: </span>
           <span>{CUSTOM_TYPE[Number(orderActionInfo.target)]}</span>
       </p>
       <p>
-          <span> 是否限量：</span>
-          <span>{orderActionInfo.limitBuy===999?'不限':orderActionInfo.limitBuy}</span>
+          <span>Amount: </span>
+          <span>{orderActionInfo.limitBuy===999?'999':orderActionInfo.limitBuy}</span>
       </p>
       <p>
-          <span> 配送方式：</span>
+          <span>DeliverWay: </span>
           <span>{DILIVER_TYPE[Number(orderActionInfo.deliverWay)]}</span>
       </p>
       <p>
-          <span> 提货时间：</span>
+          <span> Pickup Time: </span>
           <span>{dayjs(orderActionInfo.pickTime).format(DATETIME_FORMAT)}</span>
       </p>
     </Card>

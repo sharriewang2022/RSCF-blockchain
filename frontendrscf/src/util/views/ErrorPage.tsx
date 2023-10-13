@@ -1,3 +1,5 @@
+import React, { Component }  from 'react';
+
 interface Iprops {
     message?:string
 }

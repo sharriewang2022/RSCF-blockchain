@@ -1,4 +1,4 @@
-const menusListData = [
+export const menusListData = [
     {
         "id": 1,
         "title": "Home",

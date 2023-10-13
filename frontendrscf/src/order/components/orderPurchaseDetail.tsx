@@ -14,21 +14,20 @@ function OrderPurchaseDetail() {
   useEffect(()=>{
     getOrderPurchase({id:params.id})
     .then(res=>{
-      //refresh
       setOrderActionInfo(res.data.data[0])
     })
   },[])
   
   // tabs
   const items = [
-    // 把团购信息传递个子组件 OrderPurchaseInfo
+    // send order info to subcomponents, OrderPurchaseInfo
     {label:'Order Purchase Info',key:"1",children:<OrderPurchaseInfo orderActionInfo={orderActionInfo} />},
     {label:'Products List',key:"2",children:<OrderChainProList orderActionInfo={orderActionInfo}/>},
     {label:'Shops List',key:"3",children:<OrderChainShopList  orderActionInfo={orderActionInfo}/>}
   ]
   return ( <div className="OrderPurchaseDetail">
     
-     <Button style={{margin:"16px 0"}}><Link to="/admin/channel/communityPurchase">←返回</Link></Button>
+     <Button style={{margin:"16px 0"}}><Link to="/order/components/orderPurchase">←come back</Link></Button>
      
     <Tabs
         defaultActiveKey="1"

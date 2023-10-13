@@ -3,7 +3,7 @@
 import React, {useState } from "react"
 import { useAuth} from "../../contexts/authContext-old";
 import {makeStyles} from "@material-ui/core/styles";
-import {database} from "../../admin/components/firebase";
+import {database} from "../../util/firebase";
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useLocalStorage} from "../../hooks/useLocalStorage";

@@ -30,7 +30,7 @@ const baseOrderInfo =
   "state": 1
 }
 
-function CreateOrderPurchase() {
+function Order() {
   
   const [OrderActionInfo,setOrderActionInfo] = useState(baseOrderInfo)
  
@@ -58,4 +58,4 @@ function CreateOrderPurchase() {
   </div> );
 }
 
-export default CreateOrderPurchase;
+export default Order;

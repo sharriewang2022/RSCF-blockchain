@@ -1,5 +1,5 @@
 import { Space, Spin } from 'antd'
-import { lazy, Suspense } from "react";
+import React, { lazy, Suspense } from "react";
 
 function LazyLoad(url: string) {
     var message = "";

@@ -52,56 +52,51 @@ const baseParams = {
   endTime: "",
 };
 
-function CommunityPurchase() {
+function OrderPurchase() {
  
   const [pagination, setpagination] = useState({ total: 1, current: 1 });
   // default parameters
   const [params, setParams] = useState<OrderPurchaseType>(baseParams);
-  //  团购列表数据
   const [orderPurchaseList, setOrderPurchaseList] = useState<OrderPurchaseType[]>([]);
-  //  定义重置方法
+  
   const reset = () => {
     setParams(baseParams);
-    // 刚更新完数据，就去用数据取请求（问题：需要第二次才能）
-    // 更新完毕立即取请求（请求的时候拿不到最新的params）
-    // 监听params变化 如果 params等于baseParams就去请求
+    //can't get the latest params when requested at the first time, need second request
     // getOrderChain()
   };
-  //  定义获取团购的函数
+
+  //get order info
   function getOrderChain() {
-    getOrderPurchase({ ...params, current: pagination.current }).then((res) => {
-      // 更新团购列表数
+    getOrderPurchase({ ...params, current: pagination.current }).then((res) => {      
       setOrderPurchaseList(res.data.data);
       var p = res.data.pagination;
-      // 更新分页数据
       setpagination({ current: Number(p.current), total: p.total });
       console.log(res.data.data);
     });
   }
-  // 挂载获取数据(生命周期)
 
   useEffect(() => {
     getOrderChain();
   }, [pagination.current]);
 
-  //监听params变化
+  //listen
   useEffect(() => {
-    // params发生变化都会执行这个回调函数
-    // 如果params等于baseParams 点击重置
+   
+    // if params changed and  == baseParams, then send request
     if (params === baseParams) {
-      // params是最新的数据可以获取团购列表
+      // params is new and get order bill lists
       getOrderChain();
     }
   }, [params]);
   return (
     <div>
-      <h3>社区团购</h3>
+      <h3>Order Bill</h3>
       <Card
         type="inner"
         title={
           <span>
-            筛选查询 <Button 
-            style={{ marginLeft: 32 }}> <Link to="/admin/channel/createOrderPurchase">+ 创建团购活动</Link></Button>
+            Search<Button 
+            style={{ marginLeft: 32 }}> <Link to="/order/components/createOrderPurchase">+ Create Order Bill</Link></Button>
           </span>
         }
       >
@@ -112,7 +107,7 @@ function CommunityPurchase() {
           getOrderChain={getOrderChain}
         />
       </Card>
-      <Card type="inner" title={<span>数据展示</span>}>
+      <Card type="inner" title={<span>Order List</span>}>
         <Table
           size="small"
           onChange={(pa: any) => {
@@ -124,9 +119,8 @@ function CommunityPurchase() {
           dataSource={orderPurchaseList}
         />
       </Card>
-      {/* {JSON.stringify(pagination)} */}
     </div>
   );
 }
 
-export default CommunityPurchase;
+export default OrderPurchase;

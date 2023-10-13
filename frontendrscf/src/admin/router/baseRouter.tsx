@@ -1,3 +1,4 @@
+import React from 'react';
 import LoginView from "../../login/components/login";
 import AdminView from "../views/adminView";
 import Private from '../../util/private'

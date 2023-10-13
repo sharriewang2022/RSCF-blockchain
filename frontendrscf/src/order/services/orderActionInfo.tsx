@@ -1,4 +1,4 @@
-import SelectShop from "./orderShop";
+import SelectShop from "./operateShop";
 import SelectTag from "./orderTag";
 import dayjs from "dayjs";
 import {Card, Input, DatePicker ,Button,Checkbox,Upload, Image,Radio,Select, Tag} from "antd";
@@ -24,13 +24,9 @@ function CreateOrderActionInfo(props: Iprops) {
   const [shopList,setShopList] = useState<shopType[]>([])
   // show shop
   const [showShop,setShowShop] = useState(false)
-
-  const {orderActionInfo, setCurrent, setOrderActionInfo } = props;
- 
+  const {orderActionInfo, setCurrent, setOrderActionInfo } = props; 
   const [tag,setTag] = useState({pic:'',type:'',name:'',id:''})
-
   const [tagType,setTagType] = useState(1)
-
   const [showTag,setShowTag] =useState(false)
   // listen tag to change orderActionInfo's tag
   useEffect(()=>{
@@ -43,7 +39,7 @@ function CreateOrderActionInfo(props: Iprops) {
   },[shopList])
   return (
     <div className="CreateOrderActionInfo">
-      <Card type="inner" title="Order Activity">
+      <Card type="inner" title="Order Action">
         {JSON.stringify(orderActionInfo)}
         <p>
           <span className="label">Order Name:</span>
@@ -57,7 +53,7 @@ function CreateOrderActionInfo(props: Iprops) {
           </span>
         </p>
         <p>
-          <span className="label">活动时间：</span>
+          <span className="label">Order Time: </span>
           <span>
             <RangePicker
               onChange={(value, str) => {
@@ -77,7 +73,7 @@ function CreateOrderActionInfo(props: Iprops) {
         </p>
         
         <p>
-          <span className="label">广告语：</span>
+          <span className="label">Order Sign: </span>
           <span>            
             <Input
               value={orderActionInfo.slogan}
@@ -88,7 +84,7 @@ function CreateOrderActionInfo(props: Iprops) {
           </span>
         </p>
         <p>
-          <span className="label">首页展示：</span>
+          <span className="label">Order Show: </span>
           <span>            
              <Checkbox 
               onChange={(e) => {
@@ -98,10 +94,9 @@ function CreateOrderActionInfo(props: Iprops) {
           </span>
         </p>
         <p>
-          <span className="label">首页展示图：</span>
+          <span className="label">Order Picture: </span>
           <span  style={{width:200,display:'inline-block',verticalAlign:'middle'}}>            
-        <Upload 
-       
+        <Upload        
         showUploadList={false} 
         listType="picture-card"
         className="avatar-uploader"
@@ -121,7 +116,7 @@ function CreateOrderActionInfo(props: Iprops) {
         </p>
         
         <p>
-          <span className="label"> 活动主题页海报：</span>
+          <span className="label"> Order Introduction: </span>
           <span  style={{width:200,display:'inline-block',verticalAlign:'middle'}}>            
         <Upload 
        
@@ -143,18 +138,18 @@ function CreateOrderActionInfo(props: Iprops) {
           </span>
         </p>
         <p>
-          <span className="label">活动主题页展示样式：</span>
+          <span className="label">Order Style: </span>
           <span>            
-          <Radio.OrderChain onChange={e=>setOrderActionInfo({...orderActionInfo,showType:e.target.value})} value={orderActionInfo.showType}>
-          <Radio value={1}>一行一列</Radio>
-          <Radio value={2}>一行两列</Radio>
-          <Radio value={3}>一行三列</Radio>
+          <Radio.Group onChange={e=>setOrderActionInfo({...orderActionInfo,showType:e.target.value})} value={orderActionInfo.showType}>
+          <Radio value={1}>One Row One Column</Radio>
+          <Radio value={2}>One Row Two Columns</Radio>
+          <Radio value={3}>One Row Three Columns</Radio>
          
-          </Radio.OrderChain>
+          </Radio.Group>
           </span>
         </p>
         <p>
-          <span className="label">促销标签：</span>
+          <span className="label">Order Tag: </span>
           <span>            
           <Select
           onChange={e=>{
@@ -163,22 +158,21 @@ function CreateOrderActionInfo(props: Iprops) {
           }}
           defaultValue={1}
           style={{ width: 120 }}         
-          options={[{ value: 1, label: '团购' },{ value: 2, label: '活动' }]}
+          options={[{ value: 1, label: 'Order' },{ value: 2, label: 'Action' }]}
         />&emsp;&emsp;
-        {/* 图片单击 执行setShowTag(true) 显示弹框 */}
         <Image 
         preview={false}
         onClick={()=>setShowTag(true)}
         src={tag.pic} fallback={fallback} width={64}/>
           </span>
         </p>
-        {/* 如果可以显示弹框，则显示 并传入setShowTag方法 */}
+        {/* showTag is true and send setShowTag() */}
         {showTag&&<SelectTag setShowTag={setShowTag} tagType={tagType} setTag={setTag}/>}
        
       </Card>
-      <Card type="inner" title="规则设置" >
+      <Card type="inner" title="Order Rule" >
       <p>
-          <span className="label">预告时间：</span>
+          <span className="label">Time: </span>
           <span>
             <DatePicker
               onChange={(value, str) => {
@@ -195,17 +189,17 @@ function CreateOrderActionInfo(props: Iprops) {
           </span>
         </p>
       <p>
-          <span className="label">活动对象：</span>
+          <span className="label">Order Clients: </span>
           <span>            
-          <Radio.OrderChain onChange={e=>setOrderActionInfo({...orderActionInfo,target:e.target.value})} value={orderActionInfo.target}>
-            <Radio value={1}>不限</Radio>
-            <Radio value={2}>新用户</Radio>
-          </Radio.OrderChain>
+          <Radio.Group onChange={e=>setOrderActionInfo({...orderActionInfo,target:e.target.value})} value={orderActionInfo.target}>
+            <Radio value={1}>All Users</Radio>
+            <Radio value={2}>New User</Radio>
+          </Radio.Group>
           </span>
         </p>        
        
         <p>
-          <span className="label">购买限量：</span>
+          <span className="label">Order Amount: </span>
           <span>            
             <Input
               value={orderActionInfo.limitBuy}
@@ -216,38 +210,37 @@ function CreateOrderActionInfo(props: Iprops) {
           </span>
         </p>
         <p>
-          <span className="label">配置方式：</span>
+          <span className="label">DeliverWay: </span>
           <span>            
-          <Radio.OrderChain onChange={e=>setOrderActionInfo({...orderActionInfo,deliverWay:e.target.value})} value={orderActionInfo.deliverWay}>
-            <Radio value={1}>自提</Radio>
-            <Radio value={2}>配置</Radio>
-          </Radio.OrderChain>
+          <Radio.Group onChange={e=>setOrderActionInfo({...orderActionInfo,deliverWay:e.target.value})} value={orderActionInfo.deliverWay}>
+            <Radio value={1}>Self Pickup</Radio>
+            <Radio value={2}>Express </Radio>
+          </Radio.Group>
           </span>
         </p> 
         <p>
-          <span className="label">店铺现在：</span>
+          <span className="label">Shops: </span>
           <span>            
-          <Radio.OrderChain onChange={e=>{
+          <Radio.Group onChange={e=>{
             setOrderActionInfo({...orderActionInfo,shop:e.target.value})
             if(e.target.value){
               setShowShop(true);
             }
             }} value={orderActionInfo.shop}>
-            <Radio value={''}>不限</Radio>
-            <Radio value={1}>选择店铺</Radio>
-          </Radio.OrderChain>
+            <Radio value={''}>All Shops</Radio>
+            <Radio value={1}>Some shop</Radio>
+          </Radio.Group>
          { orderActionInfo.shop&&<span onClick={()=>setShowShop(true)}> </span>}
           </span><span>{shopList.map(item=>item.name).join(' ,')}</span>
         </p> 
         <p>
-          <span className="label">提货时间：</span>
+          <span className="label">Pickup Time: </span>
           <span>
             <DatePicker
               onChange={(value, str) => {
                 setOrderActionInfo({
                   ...orderActionInfo,
-                  pickTime: str,
-                 
+                  pickTime: str,                 
                 });
               }}
               format={DATE_FORMAT}
@@ -257,7 +250,7 @@ function CreateOrderActionInfo(props: Iprops) {
           </span>
         </p>  
       </Card>
-      <p><Button type="primary" onClick={()=>setCurrent(1)}>下一步，选择商品</Button></p>
+      <p><Button type="primary" onClick={()=>setCurrent(1)}>Next, Select Products</Button></p>
       {showShop&&<SelectShop shopList={shopList} setShowShop={setShowShop} setShopList={setShopList}></SelectShop>}
     </div>
   );

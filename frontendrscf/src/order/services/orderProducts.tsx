@@ -1,6 +1,6 @@
 import {addOrderAction, addOrderChainProduct, UpdateOrderAction} from '../../api/orderPurchaseApi'
 import {Button,Table,Input} from 'antd'
-import SelectPro from  './orderPro'
+import SelectProduct from  './selectProduct'
 import {useState,useEffect} from 'react';
 import type {OrderPurchaseType, ActitivyProType} from "../../util/variableTypes";
 
@@ -12,18 +12,18 @@ interface Iprops {
 }
 
 function OrderProducts(props:Iprops) {
- 
-  const [showSelectPro,setShowSelectPro] = useState(false)
- 
-  const [activityProductList,setActivityProductList] =useState<any>([])
- 
+  // show product list
+  const [showSelectProduct,setShowSelectProduct] = useState(false) 
+  //order product
+  const [actionProductList,setActionProductList] =useState<any>([]) 
+  //product list
   const [selProductList,setSelProductList] =useState([])
  
   // activity products list
 const columns = [
   {
     title:"Product ID",dataIndex:'productId'},
-  {title:"规格",dataIndex:'specs'},
+  {title:"Specific",dataIndex:'specs'},
   {title:"Product Name",dataIndex:'productName'},
   {title:"Price",dataIndex:'price'},
   {
@@ -32,11 +32,11 @@ const columns = [
      
       return <Input 
       onChange={(e)=>{
-        var list = activityProductList;
+        var list = actionProductList;
         // e is form inputted value
         list[index].salePrice = e.target.value
         console.log(list,list[index]);
-        setActivityProductList([...list]);
+        setActionProductList([...list]);
       }}
       value={value}/>
     }
@@ -58,39 +58,38 @@ const columns = [
       obj.order = 0;
       return obj;
     }) 
-    setActivityProductList(list)
+    setActionProductList(list)
   },[selProductList])
  
-  async function done (){
+  async function chooseFinish (){
     // add order actitivy to server and then get activityId
-   const activity =  await addOrderAction(props.orderActionInfo)
-   var orderPurchaseId = activity.data.data.insertId;//插入团购信息后得到id
-    // 02 有多个少团购商品，遍历添加的 服务器  products 团购商品id（多个）
-   var list = activityProductList.map((item:any)=>addOrderChainProduct({...item,orderPurchaseId})) 
-    // list 多个promise请求结果,Promise.all()
-    const gplist = await Promise.all(list)
-    // gplist 多个个求和得到的结果列表
-   var products = gplist.map(item=>item.data.data.insertId).join(",")
-   // 03 更新团购活动信息的products
+  const activity =  await addOrderAction(props.orderActionInfo)
+  var orderPurchaseId = activity.data.data.insertId; 
+    // order products with id
+  var list = actionProductList.map((item:any)=>addOrderChainProduct({...item,orderPurchaseId})) 
+    // several promise
+  const gplist = await Promise.all(list)
+    // several gplist  join together
+  var products = gplist.map(item=>item.data.data.insertId).join(",")
+   //  update order products
   const result = await UpdateOrderAction({id:orderPurchaseId,products})
   if(result.data.code===0){
     props.setCurrent(2);
-    // 进入下步完成
   }else{
-    console.log("创建活动失败")
+    console.log("fail")
   }
-    // 04 进入下一步 props.setCurrent(2)
   }
+  
   return ( <div className="SelectProducts">
-   <p style={{textAlign:'center'}}><Button type='primary' onClick={()=>setShowSelectPro(true)}>+选择商品</Button></p>
-   <Table rowKey="productId" pagination={false} dataSource={activityProductList} columns={columns}/>
-   {showSelectPro&&<SelectPro 
-   shopList={selProductList} 
-   setShowShop={setShowSelectPro} 
-   setShopList={setSelProductList}></SelectPro>} 
+   <p style={{textAlign:'center'}}><Button type='primary' onClick={()=>setShowSelectProduct(true)}>Choose Product:</Button></p>
+   <Table rowKey="productId" pagination={false} dataSource={actionProductList} columns={columns}/>
+   {showSelectProduct&&<SelectProduct 
+   selectProductList={selProductList} 
+   setShowSelectProduct={setShowSelectProduct} 
+   setSelectProductList={setSelProductList}></SelectProduct>} 
    <p>
-     <Button onClick={()=>props.setCurrent(0)}>上一步，编辑商品信息</Button>  
-     <Button onClick={()=>done()}>完成</Button>
+     <Button onClick={()=>props.setCurrent(0)}>Edit Product</Button>  
+     <Button onClick={()=>chooseFinish()}>Done</Button>
    </p>
    {/* <p>{JSON.stringify(orderChainProductList)}</p> */}
     </div> );

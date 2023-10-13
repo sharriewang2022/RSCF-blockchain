@@ -1,17 +1,14 @@
 import { Outlet,useNavigate,useLocation} from "react-router-dom";
 import { useSelector,useDispatch} from "react-redux";
 import type {Dispatch} from 'redux'
-//hook life cycle
-import { useEffect } from "react";
+import  React, { useEffect } from "react";
 import {getMenus} from '../action/adminActions'
 import { Layout, Menu } from 'antd';
 import type { MenuProps } from 'antd';
 import type { RootState } from "../store/adminStore";
-
-
- 
-// layout components
 const { Header, Footer, Sider, Content } = Layout;
+
+
 function Admin() {
   
   const menu  = useSelector((state:RootState)=>state.adminReducer.menu)
