@@ -1,7 +1,7 @@
 /*colors scheme #05386B #379683 #5cdb95 #8ee4af #EDF5E1 */
 
 import React, { useState } from "react"
-import {useAuth} from "../../contexts/authContext-old";
+import {useAuth} from "../../contexts/authContext";
 import {ROLES} from "../../config/sysConfig";
 import {useNavigate} from "react-router-dom";
 
@@ -75,7 +75,7 @@ const validationSchema = yup.object({
         }
   }))
 export function Register(props: UserType) {
-        const {signup} = useAuth()
+        const {signUp} = useAuth()
         const {writeData} = useAuth()
         const style = useStyle()
         const [err,setErr] = useState(0);
@@ -97,7 +97,8 @@ export function Register(props: UserType) {
 
             async function submitValues(values:UserType){
                 try{
-                    await signup(values.userEmail,values.userPassword)                   
+                    await signUp( values )  
+                                
                     await writeData(values.userName,values.role,values.uid,values.waddress)
                     setOpen(true);
                     useNavigate.call("./home/trackproduct")                     

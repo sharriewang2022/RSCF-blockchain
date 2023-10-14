@@ -13,6 +13,7 @@ function LazyLoad(url: string) {
                     resolve(import("./views/" + "ErrorPage"))
                     console.log(err)
                     message = JSON.parse(err);
+                    console.log(message)
                 })
         })
     })

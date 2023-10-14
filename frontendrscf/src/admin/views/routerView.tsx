@@ -2,7 +2,7 @@ import { useRoutes } from 'react-router-dom'
 import baseRouter from '../router/baseRouter'
 import  React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import type { RootState } from "../store/adminStore";
+import type { RootState } from "../../store/sysStore";
   
 
 function RouterView() {

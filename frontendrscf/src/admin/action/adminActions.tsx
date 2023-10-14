@@ -18,7 +18,7 @@ export function login(data:UserType,callback?:Function){
     // LoginResponseType is AxiosResponse'data type
     // LoginResponseType is login return type; AxiosResponse is axios turn type
     .then((res:AxiosResponse<LoginResponseType>)=>{
-      if(res.data != undefined && res.data.code===200){
+      if(res.data !== undefined && res.data.code===200){
      
         // run local storage
         sessionStorage.setItem("token",res.data.token);
@@ -102,7 +102,7 @@ export function getMenus(){
     getUserMenu()
     .then(res=>{
       console.log(res.data.list,"get menu");
-      // run SET_MENU��trig reducer and update state
+      // run SET_MENU reducer and update state
       dispath({type:SET_MENU,payload:formaterMenu(res.data.list)})
       // update routes in redux
       dispath({type:SET_ROUTES,payload:foramterRoutes(res.data.list)})

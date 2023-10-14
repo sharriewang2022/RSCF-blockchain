@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import SeachParams from "../services/orderChainSearchParams";
-import { ORDERPURCHASE_STATE, DATETIME_FORMAT } from "../../config/sysConfig";
+import { ORDERPURCHASE_STATE } from "../../util/constant";
+import { DATETIME_FORMAT } from "../../config/sysConfig";
 import dayjs from "dayjs";
 import { Table, Card, Button } from "antd";
 import { useEffect, useState } from "react";

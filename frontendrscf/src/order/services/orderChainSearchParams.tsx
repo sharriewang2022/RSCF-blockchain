@@ -1,5 +1,6 @@
 import dayjs from  'dayjs'
-import {ORDERPURCHASE_STATE,DATE_FORMAT} from "../../config/sysConfig";
+import { ORDERPURCHASE_STATE } from "../../util/constant";
+import { DATE_FORMAT } from "../../config/sysConfig";
 import { Col, Row,Input,DatePicker,Radio,Button} from 'antd';
 import {OrderPurchaseType}  from "../../util/variableTypes";
 interface Iprops{

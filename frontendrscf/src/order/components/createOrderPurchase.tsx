@@ -2,10 +2,8 @@ import dayjs from  'dayjs'
 
 import CreateOrderActionFinish from '../services/createOrderActionFinish';
 import SelectProducts from '../services/orderProducts';
-import CreateOrderActionInfo from '../services/orderActionInfo';
- 
-import { Steps } from 'antd';
- 
+import CreateOrderActionInfo from '../services/orderActionInfo'; 
+import { Steps } from 'antd'; 
 import { useState } from 'react';
  
 const baseOrderInfo = 
@@ -14,7 +12,7 @@ const baseOrderInfo =
   "name": "test order activity",
   "startTime": dayjs().format("YYYY-MM-DD HH:mm:ss"),
   "endTime": dayjs().format("YYYY-MM-DD HH:mm:ss"),
-  "slogan": 'order activity',
+  "slogan": 'order action',
   "showHome": "1",
   "homePic": 'xxx.jpg',
   "banner": 'xxx.jpg',

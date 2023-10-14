@@ -1,7 +1,6 @@
 import React from 'react';
-import {useAuth} from "../../contexts/authContext-old";
-import {database} from "../../util/firebase";
-import {Navigate, Route } from "react-router-dom"
+import {useAuth} from "../../contexts/authContext";
+import { Route } from "react-router-dom"
 import {Manufacturer} from "../../admin/components/manufacturer";
 import {Product} from "../../product/components/product";
 import Order from "../../order/components/createOrderPurchase";
@@ -30,11 +29,11 @@ export default function PrivateRoute( {...rest}){
 
     async function fetchRole(){
         if(currentUser){
-            await database.ref("users/" + currentUser.uid).child("role").get().then((snapshot:any) =>{
-                if(snapshot.exists()){
-                    setUserRole(snapshot.val())
-                }
-            })
+            // await database.ref("users/" + currentUser.uid).child("role").get().then((snapshot:any) =>{
+            //     if(snapshot.exists()){
+            //         setUserRole(snapshot.val())
+            //     }
+            // })
         }
     }
 

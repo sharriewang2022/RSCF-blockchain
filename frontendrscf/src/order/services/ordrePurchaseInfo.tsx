@@ -2,7 +2,8 @@ import  React,{ useState,useEffect } from 'react'
 import { getTag } from '../../api/orderPurchaseApi'
 import dayjs from 'dayjs'
 import {Card,Button} from 'antd' 
-import {ORDERPURCHASE_STATE,DATETIME_FORMAT,SHOW_HOME,CUSTOM_TYPE,DILIVER_TYPE} from "../../config/sysConfig";
+import {DATETIME_FORMAT} from "../../config/sysConfig";
+import {ORDERPURCHASE_STATE,SHOW_HOME,CUSTOM_TYPE,DILIVER_TYPE} from "../../util/constant";
 import type {OrderPurchaseType,TagType}  from "../../util/variableTypes";
 interface Iprops{
   orderActionInfo:OrderPurchaseType

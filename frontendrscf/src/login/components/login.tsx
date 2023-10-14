@@ -1,5 +1,5 @@
 import React, {useState } from "react"
-import {useAuth} from "../../contexts/authContext-old";
+import {useAuth} from "../../contexts/authContext";
 import {useNavigate} from "react-router-dom";
 import {makeStyles} from "@material-ui/core/styles";
 import {useFormik} from 'formik';
@@ -90,7 +90,7 @@ function LoginView() {
     async function handleLogin(values: UserType) {
 
         try{
-        await login(values.userEmail,values.userPassword)
+        await login( values.userEmail,values.userPassword )
             setErr(0) 
             useNavigate.call("./home/trackproduct")
             setOpen(true)

@@ -1,6 +1,6 @@
 import React,{useRef ,useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
-import {useAuth} from "../../contexts/authContext-old";
+import {useAuth} from "../../contexts/authContext";
 import {useBlock} from "../../contexts/blockContext";
 import QrReader from 'react-qr-reader';
 import { TransitionProps } from '@material-ui/core/transitions';

@@ -1,9 +1,6 @@
-/*colors scheme #05386B #379683 #5cdb95 #8ee4af #EDF5E1 */
-
 import React, {useState } from "react"
-import { useAuth} from "../../contexts/authContext-old";
+import { useAuth} from "../../contexts/authContext";
 import {makeStyles} from "@material-ui/core/styles";
-import {database} from "../../util/firebase";
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useLocalStorage} from "../../hooks/useLocalStorage";

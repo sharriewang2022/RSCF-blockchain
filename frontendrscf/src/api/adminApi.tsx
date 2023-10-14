@@ -12,7 +12,6 @@ interface ReType{
 
 // return type is Promise with AxiosResponse<ReType>
 export function login(data:UserType):Promise<AxiosResponse<ReType>>{
-  // result
   return request.post("/api/login",data)
 }
 
@@ -24,10 +23,25 @@ export function getUserMenu(){
 /* get user list */
 export const getUserList = (searchName: string) =>
   request<UserType>({
-    url: `/api/search/users?q=${searchName}`,
+    url: '/api/search/users?q=${searchName}',
     method: 'get',
   });
+
+  export function getShops(params:Stype){
+    return request.get("/api/yp/shop",{params})
+  }
 // login({name:"abc",password:"des"})
 // .then(res=>{
 //   res.data.
 // })
+
+export const AddUser = (userValue: UserType) =>
+  request<UserType>({
+    url: '/api/user/addUser?q=${userValue}',
+    method: 'post',
+  });
+
+
+  export function addUser(userParam: UserType){
+    return request.post("/api/yp/orderPurchase",userParam)
+  }

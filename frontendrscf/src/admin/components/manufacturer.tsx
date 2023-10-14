@@ -1,7 +1,5 @@
-/*colors scheme #05386B #379683 #5cdb95 #8ee4af #EDF5E1 */
-
 import React, {useState} from 'react';
-import {useAuth} from '../../contexts/authContext-old';
+import {useAuth} from '../../contexts/authContext';
 import UpdateProfile from "../../login/components/updateProfile";
 import {useNavigate, Route} from "react-router-dom"; 
 import {TrackProduct} from "../../trace/components/trackProduct";
@@ -18,7 +16,7 @@ export function Manufacturer(props:any){
     const {logout} = useAuth();
 
     const handlelogout = async (e : React.MouseEvent<HTMLElement>) => {
-      await logout();
+      await logout(); 
       useNavigate.call('./login')
     }
       
