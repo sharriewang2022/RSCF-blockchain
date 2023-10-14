@@ -21,27 +21,25 @@ export function getUserMenu(){
 }
 
 /* get user list */
-export const getUserList = (searchName: string) =>
-  request<UserType>({
-    url: '/api/search/users?q=${searchName}',
-    method: 'get',
-  });
+export const getUserList = () =>
+  // request<UserType>({
+    // url: '/api/search/users?q=${searchName}',
+    // method: 'get',
+    request.post("/user/allUsers")
+  // });
 
-  export function getShops(params:Stype){
-    return request.get("/api/yp/shop",{params})
-  }
+
 // login({name:"abc",password:"des"})
 // .then(res=>{
 //   res.data.
 // })
 
-export const AddUser = (userValue: UserType) =>
-  request<UserType>({
-    url: '/api/user/addUser?q=${userValue}',
-    method: 'post',
-  });
 
-
-  export function addUser(userParam: UserType){
-    return request.post("/api/yp/orderPurchase",userParam)
-  }
+export function addUser(userParam: UserType){
+  return request.post("/user/register",userParam)
+}
+// export const AddUser = (userValue: UserType) =>
+//   request<UserType>({
+//     url: '/api/user/addUser?q=${userValue}',
+//     method: 'post',
+//   });
