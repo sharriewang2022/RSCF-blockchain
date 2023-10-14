@@ -16,3 +16,10 @@ EXPIRE_TIME = 600
 
 # MD5 salt value
 MD5_SALTVALUE = "2343dfudrjer#%*"
+
+IPFS_HOST =  "127.0.0.1"
+IPFS_PORT = 48084
+IPFS_SCHEME = "http"
+INFURA_USE = True
+INFURA_PROJECT_ID = "test"
+ALCHE_KEY =""

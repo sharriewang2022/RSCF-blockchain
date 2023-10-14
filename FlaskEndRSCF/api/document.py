@@ -29,7 +29,7 @@ if __name__ == "__main__":
 CORS(app, expose_headers='Authorization')
 
 
-@app.route('/upload', methods=['POST'])
+@app.route('/file/upload', methods=['POST'])
 def fileUpload():
     target=os.path.join(UPLOAD_FOLDER,'test_docs')
     if not os.path.isdir(target):
@@ -46,7 +46,7 @@ def fileUpload():
 
 
 
-@app.route("/allDocuments", methods=["GET"])
+@app.route("/file/allDocuments", methods=["GET"])
 def getAllDocuments():
     """all document info"""
     sql = "SELECT * FROM document"
@@ -55,7 +55,7 @@ def getAllDocuments():
     return jsonify({"code": 0, "data": data, "msg": "success"})
 
 
-@app.route("/someDocument/<string:documentId>", methods=["GET"])
+@app.route("/file/getSomeDocument/<string:documentId>", methods=["GET"])
 def getSomeDocument(documentId):
     """some document"""
     sql = "SELECT * FROM document WHERE documentId = '{}'".format(documentId)
@@ -65,7 +65,7 @@ def getSomeDocument(documentId):
         return jsonify({"code": 0, "data": data, "msg": "success"})
     return jsonify({"code": "1004", "msg": "no document"})
 
-@app.route("/userDocument/<string:userId>", methods=["GET"])
+@app.route("/file/userDocument/<string:userId>", methods=["GET"])
 def getSomeDocument(userId):
     """some document"""
     sql = "SELECT * FROM document WHERE authorId = '{}'".format(userId)
@@ -76,7 +76,7 @@ def getSomeDocument(userId):
     return jsonify({"code": "1004", "msg": "no document"})
 
 
-@app.route("/add/document", methods=['POST'])
+@app.route("/file/addDocument", methods=['POST'])
 def addDocument():
     """add document"""
     documentId = uuid.uuid1()
@@ -108,7 +108,7 @@ def addDocument():
 
 
 
-@app.route("/update/document/<int:id>", methods=['PUT'])
+@app.route("/file/updateDocument/<int:id>", methods=['PUT'])
 def UpdateDocument(id):  
     """update document"""
     documentManufacturer = request.json.get("documentManufacturer", "").strip()  
@@ -151,7 +151,7 @@ def UpdateDocument(id):
         return jsonify({"code": 8001, "msg": "The details of document could not be empty"})
     
 
-@app.route("/delete/document/<string:id>", methods=['POST'])
+@app.route("/file/deleteDocument/<string:id>", methods=['POST'])
 def deleteDocument(id):
     adminUser = request.json.get("adminUser", "").strip()  
     token = request.json.get("token", "").strip()  

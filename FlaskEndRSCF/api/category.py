@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 
 
-@app.route("/allCategorys", methods=["GET"])
+@app.route("/category/allCategorys", methods=["GET"])
 def getAllCategory():
     """all category info"""
     sql = "SELECT * FROM category"
@@ -18,7 +18,7 @@ def getAllCategory():
     return jsonify({"code": 0, "data": data, "msg": "success"})
 
 
-@app.route("/someCategory/<string:categoryId>", methods=["GET"])
+@app.route("/category/getSomeCategory/<string:categoryId>", methods=["GET"])
 def getSomeCategory(categoryId):
     """some category"""
     sql = "SELECT * FROM category WHERE categoryId = '{}'".format(categoryId)
@@ -29,7 +29,7 @@ def getSomeCategory(categoryId):
     return jsonify({"code": "1004", "msg": "no category"})
 
 
-@app.route("/add/category", methods=['POST'])
+@app.route("/category/addCategory", methods=['POST'])
 def addCategory():
     """add category"""
     categoryId = uuid.uuid1()   
@@ -62,7 +62,7 @@ def addCategory():
 
 
 
-@app.route("/update/category/<int:id>", methods=['PUT'])
+@app.route("/category/updateCategory/<int:id>", methods=['PUT'])
 def UpdateCategory(id):  
     """update category, only manufacturer could do this"""
     categoryManufacturer = request.json.get("categoryManufacturer", "").strip()  
@@ -109,7 +109,7 @@ def UpdateCategory(id):
         return jsonify({"code": 6006, "msg": "The details of category could not be empty"})
     
 
-@app.route("/delete/category/<string:id>", methods=['POST'])
+@app.route("/category/deleteCategory/<string:id>", methods=['POST'])
 def deleteCategory(id):
     adminUser = request.json.get("adminUser", "").strip()  
     token = request.json.get("token", "").strip()  

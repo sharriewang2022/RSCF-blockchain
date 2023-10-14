@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, request
 from util.mySqlDB import mySqlDB
 from util.redisUtil import redisUtil
-
 from datetime import datetime
 import uuid
 
@@ -9,7 +8,7 @@ app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 
 
-@app.route("/allProducts", methods=["GET"])
+@app.route("/product/allProducts", methods=["GET"])
 def getAllProducts():
     """all product info"""
     sql = "SELECT * FROM product"
@@ -18,7 +17,7 @@ def getAllProducts():
     return jsonify({"code": 0, "data": data, "msg": "success"})
 
 
-@app.route("/someProduct/<string:productId>", methods=["GET"])
+@app.route("/product/someProduct/<string:productId>", methods=["GET"])
 def getSomeProduct(productId):
     """some product"""
     sql = "SELECT * FROM product WHERE productId = '{}'".format(productId)
@@ -29,7 +28,7 @@ def getSomeProduct(productId):
     return jsonify({"code": "1004", "msg": "no product"})
 
 
-@app.route("/add/product", methods=['POST'])
+@app.route("/product/addProduct", methods=['POST'])
 def addProduct():
     """add product"""
     productId = uuid.uuid1()
@@ -65,7 +64,7 @@ def addProduct():
 
 
 
-@app.route("/update/product/<int:id>", methods=['PUT'])
+@app.route("/product/updateProduct/<int:id>", methods=['PUT'])
 def UpdateProduct(id):  
     """update product, only manufacturer could do this"""
     productManufacturer = request.json.get("productManufacturer", "").strip()  
@@ -116,7 +115,7 @@ def UpdateProduct(id):
         return jsonify({"code": 5001, "msg": "The details of product could not be empty"})
     
 
-@app.route("/delete/product/<string:id>", methods=['POST'])
+@app.route("/product/deleteProduct/<string:id>", methods=['POST'])
 def deleteProduct(id):
     adminUser = request.json.get("adminUser", "").strip()  
     token = request.json.get("token", "").strip()  

@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 
 
-@app.route("/allOrders", methods=["GET"])
+@app.route("/order/allOrders", methods=["GET"])
 def getAllOrders():
     """all order info"""
     sql = "SELECT * FROM orderProduct"
@@ -18,7 +18,7 @@ def getAllOrders():
     return jsonify({"code": 0, "data": data, "msg": "success"})
 
 
-@app.route("/someOrder/<string:orderId>", methods=["GET"])
+@app.route("/order/getSomeOrder/<string:orderId>", methods=["GET"])
 def getSomeOrder(orderId):
     """some order"""
     sql = "SELECT * FROM orderProduct WHERE orderId = '{}'".format(orderId)
@@ -29,7 +29,7 @@ def getSomeOrder(orderId):
     return jsonify({"code": "7007", "msg": "no order"})
 
 
-@app.route("/add/order", methods=['POST'])
+@app.route("/order/addOrder", methods=['POST'])
 def addOrder():
     """add order"""
     orderId = uuid.uuid1()
@@ -66,7 +66,7 @@ def addOrder():
 
 
 
-@app.route("/update/order/<int:id>", methods=['PUT'])
+@app.route("/order/updateOrder/<int:id>", methods=['PUT'])
 def UpdateOrder(id):  
     """update order, only manufacturer could do this"""
     orderManufacturer = request.json.get("orderManufacturer", "").strip()  
@@ -119,7 +119,7 @@ def UpdateOrder(id):
         return jsonify({"code": 7001, "msg": "The details of order could not be empty"})
     
 
-@app.route("/delete/order/<string:id>", methods=['POST'])
+@app.route("/order/deleteOrder/<string:id>", methods=['POST'])
 def deleteOrder(id):
     adminUser = request.json.get("adminUser", "").strip()  
     token = request.json.get("token", "").strip()  

@@ -6,7 +6,7 @@ app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 
 
-@app.route("/allRoles", methods=["GET"])
+@app.route("/role/allRoles", methods=["GET"])
 def getAllRoles():
     """all role info"""
     sql = "SELECT * FROM role"
@@ -15,7 +15,7 @@ def getAllRoles():
     return jsonify({"code": 0, "data": data, "msg": "success"})
 
 
-@app.route("/someRole/<string:userId>", methods=["GET"])
+@app.route("/role/someRole/<string:userId>", methods=["GET"])
 def getSomeRole(userId):
     """some role"""
     sql = "SELECT RoleID, RoleName FROM v_user_role_menu WHERE userId = '{}'".format(userId)
