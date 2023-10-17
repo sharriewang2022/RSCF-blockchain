@@ -17,7 +17,7 @@ def getAllProducts():
     return jsonify({"code": 0, "data": data, "msg": "success"})
 
 
-@app.route("/product/someProduct/<string:productId>", methods=["GET"])
+@app.route("/product/getSomeProduct/<string:productId>", methods=["GET"])
 def getSomeProduct(productId):
     """some product"""
     sql = "SELECT * FROM product WHERE productId = '{}'".format(productId)

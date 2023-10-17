@@ -4,6 +4,12 @@ app = Flask(__name__)
 import os, sys
 from config.setting import SERVER_PORT
 from api.user import app
+from api.product import app
+from api.order import app
+from api.category import app
+from api.document import app
+from api.menu import app
+from api.role import app
 
 
 BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -14,4 +20,10 @@ if __name__ == '__main__':
 
 @app.route("/", methods =['GET'])
 def home():
-    return "Hello, Flask!" +"test"
+    return "Hello, Flask!%$##"
+
+
+@app.route("/test", methods =['GET'])
+def test():
+    print("testss")
+    return "test, Flask!" 

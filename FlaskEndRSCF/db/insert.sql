@@ -1,3 +1,7 @@
+-----------USER--------------
+insert into USER (ID, UserID, UserName, UserPassword, FirstName, LastName, RoleID, Email, Telephone, CreateDate)
+values('001', '001', 'sa', 1, 'saFirst', 'saLast', '3001', '@', '020999','2023-10-17');
+
 -----------------------------MENU---------------------------
 insert into MENU (MenuID, MenuName, Description, CreateDate)
 values('1001','Administration module','System management module','2023-09-25');

@@ -15,7 +15,7 @@ def getAllRoles():
     return jsonify({"code": 0, "data": data, "msg": "success"})
 
 
-@app.route("/role/someRole/<string:userId>", methods=["GET"])
+@app.route("/role/getSomeRole/<string:userId>", methods=["GET"])
 def getSomeRole(userId):
     """some role"""
     sql = "SELECT RoleID, RoleName FROM v_user_role_menu WHERE userId = '{}'".format(userId)
