@@ -2,7 +2,7 @@ export const config = {
     VERSION: process.env.VERSION
 }; 
 
-export const SERVER_BASE_URL = "http://localhost:8001"
+export const SERVER_BASE_URL = "http://localhost:5000"
 
 export const APP_DATE_FORMAT = 'DD/MM/YY HH:mm';
 export const APP_TIMESTAMP_FORMAT = 'DD/MM/YY HH:mm:ss';
@@ -15,15 +15,7 @@ export const DATETIME_FORMAT = "YYYY-MM-DD HH:mm:ss"
 export const DATE_FORMAT = "YYYY-MM-DD"
 export const SHOW_HOME = ["No","Yes"]
 
-
-export const ROLES = [
-    "administrator",
-    "supplier",
-    "manufacturer", 
-    "distributer",
-    "retailer",
-    "customer"
-]
-
 export const IPFS_HOST = "http://localhost";
 export const IPFS_PORT = 5001;
+
+export const SMART_CONTRACT_ADDRESS ="0x8697637667f90510F3256aDE275bA0023DD41a00";

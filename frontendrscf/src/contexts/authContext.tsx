@@ -6,11 +6,12 @@ import { api } from '../api/authApiClient'
 import { UserType } from '../util/variableTypes';
 import { addUser } from '../api/adminApi';
 
+
 interface AuthContextData {
   currentUser: UserType | undefined | null;
   isAuthenticated: boolean;
   // login: (credentials: SignInProps) => Promise<void>;
-  login: (email:string , password:string) => Promise<void>;
+  login: (username:string, password:string, role:string) => Promise<void>;
   signUp: (credentials: UserType) => Promise<void>;
   logout: () => Promise<void>;
   writeData : (userName:string, role:string, id:string, address:string) => Promise<void>;
@@ -74,7 +75,7 @@ export function AuthProvider({ children }: AuthProviderProps){
           userPassword,
           role,
           userEmail,
-          uid,
+          userID: uid,
           waddress
         })
 
@@ -86,12 +87,11 @@ export function AuthProvider({ children }: AuthProviderProps){
     }
   }, [])
 
-  async function login( email:string , password:string ){
+  async function login( username:string , password:string, userRole:string ){
   // async function login({ email, password }: SignInProps){
     try{
-      const response = await api.post("/session", {
-        email,
-        password,
+      const response = await api.post("/user/login", {
+        username, password, userRole
       })
 
       const {userName, userPassword, role, userEmail, uid, waddress, token} = response.data;
@@ -106,7 +106,7 @@ export function AuthProvider({ children }: AuthProviderProps){
         userPassword,
         role,
         userEmail,
-        uid,
+        userID: uid,
         waddress
       })
 
@@ -120,10 +120,10 @@ export function AuthProvider({ children }: AuthProviderProps){
   }
 
 
-  async function signUp({ userName, userEmail, userPassword, role, uid, waddress}: UserType){
+  async function signUp({ userName, userEmail, userPassword, role, userID: uid, waddress}: UserType){
     try{
       addUser({
-        userName, userEmail, userPassword, role, uid, waddress
+        userName, userEmail, userPassword, role, userID: uid, waddress
       })
       useNavigate.call('/login')
     }catch(err){
@@ -184,22 +184,22 @@ async function updateAddressInBase(userName:string, caddress:string, address:str
 }
 
 function updatemail(emailStr: string) {
-    if(currentUser != undefined){
+    if(currentUser !== undefined){
        // setCurrentUser((prev:UserType|undefined) => ({prev}));
         setCurrentUser({ userName:currentUser.userName, 
             userPassword : currentUser.userPassword,
             waddress : currentUser.waddress,
-            uid : currentUser.uid,
+            userID : currentUser.userID,
             role: currentUser.role,
             userEmail: emailStr});
     }
 }
 function updatePass(pass:string) {
-    if(currentUser != undefined){
+    if(currentUser !== undefined){
         setCurrentUser({ userName:currentUser.userName, 
             userPassword :  pass,
             waddress : currentUser.waddress,
-            uid : currentUser.uid,
+            userID : currentUser.userID,
             role: currentUser.role,
             userEmail: currentUser.userEmail});
     }
@@ -231,7 +231,7 @@ async function addressToName(address:string){
           userPassword,
           role,
           userEmail,
-          uid,
+          userID: uid,
           waddress
         })
   

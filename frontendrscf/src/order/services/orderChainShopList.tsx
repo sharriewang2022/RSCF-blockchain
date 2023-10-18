@@ -1,5 +1,5 @@
 import {Table } from 'antd'
-import {getShops} from '../../api/orderPurchaseApi'
+import {getShops} from '../../api/orderApi'
 import { useEffect,useState } from 'react';
 import type {OrderPurchaseType} from "../../util/variableTypes";
 import type { ColumnsType } from 'antd/es/table';

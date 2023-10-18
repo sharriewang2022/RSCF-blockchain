@@ -2,7 +2,7 @@ import React from 'react';
 import {useAuth} from "../../contexts/authContext";
 import { Route } from "react-router-dom"
 import {Manufacturer} from "../../admin/components/manufacturer";
-import {Product} from "../../product/components/product";
+import ProductView from "../../product/components/product";
 import Order from "../../order/components/createOrderPurchase";
 import Document from '../../drmDocument/components/uploadFile';
 import { useLocalStorage} from "../../hooks/useLocalStorage"
@@ -12,7 +12,7 @@ export default function PrivateRoute( {...rest}){
     const roleRoute = {
         "manufacturer": <Manufacturer/>,       
         "supplier": <Order/>,
-        "distributer":<Product/>,
+        "distributer":<ProductView/>,
         "customer": <Order/>,
         "retailer": <Document/>,
         "undefined":<div>Loading..</div>    

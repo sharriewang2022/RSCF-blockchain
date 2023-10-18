@@ -1,4 +1,4 @@
-import {addOrderAction, addOrderChainProduct, UpdateOrderAction} from '../../api/orderPurchaseApi'
+import {addOrderAction, addOrderChainProduct, UpdateOrderAction} from '../../api/orderApi'
 import {Button,Table,Input} from 'antd'
 import SelectProduct from  './selectProduct'
 import {useState,useEffect} from 'react';

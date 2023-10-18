@@ -1,5 +1,5 @@
 import  React,{ useState,useEffect } from 'react' 
-import { getTag } from '../../api/orderPurchaseApi'
+import { getTag } from '../../api/orderApi'
 import dayjs from 'dayjs'
 import {Card,Button} from 'antd' 
 import {DATETIME_FORMAT} from "../../config/sysConfig";

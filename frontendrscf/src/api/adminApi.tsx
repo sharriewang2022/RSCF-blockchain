@@ -10,14 +10,15 @@ interface ReType{
   user:any
 }
 
-// return type is Promise with AxiosResponse<ReType>
+// return: Promise with AxiosResponse<UserType>
 export function login(data:UserType):Promise<AxiosResponse<ReType>>{
-  return request.post("/api/login",data)
+  return request.post("/user/login",data)
 }
 
 // get user menu
-export function getUserMenu(){
-  return request.get("/api/yp/user_permission")
+// "/menu/getSomeMenu/<string:userId>"
+export function getUserMenu(userID: string){
+  return request.get("/menu/getSomeMenu/"+userID)
 }
 
 /* get user list */

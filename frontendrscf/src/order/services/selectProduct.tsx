@@ -1,4 +1,4 @@
-import {getProduts} from '../../api/orderPurchaseApi';
+import {getProduts} from '../../api/orderApi';
 import {Button,Card,Row,Col,Input,Table,Image} from 'antd'
 import { useEffect, useState } from 'react';
 import type { ColumnsType } from 'antd/es/table';

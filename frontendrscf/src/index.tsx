@@ -8,6 +8,11 @@ import enGB from 'antd/locale/en_GB';
 import 'antd/dist/reset.css';
 import sysStore from './store/sysStore'
 import { Provider } from 'react-redux';
+import {BlockProvider} from "./contexts/blockContext";
+import {AuthProvider} from "./contexts/authContext";
+import Compose from "./util/compose";
+
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -18,7 +23,9 @@ root.render(
   <React.StrictMode>
     <Provider store={sysStore}>
       <ConfigProvider locale={enGB}>
-        <App />
+<Compose components={[BlockProvider, AuthProvider]}>
+    <App />
+</Compose>
       </ConfigProvider>
     </Provider>
   </React.StrictMode>

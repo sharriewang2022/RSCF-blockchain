@@ -74,7 +74,7 @@ interface ipfsState {
 class IPFSFile extends Component <ipfsProps, ipfsState> {
 
   //class component can not use hook
-  constructor(props: any) {
+  constructor(props: ipfsProps) {
     super(props);
     this.state = {
       strHash: null,

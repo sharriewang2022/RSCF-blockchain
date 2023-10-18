@@ -111,17 +111,17 @@ export default  function UpdateProfile(props: any) {
             }
     
             if(values.Role && currentUser != undefined){
-                promises.push(updateRoleInBase(values.Role,currentUser?.uid))
+                promises.push(updateRoleInBase(values.Role,currentUser?.userID))
                 setUserRole(values.Role)
                 window.location.reload();
             }
 
             if(values.address  && currentUser != undefined){
-                promises.push(updateAddressInBase(values.Username, CAddr, values.address, currentUser.uid))
+                promises.push(updateAddressInBase(values.Username, CAddr, values.address, currentUser.userID))
             }
 
             if(values.Username && currentUser != undefined){
-                promises.push(updateUserInBase(values.Username, currentUser.uid, (values.address?values.address:CAddr)))
+                promises.push(updateUserInBase(values.Username, currentUser.userID, (values.address?values.address:CAddr)))
             }
             
             Promise.all(promises).then(() => {

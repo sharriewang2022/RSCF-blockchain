@@ -5,7 +5,7 @@ import { DATETIME_FORMAT } from "../../config/sysConfig";
 import dayjs from "dayjs";
 import { Table, Card, Button } from "antd";
 import { useEffect, useState } from "react";
-import { getOrderPurchase } from "../../api/orderPurchaseApi";
+import { getOrderPurchase } from "../../api/orderApi";
 import type { OrderPurchaseType } from "../../util/variableTypes";
 import type { ColumnsType } from "antd/es/table";
 

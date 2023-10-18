@@ -42,7 +42,6 @@ const client = ipfsClient.create({
 })
 
 generateKeys()
-// _testing()
 
 async function uploadFileEncrypted(file: fs.PathOrFileDescriptor, ipfspath: string) {
   try {
@@ -217,7 +216,7 @@ app.get(/^\/api\/file(\/.*)$/, async (req, res, next) => {
 });
 
 app.listen(backEndRestport, () => {
- console.log("Server running on port 3000");
+ console.log("Server running on port " + backEndRestport);
 });
 
 

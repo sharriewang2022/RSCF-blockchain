@@ -1,2 +1,25 @@
 Blockchain
-https://docs.metamask.io/wallet/reference/provider-api/
+*https://docs.metamask.io/wallet/reference/provider-api/
+
+*https://github.com/MetaMask/metamask-extension/issues/8077
+
+*https://docs.ethers.org/v4/cookbook-providers.html
+
+https://www.dappuniversity.com/articles/ethereum-dapp-react-tutorial
+
+https://docs.ethers.org/v6/getting-started/
+
+https://www.infura.io/ 
+
+https://www.infura.io/blog/post/getting-started-with-infura-28e41844cc89 ---good
+
+https://github.com/ipfs/js-ipfs/blob/master/docs/core-api/FILES.md    -- good
+
+
+React:
+https://redux.js.org/api/applymiddleware
+
+https://redux-toolkit.js.org/api/configureStore
+
+for businessApi.tsx
+https://github.com/wang1xiang/create-vct/blob/9c5f03e71f6233f42004826c992bf53ef3920407/react-project/src/api/feature/app.ts

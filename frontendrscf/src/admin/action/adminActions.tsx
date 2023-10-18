@@ -18,8 +18,7 @@ export function login(data:UserType,callback?:Function){
     // LoginResponseType is AxiosResponse'data type
     // LoginResponseType is login return type; AxiosResponse is axios turn type
     .then((res:AxiosResponse<LoginResponseType>)=>{
-      if(res.data !== undefined && res.data.code===200){
-     
+      if(res.data !== undefined && res.data.code===200){     
         // run local storage
         sessionStorage.setItem("token",res.data.token);
         sessionStorage.setItem("userInfo",JSON.stringify(res.data.user))
@@ -29,7 +28,7 @@ export function login(data:UserType,callback?:Function){
         // navigate
         if(callback){callback()};
         // login success then get menus
-        dispatch(getMenus())
+        dispatch(getMenus(data.userID))
       }
     }) 
   }
@@ -97,9 +96,9 @@ function foramterRoutes(list:Array<OriginMenuItemType>):Array<RouteItemType>{
   })
   return temp;
 }
-export function getMenus(){
+export function getMenus(userID: string){
   return (dispath:Dispatch)=>{
-    getUserMenu()
+    getUserMenu(userID)
     .then(res=>{
       console.log(res.data.list,"get menu");
       // run SET_MENU reducer and update state

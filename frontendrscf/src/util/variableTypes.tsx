@@ -2,14 +2,21 @@
 
 export interface ProductType {
     id?:number|string
-    gallery?:string
+    productId?:string
     productName?:string
-    price?:string
+    price?:number
+    amount?:number
+    productItems?:string
+    blockchainHash?:string
+    category?:string
+    manufacturer?:string
+    supplier?:string
     specs?:string
-    current?:number
     size?:number
+    current?:number
 }
- 
+
+//type used in Order management
 export type ActitivyProType = ProductType&{
     groupBuyId?:number|string
     salePrice?:string
@@ -55,7 +62,7 @@ export interface UserType {
     userPassword:string
     role:string
     userEmail:string
-    uid: string
+    userID: string
     waddress: string
 }
 

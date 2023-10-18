@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import {useAuth} from '../../contexts/authContext';
 import UpdateProfile from "../../login/components/updateProfile";
 import {useNavigate, Route} from "react-router-dom"; 
-import {TrackProduct} from "../../trace/components/trackProduct";
-import {Product} from "../../product/components/product" ;
+import TrackProduct from "../../trace/components/trackProduct";
+import ProductView from "../../product/components/product" ;
 import "./navbar.scss";
 import {About} from "./about";
 import {Nav ,Navbar , NavDropdown,Container} from "react-bootstrap";
@@ -66,7 +66,7 @@ export function Manufacturer(props:any){
             <Container>
                 <Route path = "/home/profile" Component = {UpdateProfile}></Route>
                 <Route path = "/home/trackproduct" Component = {TrackProduct}></Route>
-                <Route path = "/home/addproduct" Component = {Product}></Route>
+                <Route path = "/home/addproduct" Component = {ProductView}></Route>
                 <About open = {open} setOpen = {setOpen}/>
             </Container>
             </div>

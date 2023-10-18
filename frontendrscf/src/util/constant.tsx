@@ -12,4 +12,14 @@ export const DILIVER_TYPE=['Undefined', 'Self Speech', 'Express Delivery']
 export const messages = {
 DATA_ERROR_ALERT: 'Internal Error'
 };
+
+export const ROLES = [
+    "Administrator",
+    "Supplier",
+    "Manufacturer", 
+    "Distributer",
+    "Retailer",
+    "Customer"
+]
+
   

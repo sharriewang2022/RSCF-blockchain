@@ -52,4 +52,17 @@ request.interceptors.response.use(
   }
 );
 
+function requestTest(){
+  const product ="";
+  const headers = {
+    "x-access-token": sessionStorage.getItem("jwtToken"),
+  };
+
+  console.log("request test");
+
+  axios
+    .post("http://192.168.0.108:8090/product", product, { headers: headers })
+    .then((res) => console.log(res));
+}
+
 export default  request;

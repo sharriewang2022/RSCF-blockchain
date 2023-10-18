@@ -2,8 +2,9 @@ import React,{useRef ,useState} from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import {useAuth} from "../../contexts/authContext";
 import {useBlock} from "../../contexts/blockContext";
-import QrReader from 'react-qr-reader';
+// import QrReader from 'react-qr-reader';
 import { TransitionProps } from '@material-ui/core/transitions';
+
 import {
   Container,
   Typography,
@@ -18,6 +19,7 @@ import {
   DialogContent,
   DialogTitle,
   Slide,
+  Hidden,
 } from '@material-ui/core';
 
 import MuiAlert from '@material-ui/lab/Alert';
@@ -122,7 +124,7 @@ function FetchLocation(props: any){
  </Dialog>)
 }
 
-export function TrackProduct(){
+function TrackProductView(){
     const handleClose = (event: React.MouseEvent, reason:string) => {
         if (reason === 'clickaway') {
           return;
@@ -146,7 +148,8 @@ export function TrackProduct(){
     }
     async function handleFetchInfo(id: string){
         try {
-            if(!id){
+            if(!id || id ==="Search Product ID"){
+                window.alert("Please enter Product ID")
                 throw("Please enter Product ID")
             }
             const dataRaw = await trackProduct(id)
@@ -187,7 +190,8 @@ export function TrackProduct(){
 
     return(
         <Grid container spacing = {3} style = {{
-            transform:"translateY(10%)"
+            transform:"translateY(10%)",
+            border: "5px solid #05386B",
         }}>
         {openErr &&<Snackbar open={openErr} autoHideDuration={6000} onClose={()=>handleClose}>
         <Alert onClose={handleClose} severity="error">
@@ -196,15 +200,16 @@ export function TrackProduct(){
         </Snackbar>}
         <Grid item xs = {12}>
         <Container>
-        <Grid container>
-        <Grid xs = {11}>
+        <Grid container alignContent = "center" alignItems = "center">
+        <Grid item xs = {10} >
         <TextField
-        fullWidth
+        // fullWidth
         type = "number"
         placeholder="Search Product ID"
         variant= "outlined"
         size = "small"
         margin = "none"
+
         style = {{
             background:"#5cdb95",
             border: "5px solid #05386B",
@@ -221,26 +226,29 @@ export function TrackProduct(){
     />
     </Grid>
 
-    <Grid item xs = {1} style = {{
-        border:"5px solid #05386B",
+    <Grid item xs = {10} style = {{
+        // border:"5px solid #05386B",
         borderLeft:"none"
     }}>
-    <Grid container justifyContent = 'center' alignItems = "center">
-    <i className="fas fa-search" style = {{
+    {/* <Grid container justifyContent = 'center' alignItems = "center"> */}
+    <Button className="fas fa-search" style = {{
         fontSize:"25px",
         color: "#05386B",
         transform:"translateY(30%)",
         cursor: "pointer"
-    }} onClick = {() => {handleFetchInfo(id)}}></i></Grid>
-    </Grid>
+        }} onClick = {() => {handleFetchInfo(id)}}><i className="fas fa-qrcode" style = {{
+            color:"#05386B",
+            fontSize:"12px"
+        }}></i>Search</Button></Grid>
+    {/* </Grid> */}
         </Grid>
     </Container>
     </Grid>
 
-    <Grid container justifyContent = "center" >
+    {/* <Grid container justifyContent = "center">
              <span style = {{marginTop:"7px" ,color: "#05386B" ,fontWeight:"650"}}>OR</span>
          </Grid>
-         <Grid container justifyContent = "center" style = {{}}>
+         <Grid container justifyContent = "center" >
          <Button size = "small"><i className="fas fa-qrcode" style = {{
                     color:"#05386B",
                     fontSize:"15px"
@@ -248,7 +256,8 @@ export function TrackProduct(){
                     fontSize:"16px",
                     color:"#05386B",
                     marginLeft:"2px",
-                }} onClick = {handleScan}>Scan QR</div></Button></Grid>
+                }} onClick = {handleScan}>Scan QR</div></Button></Grid> */}
+    
     <Grid item xs = {12}>
         <Grid container justifyContent = "center" alignItems = "center">
         <Box style = {{
@@ -317,3 +326,5 @@ export function TrackProduct(){
     </Grid>
     </Grid>)
 }
+
+export default TrackProductView;

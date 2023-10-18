@@ -1,6 +1,6 @@
 import React from 'react';
 
-class Document extends React.Component {
+class DocumentView extends React.Component {
     constructor(props:any) {
         super(props);
         this.state = {
@@ -57,4 +57,4 @@ class Document extends React.Component {
     }
 }
 
-export default Document;
+export default DocumentView;

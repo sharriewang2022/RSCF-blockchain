@@ -1,5 +1,5 @@
  
-import {getShops} from '../../api/orderPurchaseApi';
+import {getShops} from '../../api/orderApi';
 import {Button,Card,Row,Col,Input,Table} from 'antd';
 import { useEffect, useState } from 'react';
 import type { ColumnsType } from 'antd/es/table';

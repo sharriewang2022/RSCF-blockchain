@@ -1,6 +1,6 @@
 import  {Table} from  'antd'
 import { useState,useEffect } from 'react'
-import  {getTag} from '../../api/orderPurchaseApi';
+import  {getTag} from '../../api/orderApi';
 import {Modal} from 'antd'
 import type { ColumnsType } from 'antd/es/table';
 import type { TagType } from "../../util/variableTypes";

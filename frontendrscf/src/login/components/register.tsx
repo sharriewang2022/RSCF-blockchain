@@ -2,7 +2,7 @@
 
 import React, { useState } from "react"
 import {useAuth} from "../../contexts/authContext";
-import {ROLES} from "../../config/sysConfig";
+import {ROLES} from "../../util/constant";
 import {useNavigate} from "react-router-dom";
 
 import {makeStyles} from "@material-ui/core/styles";
@@ -87,7 +87,7 @@ export function Register(props: UserType) {
                 userPassword:"",
                 role:"",
                 userEmail:"",
-                uid:"",
+                userID:"",
                 waddress:"",
                 passwordConfirmation:""
             },
@@ -99,7 +99,7 @@ export function Register(props: UserType) {
                 try{
                     await signUp( values )  
                                 
-                    await writeData(values.userName,values.role,values.uid,values.waddress)
+                    await writeData(values.userName,values.role,values.userID,values.waddress)
                     setOpen(true);
                     useNavigate.call("./home/trackproduct")                     
                 } catch(error:any){
