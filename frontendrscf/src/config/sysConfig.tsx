@@ -18,4 +18,5 @@ export const SHOW_HOME = ["No","Yes"]
 export const IPFS_HOST = "http://localhost";
 export const IPFS_PORT = 5001;
 
+// 0x009278Cfea93587403af5613D0191513256F9244
 export const SMART_CONTRACT_ADDRESS ="0x8697637667f90510F3256aDE275bA0023DD41a00";

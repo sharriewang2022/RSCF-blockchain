@@ -100,6 +100,7 @@ function LoginView() {
     async function handleLogin(values: UserType) {
       Alert("login");
       navigate("/trackProduct")
+      // navigate("/ProductView")
 
         // try{
         // await login( values.userName,values.userPassword, values.role )

@@ -1,10 +1,11 @@
+// SPDX-License-Identifier: MIT
 pragma experimental ABIEncoderV2;
 pragma solidity >=0.4.22 <0.9.0;
 
-contract supplyChain {
+contract SupplyChainRSCF {
 
     //utility functions
-       function uint2str(uint _i) internal pure returns (string memory _uintAsString) {
+    function uint2str(uint _i) internal pure returns (string memory _uintAsString) {
         if (_i == 0) {
             return "0";
         }
@@ -25,17 +26,16 @@ contract supplyChain {
         }
         return string(bstr);
     }
-
-      function append(string memory a, string memory b, string memory c) internal pure returns (string memory) {
-
+    function append(string memory a, string memory b, string memory c) internal pure returns (string memory) {
     return string(abi.encodePacked(a, ',', b, ',', c));
-
 }
 
-    ////////variables
    uint256 public productCount =0;
-
-   mapping(uint256 => Product) public Products;
+   
+   //mapping: key--value
+   mapping(uint256 => Product) public ProductMap;
+   mapping(uint => bool) public productAdded;
+   Product[] public Products;
 
     struct Product {
         uint256 id;
@@ -46,48 +46,59 @@ contract supplyChain {
         mapping(uint256 => string) Locations;
     }
 
-    //////////////events
-    event ProductAdded( uint256 id,
+    //following is events
+    event ProductAdded( 
+        uint256 id,
         address owner,
         string name,
         uint currentLocation,
-        uint256 date);
+        uint256 date
+    );
 
-    event locationChanged(uint256 id, 
-     string currentLocation);
+    event locationChanged(uint256 id, string currentLocation);
 
     event Info( string info);
 
-    //////modifiers
+    //following is modifiers
     modifier owner_only(uint _id){
         require(msg.sender == Products[_id].owner);
         _;
     }
-    /////main methods
+
+    //main methods
     function addProduct(string memory _name)  public returns (bool){
 
-        require( bytes(_name).length > 0);
+        require(bytes(_name).length > 0);
         productCount++;
-        Products[productCount] = Product(productCount , msg.sender, _name, 0,block.timestamp);
-
-        emit ProductAdded(productCount , msg.sender,_name, 0,block.timestamp);
+        //TypeError: Types in storage containing (nested) mappings cannot be assigned to
+        // Products[productCount] = Product(productCount, msg.sender, _name, 0, block.timestamp);
+        Product storage newProduct = ProductMap[productCount];
+        newProduct.id= productCount;
+        newProduct.owner = msg.sender;
+        newProduct.name = _name;
+        newProduct.currentLocation = 0;
+        newProduct.date = block.timestamp;
+        newProduct.Locations[productCount] = "0";
+        productAdded[productCount] = true;
+        emit ProductAdded(productCount, msg.sender, _name, 0, block.timestamp);
         return true;
     }
 
     function changeLocation( string memory _location  , uint256 _id, address _new_owner) public owner_only(_id){
 
-         Product storage  _product = Products[_id];
+        //  Product storage _product = Products[_id];
+         Product storage _product = Products[_id];
+        require(productAdded[_id] == true, "This product does not exist");
          _product.currentLocation++;
          _product.Locations[_product.currentLocation] = _location;
          _product.owner = _new_owner;
-         Products[_id] = _product;
+        //  Products[_id] = _product;
 
-         emit locationChanged( _id, 
-     _location);
+         emit locationChanged( _id, _location);
 
     }
 
-    function fetchInfo( uint256  _id)public view returns(string memory) {
+    function fetchInfo( uint256 _id)public view returns(string memory) {
 
         string memory _info  = append(
             Products[_id].name,

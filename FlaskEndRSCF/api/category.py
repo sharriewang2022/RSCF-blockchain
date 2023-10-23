@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 
 
-@app.route("/category/allCategorys", methods=["GET"])
+@app.route("/category/allCategory", methods=["GET"])
 def getAllCategory():
     """all category info"""
     sql = "SELECT * FROM category"

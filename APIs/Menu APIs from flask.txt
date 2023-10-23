@@ -2,16 +2,16 @@ Menus APIS:
 
 --Interface for getting all menus' information£º
 Method of request: GET
-Requested address: http://{serverIP}:8001/allMenus
+Requested address: http://{serverIP}:{serverPort}/menu/allMenus
 
 
 --Interface for getting some users' menus accoding to the user's role rights£º
 Method of request: GET
-Requested address: http://{serverIP}:8001/someMenu/{userID}
+Requested address: http://{serverIP}:{serverPort}/menu/getSomeMenu/{userID}
 
 
 --Interface for getting all rolls' information£º
 Method of request: GET
-Requested address: http://{serverIP}:8001/allRoles
+Requested address: http://{serverIP}:{serverPort}/allRoles
  
  

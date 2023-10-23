@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import Web3 from "web3";
 // import { ethers } from 'ethers';
-import supplyJson from '../abis/supplyChain.json'
+import SupplyChainRSCF from '../abis/SupplyChainRSCF.json'
 import web3Load from "../trace/metamask/web3Load"
 import { Web3Provider } from '@ethersproject/providers';
 import { SMART_CONTRACT_ADDRESS } from '../config/sysConfig';
@@ -79,7 +79,7 @@ export function BlockProvider({children}: Props){
         }
         else if (window.web3) {
           setIsMetamask(true)
-        window.web3 = new Web3(window.web3.currentProvider)
+          window.web3 = new Web3(window.web3.currentProvider)
         }
         else {          
           window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!');          
@@ -96,7 +96,7 @@ export function BlockProvider({children}: Props){
         window.ethereum.enable();  
         const web3 = new Web3(window.web3.currentProvider);
         // const web3 = new Web3(window.ethereum);
-        // const web3 = new Web3(Web3.givenProvider || "http://localhost:8545")
+        // const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
         const accounts = await web3.eth.getAccounts()
         setWeb3(web3)
         // Get the accounts from MetaMask      
@@ -111,8 +111,9 @@ export function BlockProvider({children}: Props){
         const networkId = await web3.eth.net.getId();
         const chainId = await web3.eth.getChainId();
 
-        const contractABI = supplyJson.abi;
+        const contractABI = SupplyChainRSCF.abi;
         const contractAddress = SMART_CONTRACT_ADDRESS;
+        // const contractAddress = supplyJson.networks["5777"].address;
         // const contractAddress = supplyJson.networks[networkId].address; //supplyJson.networks[42]        
 
         //get smart contract in supplyChain.json. parameters: (contractABI, contractAddress）

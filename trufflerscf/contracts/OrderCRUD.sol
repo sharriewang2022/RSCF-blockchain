@@ -1,7 +1,7 @@
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.9;
+// SPDX-License-Identifier: MIT
+pragma solidity >=0.4.22 <0.9.0;
 
-contract OrderSC {
+contract OrderCRUD {
     enum State { Purchased, Produced, Distributed, Sold }
 
     struct Order {

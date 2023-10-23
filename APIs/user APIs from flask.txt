@@ -1,40 +1,35 @@
-users APIS: 
-
---Interface for getting all users' information£º
+1)Interface for getting all users' information
 Method of request: GET
-Requested address: http://{serverIP}:8001/allUsers
+Requested address: http://{serverIP}:{serverPort}/user/allUsers
 
 
---Interface for getting some users' information accoding to the username£º
+2)Interface for getting some users' information accoding to the username
 Method of request: GET
-Requested address: http://{serverIP}:8001/someUser/{userName}
+Requested address: http://{serverIP}:{serverPort}/user/someUser/{userName}
  
 
---Interface for user registration£º
+3)Interface for user registration
 Method of request: POST
-Requested address: http://{serverIP}:8001/register
+Requested address: http://{serverIP}:{serverPort}/user/register
 Requested head£ºContent-Type: application/json
-Body example£º{"userName": "lily", "password": "333", "sex": "0", "telephone":"02889362743", "address": "location"}
+Body example£º{"userID": "001","userName": "lily", "password": "333", "email": "0", "role":"02889362743", "address": "location"}
  
 
-
---Interface for logging in£º
+4)Interface for logging in
 Method of request: POST
-Requested address: http://{serverIP}:8001login
+Requested address: http://{serverIP}:{serverPort}/login
 Requested head£ºContent-Type: application/x-www-form-urlencoded
-Body example£ºusername=wintest&password=123456
+Body example£ºusername=wintest&password=123456&role=02
 
 
---Interface for updating user:
+5)Interface for updating user
 Method of request: POST
-Requested address: http://{serverIP}:8001/update/user/{UserName}
+Requested address: http://{serverIP}:{serverPort}/user/update/user/{UserID}
 Requested head£ºContent-Type: application/json
 
-Body example£º{"adminUser": "lily", "token": "f54f9d6ebba2c75d45ba00a8832cb593", "sex": "1", "address": "sx", "password": "12345678", "telephone": "02889362743"}
- 
 
---Interface for deleting user:
+Interface for deleting user:
 Method of request: POST
-Requested address: http://{serverIP}:8001/delete/user/{UserName}
+Requested address: http://{serverIP}:{serverPort}/user/delete/user/{UserID}
 Requested head£ºContent-Type: application/json
 Body example£º{"adminUser": "lily", "token": "02889362743"}
