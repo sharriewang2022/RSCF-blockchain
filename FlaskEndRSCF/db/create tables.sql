@@ -28,6 +28,13 @@ CREATE TABLE Menu(
   ID Int(30) NOT NULL AUTO_INCREMENT,
   MenuID Varchar(30) NOT NULL,
   MenuName Varchar(50) NOT NULL,
+  ParentID Varchar(30),
+  ParentName Varchar(50),
+  Component Varchar(50),
+  Path Varchar(100),
+  Label Varchar(50),
+  icon Varchar(100),
+  Meta Varchar(50),
   Description Varchar(100) NOT NULL,   
   CreateDate date DEFAULT NULL,
   PRIMARY KEY (ID)

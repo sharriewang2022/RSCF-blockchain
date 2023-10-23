@@ -3,23 +3,23 @@ insert into USER (ID, UserID, UserName, UserPassword, FirstName, LastName, RoleI
 values('001', '001', 'sa', 1, 'saFirst', 'saLast', '3001', '@', '020999','2023-10-17');
 
 -----------------------------MENU---------------------------
-insert into MENU (MenuID, MenuName, Description, CreateDate)
-values('1001','Administration module','System management module','2023-09-25');
+insert into MENU (MenuID, MenuName, Component, Path, Label, ParentID, Description, CreateDate)
+values('1001','Administration module','','','',null,'System management module','2023-09-25');
 
-insert into MENU (MenuID, MenuName, Description, CreateDate)
-values('1002','Category module','Category management module','2023-09-25');
+insert into MENU (MenuID, MenuName, Component, Path, Label, ParentID, Description, CreateDate)
+values('1002','Category module','','','',null,'Category management module','2023-09-25');
 
-insert into MENU (MenuID, MenuName, Description, CreateDate)
-values('1003','Product module','Product management module','2023-09-25');
+insert into MENU (MenuID, MenuName, Component, Path, Label, ParentID, Description, CreateDate)
+values('1003','Product module','ProductView','/prodcut','Product',null,'Product management module','2023-09-25');
 
-insert into MENU (MenuID, MenuName, Description, CreateDate)
-values('1004','Order module','Order management module','2023-09-25');
+insert into MENU (MenuID, MenuName, Component, Path, Label, ParentID, Description, CreateDate)
+values('1004','Order module','','','',null,'Order management module','2023-09-25');
 
-insert into MENU (MenuID, MenuName, Description, CreateDate)
-values('1005','Document module','Document manage module','2023-09-25');
+insert into MENU (MenuID, MenuName, Component, Path, Label, ParentID, Description, CreateDate)
+values('1005','Document module','DocumentView','/file','DRM Document',null,'Document manage module','2023-09-25');
 
-insert into MENU (MenuID, MenuName, Description, CreateDate)
-values('1006','Trace module','Trace management module','2023-09-25');
+insert into MENU (MenuID, MenuName, Component, Path, Label, ParentID, Description, CreateDate)
+values('1006','Trace module','TrackProductView','/trackProduct','TrackProduct',null,'Trace management module','2023-09-25');
 
 -----------------------------Role---------------------------
 insert into Role (RoleID, RoleName, Description, CreateDate)
