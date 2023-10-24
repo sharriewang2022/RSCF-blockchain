@@ -2,7 +2,7 @@ import React from 'react';
 import {useAuth} from "../../contexts/authContext";
 import { Route } from "react-router-dom"
 import {Manufacturer} from "../../admin/components/manufacturer";
-import ProductView from "../../product/components/product";
+import ProductView from "../../product/components/productView";
 import Order from "../../order/components/createOrderPurchase";
 import Document from '../../drmDocument/components/uploadFile';
 import { useLocalStorage} from "../../hooks/useLocalStorage"

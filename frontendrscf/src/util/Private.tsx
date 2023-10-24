@@ -18,8 +18,7 @@ const Private:FC<Iprops>=(props)=> {
    if(token){
     return <>{props.children}</>
    }else{
-    // fail，go to redirect url
-    // Navigate component is from react-router-dom for redirection and link
+    //redirect to login page
     return <Navigate to={'/?redirect='+location.pathname}></Navigate>
    }
 }

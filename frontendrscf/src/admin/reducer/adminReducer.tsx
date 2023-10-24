@@ -12,7 +12,7 @@ const initialState = {
   routes:[],//Dynamic route
 }
 
-function reducer(state=initialState,action:ActionType){
+function adminReducer(state=initialState,action:ActionType){
 
   switch(action.type){
     // set user information, new info is action.payload
@@ -32,4 +32,4 @@ function reducer(state=initialState,action:ActionType){
   }
 }
 
-export default reducer
+export default adminReducer

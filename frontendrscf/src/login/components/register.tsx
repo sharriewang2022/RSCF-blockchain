@@ -74,47 +74,47 @@ const validationSchema = yup.object({
             background:"#EDF5E1 !important"
         }
   }))
-export function Register(props: UserType) {
-        const {signUp} = useAuth()
-        const {writeData} = useAuth()
-        const style = useStyle()
-        const [err,setErr] = useState(0);
-        const [open ,setOpen] = useState(false)
-        const [openErr,setOpenErr] = useState(false)
-        const formik = useFormik({
-            initialValues: {
-                userName:"",
-                userPassword:"",
-                role:"",
-                userEmail:"",
-                userID:"",
-                waddress:"",
-                passwordConfirmation:""
-            },
-            validationSchema: validationSchema,
-            onSubmit: submitValues
-            })
+function Register(props: UserType) {
+    const {signUp} = useAuth()
+    const {writeData} = useAuth()
+    const style = useStyle()
+    const [err,setErr] = useState(0);
+    const [open ,setOpen] = useState(false)
+    const [openErr,setOpenErr] = useState(false)
+    const formik = useFormik({
+        initialValues: {
+            userName:"",
+            userPassword:"",
+            role:"",
+            userEmail:"",
+            userID:"",
+            waddress:"",
+            passwordConfirmation:""
+        },
+        validationSchema: validationSchema,
+        onSubmit: submitValues
+        })
 
-            async function submitValues(values:UserType){
-                try{
-                    await signUp( values )  
-                                
-                    await writeData(values.userName,values.role,values.userID,values.waddress)
-                    setOpen(true);
-                    useNavigate.call("./home/trackproduct")                     
-                } catch(error:any){
-                    setErr(error.message)
-                    setOpenErr(true)
-                }
+        async function submitValues(values:UserType){
+            try{
+                await signUp( values )  
+                            
+                await writeData(values.userName,values.role,values.userID,values.waddress)
+                setOpen(true);
+                useNavigate.call("./home/trackproduct")                     
+            } catch(error:any){
+                setErr(error.message)
+                setOpenErr(true)
             }
+        }
 
-            const handleClose = (event:React.ChangeEvent, reason:string) => {
-                if (reason === 'clickaway') {
-                  return;
-                }
-                setOpen(false);
-                setOpenErr(false);
-            };
+        const handleClose = (event:React.ChangeEvent, reason:string) => {
+            if (reason === 'clickaway') {
+                return;
+            }
+            setOpen(false);
+            setOpenErr(false);
+        };
       
 
         return(<div style = {{
@@ -316,3 +316,5 @@ export function Register(props: UserType) {
            </div>
         ) 
     }
+
+export default Register;

@@ -7,7 +7,7 @@ interface ReType{
   code:number
   msg?:string
   token:string,
-  user:any
+  loginInfo:any
 }
 
 // return: Promise with AxiosResponse<UserType>

@@ -70,7 +70,7 @@ export interface LoginResponseType {
     code?:number
     token:string
     msg?:string
-    user:{
+    loginInfo:{
         name: string
         id: number
         score: number

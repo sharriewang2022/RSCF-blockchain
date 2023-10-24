@@ -3,7 +3,7 @@ import {useAuth} from '../../contexts/authContext';
 import UpdateProfile from "../../login/components/updateProfile";
 import {useNavigate, Route} from "react-router-dom"; 
 import TrackProduct from "../../trace/components/trackProduct";
-import ProductView from "../../product/components/product" ;
+import ProductView from "../../product/components/productView" ;
 import "./navbar.scss";
 import {About} from "./about";
 import {Nav ,Navbar , NavDropdown,Container} from "react-bootstrap";

@@ -1,11 +1,14 @@
 import { Space, Spin } from 'antd'
 import React, { lazy, Suspense } from "react";
+import DashView from '../admin/views/dashView'
+
 
 function LazyLoad(url: string) {
     var message = "";
     const Module = lazy(() => {
         return new Promise((resolve, reject) => {
-            import('../views' + url)
+            // import('../views' + url)
+            import(url)
                 // success
                 .then(res => resolve(res))
                 .catch(err => {

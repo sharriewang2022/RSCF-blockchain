@@ -28,7 +28,7 @@ function AdminView() {
       dispath(getMenus("sa"))
       //if is admin, then go to admin/dash
       if(location.pathname==="/admin"){
-        navigate('/DashView')
+        // navigate('/dashboard')
       }else{
         // go to other pages
         navigate(location.pathname)
@@ -36,6 +36,7 @@ function AdminView() {
     }    
   })
 
+  //display menus
   return ( <Layout style={{width:'100vw',height:'100vh'}}>
     <Header >Header</Header>
     <Layout>

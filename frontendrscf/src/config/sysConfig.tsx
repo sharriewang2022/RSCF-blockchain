@@ -2,7 +2,10 @@ export const config = {
     VERSION: process.env.VERSION
 }; 
 
-export const SERVER_BASE_URL = "http://localhost:5000"
+// export const SERVER_BASE_URL = "http://127.0.0.1:3000"
+// export const SERVER_BASE_URL = "http://10.7.3.95:5000"
+export const SERVER_BASE_URL = "http://127.0.0.1:5000"
+
 
 export const APP_DATE_FORMAT = 'DD/MM/YY HH:mm';
 export const APP_TIMESTAMP_FORMAT = 'DD/MM/YY HH:mm:ss';

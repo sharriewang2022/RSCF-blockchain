@@ -94,9 +94,9 @@ export function BlockProvider({children}: Props){
       //Call methods on the contract
       async function loadBlockChainData(){
         window.ethereum.enable();  
-        const web3 = new Web3(window.web3.currentProvider);
+        // const web3 = new Web3(window.web3.currentProvider);
         // const web3 = new Web3(window.ethereum);
-        // const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
+        const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
         const accounts = await web3.eth.getAccounts()
         setWeb3(web3)
         // Get the accounts from MetaMask      

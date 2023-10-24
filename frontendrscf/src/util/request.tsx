@@ -13,7 +13,7 @@ NProgress.settings.showSpinner = false;
 
 const request = axios.create({
   baseURL: SERVER_BASE_URL,
-  timeout: 5000,
+  timeout: 50000,
 });
 
 request.interceptors.request.use((config) => {
@@ -58,10 +58,8 @@ function requestTest(){
     "x-access-token": sessionStorage.getItem("jwtToken"),
   };
 
-  console.log("request test");
-
   axios
-    .post("http://192.168.0.108:8090/product", product, { headers: headers })
+    .post("http://localhost:8090/product", product, { headers: headers })
     .then((res) => console.log(res));
 }
 

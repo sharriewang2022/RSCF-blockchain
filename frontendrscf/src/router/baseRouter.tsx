@@ -1,15 +1,13 @@
 import React from 'react';
-import LoginView from "../login/components/login";
-import ProductView from "../product/components/product";
+import LoginView from "../login/components/loginView";
+import ProductView from "../product/components/productView";
 import AdminView from "../admin/views/adminView";
 import Private from '../util/private'
 import LazyLoad from "../util/LazyLoad"
 import DashView from '../admin/views/dashView';
 import DocumentView from "../drmDocument/components/uploadFile";
 import TrackProductView from "../trace/components/trackProduct";
-
-
-import { Provider } from 'web3modal';
+import Register from "../login/components/register";
 
 
 const baseRouter = [
@@ -18,12 +16,14 @@ const baseRouter = [
     {path:"/admin/*", element:<Private><AdminView/></Private>, 
          children:[{
             path:'',
-            element:LazyLoad('/admin/views/dashView'),
+            element:LazyLoad('../admin/views/dashView'),
         }]
     },
     {path:'/prodcut', element:<ProductView/>},
     {path:'/file', element:<DocumentView/>},
     {path:'/trackProduct', element:<TrackProductView/>}
+    // {path:'/Register', element:<Register userName={''} userPassword={''} role={''} userEmail={''} userID={''} waddress={''}/>}
+    
 
     // {path:'/map',element:<MapView/>}
 ];

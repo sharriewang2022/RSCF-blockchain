@@ -1,6 +1,10 @@
 import React, {useState } from "react"
-import {useAuth} from "../../contexts/authContext";
-import {useNavigate} from "react-router-dom";
+// import {useAuth} from "../../contexts/authContext";
+import { login } from "../../admin/action/adminActions";
+import Background from "../../images/Background.jpg";
+import {useNavigate, useSearchParams} from "react-router-dom";
+import {useDispatch } from "react-redux";
+import type { Dispatch } from "redux";
 import {makeStyles} from "@material-ui/core/styles";
 import {useFormik} from 'formik';
 import * as yup from 'yup';
@@ -37,52 +41,64 @@ const validationSchema = yup.object({
       .string()
       .required('Select a role'),
   });
-
+  
   const useStyle = makeStyles((theme)=>({
       root: {
         '& .MuiTextField-root': {
           margin: theme.spacing(1),
-          borderColor: "#5cdb95 !important",
-          Color: "#EDF5E1 !important"
+          borderColor: "#C0D9D9 !important",
+          Color: "#87CEFA !important"
       }},
       input:{
-          color:"#EDF5E1 !important"
+          color:"#87CEFA !important"
       },
       label:{
-        color: "#EDF5E1 !important",
+        color: "#87CEFA !important",
         fontSize:"17px"
       },
       notchedOutline:{
         borderWidth: "2px",
-        borderColor: "#5cdb95 !important",
-        color:"#EDF5E1 !important"
+        borderColor: "#C0D9D9 !important",
+        color:"#87CEFA !important"
       },
       button: {
-        backgroundColor: "#5cdb95",
+        backgroundColor: "#C0D9D9",
         color: "#05386B",
         justifySelf:"center",
         marginTop: "20px",
         marginleft: "100px",
         "&:hover" :{
-            backgroundColor:"#EDF5E1"
+            backgroundColor:"#87CEFA"
         }
     },
     divide:{
-        background:"#EDF5E1 !important",
+        background:"#87CEFA !important",
     }
   }))
+
   
 function LoginView() {
-
-    const {login} = useAuth()
+    // const {login} = useAuth()
     const [err,setErr] = useState(0)
     const [open ,setOpen] = useState(false)
     const [openErr,setOpenErr] = useState(false)
     const [isRole,setIsRole] = useState(true)
     const [Crole,setCrole] = useState("Loading...")
     const style = useStyle()
+    //dispatch use action to run reducer）
+    const dispath: Dispatch<any>= useDispatch();
+    const navigate  = useNavigate();
+    const [search] = useSearchParams();
+    //get url parameters. is behind redirect: http://ip:port/#?redirect=/admin/123
+    // is admin/123
+    const redirect = search.getAll("redirect")[0]||"/admin";
 
-    const navigate = useNavigate();
+    const callback = ()=>{
+      navigate(redirect);
+      // navigate("/admin/123")
+      // navigate("/trackProduct")
+      // navigate("/ProductView")
+    }
 
     const formik = useFormik({
       initialValues: {
@@ -98,23 +114,18 @@ function LoginView() {
     })
 
     async function handleLogin(values: UserType) {
-      Alert("login");
-      navigate("/trackProduct")
-      // navigate("/ProductView")
-
-        // try{
-        // await login( values.userName,values.userPassword, values.role )
-        //     setErr(0) 
-        //     useNavigate.call("./home/trackproduct")
-        //     setOpen(true)
-        // }
-        // catch(e){
-        //     setErr(1)
-        //     setOpenErr(true)
-        //   }
-      
+      try{
+        // dispath adminAction--login
+        dispath(login(values,callback))
+        setErr(0)         
+        setOpen(true)       
       }
-        // This is OK!
+      catch(e){
+        setErr(1)
+        setOpenErr(true)
+      }      
+    }
+        // This is also OK!
         //  function handleClose (reason:string)  {
         //     if (reason === 'clickaway') {
         //       return;
@@ -139,7 +150,8 @@ function LoginView() {
           right:"0",
           height:"100%",
           width:"100%",
-          backgroundColor:"#5cdb95"
+          backgroundImage: `url(${Background})`,
+          backgroundColor:"#C0D9D9"
         }}><Container maxWidth = "xs" style = {{ marginTop: "100px"}}>
         {open &&<Snackbar open={open} autoHideDuration={6000} onClose={()=>handleClose}>
                 <Alert onClose={handleClose} severity="success">
@@ -156,7 +168,7 @@ function LoginView() {
           padding:"20px",
           justifyContent:'center',
           alignItems:'center',
-          background:"#05386B",
+          background:"#3399cc",
           color:"#EDF5E1",
           height: "540px"
         }}>
@@ -191,7 +203,7 @@ function LoginView() {
                 variant="outlined"
                 InputLabelProps = {{
                     className : style.label,                    
-                 }}
+                }}
                 InputProps={{
                   classes: {
                     notchedOutline: style.notchedOutline,
@@ -279,7 +291,7 @@ function LoginView() {
                    </Grid>
 
                    <Grid container justifyContent = "center" alignItems = "center">
-                   <Link href="./#/signup" variant="body2" style = {{
+                   <Link href="./#/register" variant="body2" style = {{
                        paddingTop: "20px",
                        color:"#EDF5E1",
                        fontSize:"16px"

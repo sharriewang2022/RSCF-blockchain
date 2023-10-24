@@ -18,17 +18,25 @@ export function login(data:UserType,callback?:Function){
     // LoginResponseType is AxiosResponse'data type
     // LoginResponseType is login return type; AxiosResponse is axios turn type
     .then((res:AxiosResponse<LoginResponseType>)=>{
-      if(res.data !== undefined && res.data.code===200){     
-        // run local storage
-        sessionStorage.setItem("token",res.data.token);
-        sessionStorage.setItem("userInfo",JSON.stringify(res.data.user))
-        // run reducer 
-        dispatch({type:SET_TOKEN,payload:res.data.token})
-        dispatch({type:SET_USER,payload:res.data.user})
-        // navigate
-        if(callback){callback()};
-        // login success then get menus
-        dispatch(getMenus(data.userID))
+      if(res.data !== undefined )
+        if(res.data.code===200){     
+          // run local storage
+          sessionStorage.setItem("token",res.data.token);
+          sessionStorage.setItem("userInfo",JSON.stringify(res.data.loginInfo))
+          // run reducer 
+          dispatch({type:SET_TOKEN,payload:res.data.token})
+          dispatch({type:SET_USER,payload:res.data.loginInfo})
+          // navigate
+          if(callback){
+            callback()
+          };
+          // login success then get menus
+          dispatch(getMenus(data.userName))
+        }else{
+          console.log("The user information is" + res.data.msg);     
+        
+      }else{
+        console.log("The user could not login");
       }
     }) 
   }
@@ -51,7 +59,7 @@ interface OriginMenuItemType {
  
 function formaterMenu(list:Array<OriginMenuItemType>):Array<MenuItemType>{
   //return data type temp
-  var  temp:Array<MenuItemType>= [];
+  var temp:Array<MenuItemType>= [];
  
   list.forEach((element) => {
     var obj:MenuItemType= {key:element.path,label:element.name}
@@ -100,11 +108,15 @@ export function getMenus(userID: string){
   return (dispath:Dispatch)=>{
     getUserMenu(userID)
     .then(res=>{
-      console.log(res.data.list,"get menu");
-      // run SET_MENU reducer and update state
-      dispath({type:SET_MENU,payload:formaterMenu(res.data.list)})
-      // update routes in redux
-      dispath({type:SET_ROUTES,payload:foramterRoutes(res.data.list)})
+      if(res.data!=undefined){
+        console.log(res.data.list,"get menu");
+        // run SET_MENU reducer and update state and then change page
+        dispath({type:SET_MENU,payload:formaterMenu(res.data.list)})
+        // update routes in redux
+        dispath({type:SET_ROUTES,payload:foramterRoutes(res.data.list)})
+      }else{
+        console.log("The system can not get menus");
+      }
     })
   }
 }
