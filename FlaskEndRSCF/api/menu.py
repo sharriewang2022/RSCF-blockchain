@@ -1,12 +1,12 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Blueprint
 from util.mySqlDB import mySqlDB
-
 
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
+MenuBP = Blueprint("MenuBP", __name__)
 
 
-@app.route("/menu/allMenus", methods=["GET"])
+@MenuBP.route("/menu/allMenus", methods=["GET"])
 def getAllMenus():
     """all menu info"""
     sql = "SELECT * FROM menu"
@@ -15,7 +15,7 @@ def getAllMenus():
     return jsonify({"code": 0, "data": data, "msg": "success"})
 
 
-@app.route("/menu/getSomeMenu/<string:userId>", methods=["GET"])
+@MenuBP.route("/menu/getSomeMenu/<string:userId>", methods=["GET"])
 def getSomeMenu(userId):
     """some menu"""
     sql = "SELECT MenuID, MenuName FROM v_user_role_menu WHERE userId = '{}'".format(userId)

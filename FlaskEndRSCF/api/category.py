@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Blueprint
 from util.mySqlDB import mySqlDB
 from util.redisUtil import redisUtil
 
@@ -7,9 +7,10 @@ import uuid
 
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
+CategoryBP = Blueprint("CategoryBP", __name__)
 
 
-@app.route("/category/allCategory", methods=["GET"])
+@CategoryBP.route("/category/allCategory", methods=["GET"])
 def getAllCategory():
     """all category info"""
     sql = "SELECT * FROM category"
@@ -18,7 +19,7 @@ def getAllCategory():
     return jsonify({"code": 0, "data": data, "msg": "success"})
 
 
-@app.route("/category/getSomeCategory/<string:categoryId>", methods=["GET"])
+@CategoryBP.route("/category/getSomeCategory/<string:categoryId>", methods=["GET"])
 def getSomeCategory(categoryId):
     """some category"""
     sql = "SELECT * FROM category WHERE categoryId = '{}'".format(categoryId)
@@ -29,7 +30,7 @@ def getSomeCategory(categoryId):
     return jsonify({"code": "1004", "msg": "no category"})
 
 
-@app.route("/category/addCategory", methods=['POST'])
+@CategoryBP.route("/category/addCategory", methods=['POST'])
 def addCategory():
     """add category"""
     categoryId = uuid.uuid1()   
@@ -62,7 +63,7 @@ def addCategory():
 
 
 
-@app.route("/category/updateCategory/<int:id>", methods=['PUT'])
+@CategoryBP.route("/category/updateCategory/<int:id>", methods=['PUT'])
 def UpdateCategory(id):  
     """update category, only manufacturer could do this"""
     categoryManufacturer = request.json.get("categoryManufacturer", "").strip()  
@@ -109,7 +110,7 @@ def UpdateCategory(id):
         return jsonify({"code": 6006, "msg": "The details of category could not be empty"})
     
 
-@app.route("/category/deleteCategory/<string:id>", methods=['POST'])
+@CategoryBP.route("/category/deleteCategory/<string:id>", methods=['POST'])
 def deleteCategory(id):
     adminUser = request.json.get("adminUser", "").strip()  
     token = request.json.get("token", "").strip()  

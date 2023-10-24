@@ -1,12 +1,12 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Blueprint
 from util.mySqlDB import mySqlDB
-
 
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
+RoleBP = Blueprint("RoleBP", __name__)
 
 
-@app.route("/role/allRoles", methods=["GET"])
+@RoleBP.route("/role/allRoles", methods=["GET"])
 def getAllRoles():
     """all role info"""
     sql = "SELECT * FROM role"
@@ -15,7 +15,7 @@ def getAllRoles():
     return jsonify({"code": 0, "data": data, "msg": "success"})
 
 
-@app.route("/role/getSomeRole/<string:userId>", methods=["GET"])
+@RoleBP.route("/role/getSomeRole/<string:userId>", methods=["GET"])
 def getSomeRole(userId):
     """some role"""
     sql = "SELECT RoleID, RoleName FROM v_user_role_menu WHERE userId = '{}'".format(userId)

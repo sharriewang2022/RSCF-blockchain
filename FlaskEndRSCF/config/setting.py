@@ -1,4 +1,4 @@
-SERVER_PORT = 8001
+SERVER_PORT = 5000
 
 #MySql configuration
 MYSQLDB_HOST = "127.0.0.1"
@@ -23,3 +23,5 @@ IPFS_SCHEME = "http"
 INFURA_USE = True
 INFURA_PROJECT_ID = "test"
 ALCHE_KEY =""
+
+# CORS_ALLOWED_ORIGINS = ['http://127.0.0.1:3000']

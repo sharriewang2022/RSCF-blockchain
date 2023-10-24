@@ -1,6 +1,6 @@
 # https://gist.githubusercontent.com/radtech/a6165b28d4486bf7f15795fafaeb155f/raw/4187883018f0e7a9f7d8d89c2f6787f4a9a12837/FileUpload.py
 
-from flask import Flask, jsonify, request, flash, redirect, url_for, session
+from flask import Flask, jsonify, request, flash, redirect, url_for, session, Blueprint
 from util.mySqlDB import mySqlDB
 from util.redisUtil import redisUtil
 import os
@@ -12,6 +12,7 @@ import uuid
 
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
+DocumentBP = Blueprint("DocumentBP", __name__)
 
 UPLOAD_FOLDER = '/path/to/the/uploads'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
@@ -56,7 +57,7 @@ def getAllDocuments():
 
 
 @app.route("/file/getSomeDocument/<string:documentId>", methods=["GET"])
-def getSomeDocument(documentId):
+def getSomeDocumentByFileId(documentId):
     """some document"""
     sql = "SELECT * FROM document WHERE documentId = '{}'".format(documentId)
     data = mySqlDB.selectMysqldb(sql)
@@ -66,7 +67,7 @@ def getSomeDocument(documentId):
     return jsonify({"code": "1004", "msg": "no document"})
 
 @app.route("/file/userDocument/<string:userId>", methods=["GET"])
-def getSomeDocument(userId):
+def getSomeDocumentByUser(userId):
     """some document"""
     sql = "SELECT * FROM document WHERE authorId = '{}'".format(userId)
     data = mySqlDB.selectMysqldb(sql)

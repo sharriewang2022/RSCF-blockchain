@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Blueprint
 from util.mySqlDB import mySqlDB
 from util.redisUtil import redisUtil
 from util.md5Util import md5Encrypt
@@ -6,10 +6,12 @@ from util.md5Util import md5Encrypt
 from datetime import datetime
 import uuid, re, time
 
+
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
+UserBP = Blueprint("UserBP", __name__)
 
-@app.route("/user/allUsers", methods=["GET"])
+@UserBP.route("/user/allUsers", methods=["GET"])
 def getAllUsers():
     """all users info"""
     sql = "SELECT * FROM user"
@@ -18,7 +20,7 @@ def getAllUsers():
     return jsonify({"code": 0, "data": data, "msg": "success"})
 
 
-@app.route("/user/getSomeUser/<string:username>", methods=["GET"])
+@UserBP.route("/user/getSomeUser/<string:username>", methods=["GET"])
 def getSomeUser(username):
     """one user"""
     sql = "SELECT * FROM user WHERE username = '{}'".format(username)
@@ -29,7 +31,7 @@ def getSomeUser(username):
     return jsonify({"code": "1004", "msg": "no user"})
 
 
-@app.route("/user/register", methods=['POST'])
+@UserBP.route("/user/register", methods=['POST'])
 def userRegister():
     """user register"""
     userId = uuid.uuid1()
@@ -66,7 +68,7 @@ def userRegister():
         return jsonify({"code": 2001, "msg": "Username, password,and telephone could not be null"})
 
 
-@app.route("/user/login", methods=['POST'])
+@UserBP.route("/user/login", methods=['POST'])
 def userLogin():
     """user log in"""
     userName = request.json.get("username", "").strip()  
@@ -98,7 +100,7 @@ def userLogin():
         return jsonify({"code": 1001, "msg": "The user name or password does not exist"})
 
 
-@app.route("/user/update/<int:id>", methods=['PUT'])
+@UserBP.route("/user/update/<int:id>", methods=['PUT'])
 def userUpdate(id):  
     """update user, only administrator could do this"""
     adminUser = request.json.get("adminUser", "").strip()  
@@ -150,7 +152,7 @@ def userUpdate(id):
         return jsonify({"code": 1001, "msg": "Password and telephone could not be empty"})
     
 
-@app.route("/user/delete/<string:userId>", methods=['POST'])
+@UserBP.route("/user/delete/<string:userId>", methods=['POST'])
 def userDelete(UserId):
     adminUser = request.json.get("adminUser", "").strip()  
     token = request.json.get("token", "").strip()  
