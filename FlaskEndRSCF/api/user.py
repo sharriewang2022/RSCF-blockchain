@@ -6,10 +6,9 @@ from util.md5Util import md5Encrypt
 from datetime import datetime
 import uuid, re, time
 
-
+UserBP = Blueprint("UserBP", __name__)
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
-UserBP = Blueprint("UserBP", __name__)
 
 @UserBP.route("/user/allUsers", methods=["GET"])
 def getAllUsers():
@@ -71,7 +70,7 @@ def userRegister():
 @UserBP.route("/user/login", methods=['POST'])
 def userLogin():
     """user log in"""
-    userName = request.json.get("username", "").strip()  
+    userName = request.json.get("userName", "").strip()  
     userPassword = request.json.get("userPassword", "").strip()
     if userName and userPassword:  
         queryUserNameSql = "SELECT username FROM user WHERE username = '{}'".format(userName)
@@ -80,21 +79,23 @@ def userLogin():
         if not isUserExist:
             return jsonify({"code": 1003, "msg": "The user does not exist"})
         md5_password = md5Encrypt(userName, userPassword) # encode
-        queryUserNamePasswordSql = "SELECT * FROM user WHERE username = '{}' and password = '{}'".format(userName, md5_password)
+        queryUserNamePasswordSql = "SELECT * FROM user WHERE username = '{}' and userPassword = '{}'".format(userName, md5_password)
         isUserNamePwdExist = mySqlDB.selectMysqldb(queryUserNamePasswordSql)
         print("The user {}  == >> {}".format(userName, isUserNamePwdExist))
         if isUserNamePwdExist:
             timeStamp = int(time.time())
             # token = "{}{}".format(username, timeStamp)
             token = md5Encrypt(userName, str(timeStamp)) # generate token
-            redisUtil.operateRedisToken(userName, token) # set token into redis
+            # redisUtil.operateRedisToken(userName, token) # set token into redis
             loginInfo = { # object stores id,username,toke,login_time 
-                "id": isUserNamePwdExist[0]["id"],
+                "id": isUserNamePwdExist[0]["ID"],
+                "userId": isUserNamePwdExist[0]["UserID"],
                 "userName": userName,
                 "token": token,
                 "loginTime": time.strftime("%Y/%m/%d %H:%M:%S")
             }
-            return jsonify({"code": 0, "loginInfo": loginInfo, "msg": " Log successfully"})
+            return jsonify({"code": 200, "token" : token,"loginInfo": loginInfo, "msg": " Log successfully"})
+        
         return jsonify({"code": 1002, "msg": "The user name or password is wrong"})
     else:
         return jsonify({"code": 1001, "msg": "The user name or password does not exist"})
@@ -141,7 +142,7 @@ def userUpdate(id):
                                 "WHERE id = {}".format(newUserPassword, newTelephone, newEmail, id)
                         mySqlDB.executeMysqldb(updateUserSql)
                         print("update user SQL ==>> {}".format(updateUserSql))
-                        return jsonify({"code": 0, "msg": "The information of user was changed successfully！"})
+                        return jsonify({"code": 200, "msg": "The information of user was changed successfully！"})
                 else:
                     return jsonify({"code": 1004, "msg": "Only administrator could update user information"})
             else:
@@ -177,7 +178,7 @@ def userDelete(UserId):
                         delUserSql = "DELETE FROM user WHERE id = '{}'".format(UserId)
                         mySqlDB.executeMysqldb(delUserSql)
                         print("Delete user information SQL ==>> {}".format(delUserSql))
-                        return jsonify({"code": 0, "msg": "The user is deleted successfully！"})
+                        return jsonify({"code": 200, "msg": "The user is deleted successfully！"})
                 else:
                     return jsonify({"code": 5004, "msg": "Only administrator could delete user information"})
             else:

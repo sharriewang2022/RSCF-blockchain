@@ -12,15 +12,15 @@ def getAllMenus():
     sql = "SELECT * FROM menu"
     data = mySqlDB.selectMysqldb(sql)
     print("all users' data == >> {}".format(data))
-    return jsonify({"code": 0, "data": data, "msg": "success"})
+    return jsonify({"code":200, "data": data, "msg": "success"})
 
 
 @MenuBP.route("/menu/getSomeMenu/<string:userId>", methods=["GET"])
 def getSomeMenu(userId):
     """some menu"""
-    sql = "SELECT MenuID, MenuName FROM v_user_role_menu WHERE userId = '{}'".format(userId)
+    sql = "SELECT menuID, menuName as name,Component as component,Path as path,Label as label FROM v_user_role_menu WHERE userId = '{}' or userName = '{}'".format(userId, userId)
     data = mySqlDB.selectMysqldb(sql)
     print("gain {} menu info == >> {}".format(userId, data))
     if data:
-        return jsonify({"code": 0, "data": data, "msg": "success"})
+        return jsonify({"code":200, "list": data, "msg": "success"})
     return jsonify({"code": "1004", "msg": "no user"})
