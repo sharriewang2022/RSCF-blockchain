@@ -33,8 +33,7 @@ export function login(data:UserType,callback?:Function){
           // login success then get menus
           dispatch(getMenus(data.userName))
         }else{
-          console.log("The user information is" + res.data.msg);     
-        
+          console.log("The user information is" + res.data.msg);         
       }else{
         console.log("The user could not login");
       }

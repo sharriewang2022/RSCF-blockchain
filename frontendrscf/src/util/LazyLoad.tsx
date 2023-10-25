@@ -7,12 +7,11 @@ function LazyLoad(url: string) {
     var message = "";
     const Module = lazy(() => {
         return new Promise((resolve, reject) => {
-            // import('../views' + url)
-            import(url)
-                // success
-                .then(res => resolve(res))
+            import('../admin/views' + url)
+            // import(url) -- can not use variable               
+                .then(res => resolve(res))  // success
                 .catch(err => {
-                    // fail
+                    //import above url component fail
                     resolve(import("./views/" + "ErrorPage"))
                     console.log(err)
                     message = JSON.parse(err);

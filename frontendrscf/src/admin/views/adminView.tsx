@@ -28,16 +28,16 @@ function AdminView() {
       dispath(getMenus("sa"))
       //if is admin, then go to admin/dash
       if(location.pathname==="/admin"){
-        // navigate('/dashboard')
+        navigate('/admin/dashboard')
       }else{
         // go to other pages
         navigate(location.pathname)
       }
     }    
-  })
+  },[])
 
   //display menus
-  return ( <Layout style={{width:'100vw',height:'100vh'}}>
+  return ( <Layout style={{width:'100vw',height:'100vh', background:"#3399cc"}}>
     <Header >Header</Header>
     <Layout>
       <Sider className="sider" >

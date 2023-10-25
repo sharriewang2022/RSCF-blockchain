@@ -12,11 +12,11 @@ import Register from "../login/components/register";
 
 const baseRouter = [
     {path:"/", element:<LoginView/>, children:[] },
-    {path:'/dashboard', element:<DashView/>},
+    // {path:'/dashboard', element:<DashView/>}, --lazylaod 
     {path:"/admin/*", element:<Private><AdminView/></Private>, 
          children:[{
             path:'',
-            element:LazyLoad('../admin/views/dashView'),
+            element:LazyLoad('/dashView'),
         }]
     },
     {path:'/prodcut', element:<ProductView/>},
