@@ -3,17 +3,18 @@ insert into USER (ID, UserID, UserName, UserPassword, FirstName, LastName, RoleI
 values('001', '001', 'sa', 1, 'saFirst', 'saLast', '3001', '@', '020999','2023-10-17');
 
 -----------------------------MENU---------------------------
+delete from menu;
 insert into MENU (MenuID, MenuName, Component, Path, Label, ParentID, Description, CreateDate)
-values('1001','Administration module','','','',null,'System management module','2023-09-25');
+values('1001','Administration module','AdminView','/admin','Administate',null,'System management module','2023-09-25');
 
 insert into MENU (MenuID, MenuName, Component, Path, Label, ParentID, Description, CreateDate)
-values('1002','Category Module','','','',null,'Category management module','2023-09-25');
+values('1002','Category Module','CategoryView','/category','Category',null,'Category management module','2023-09-25');
 
 insert into MENU (MenuID, MenuName, Component, Path, Label, ParentID, Description, CreateDate)
 values('1003','Product Module','ProductView','/prodcut','Product',null,'Product management module','2023-09-25');
 
 insert into MENU (MenuID, MenuName, Component, Path, Label, ParentID, Description, CreateDate)
-values('1004','Order Module','','','',null,'Order management module','2023-09-25');
+values('1004','Order Module','OrderView','/order','Order',null,'Order management module','2023-09-25');
 
 insert into MENU (MenuID, MenuName, Component, Path, Label, ParentID, Description, CreateDate)
 values('1005','Document Module','DocumentView','/file','DRM Document',null,'Document manage module','2023-09-25');
