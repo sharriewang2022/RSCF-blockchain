@@ -1,5 +1,18 @@
 /* supplychain interface types */
 
+export interface CategoryType {
+    id?:number|string
+    categoryId?:string
+    categoryName?:string
+    parentID?:string 
+    parentName?:string
+    manufacturer?:string
+    supplier?:string
+    specs?:string
+    size?:number
+    current?:number
+}
+
 export interface ProductType {
     id?:number|string
     productId?:string
