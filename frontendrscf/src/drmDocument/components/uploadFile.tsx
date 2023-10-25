@@ -1,16 +1,22 @@
-import React from 'react';
+import React, {Component} from 'react';
+import { SERVER_BASE_URL } from "../../config/sysConfig";
 
-class DocumentView extends React.Component {
-    constructor(props:any) {
+interface documentProps {
+}
+
+interface documentState {
+    fileURL: string
+}
+
+class DocumentView  extends Component<documentProps, documentState> {
+    constructor(props:documentProps) {
         super(props);
         this.state = {
             fileURL: '',
         };
         this.handleUploadFile = this.handleUploadFile.bind(this);
     }
-
-    uploadInputRef = React.useRef<HTMLInputElement>(null);
-    
+    uploadInputRef = React.useRef<HTMLInputElement>(null);    
 
     handleUploadFile(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -28,12 +34,12 @@ class DocumentView extends React.Component {
 
             console.log("upload fileName is : " + files[0].name);
 
-            fetch('http://localhost:8000/upload', {
+            fetch(SERVER_BASE_URL+'/file/upload', {
                 method: 'POST',
                 body: formData,
             }).then((response) => {
                 response.json().then((body) => {
-                    this.setState({ fileURL: `http://localhost:8000/${body.file}` });
+                    // this.setState({ fileURL: SERVER_BASE_URL + `/${body.file}` });
                 });
             });
         }
@@ -49,12 +55,9 @@ class DocumentView extends React.Component {
                 <br />
                 <div>
                     <button type = "submit">Upload</button>
-                </div>
-
-                
+                </div>                
             </form>
         );
     }
 }
-
 export default DocumentView;

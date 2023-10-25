@@ -28,7 +28,7 @@ const baseOrderInfo =
   "state": 1
 }
 
-function Order() {
+function OrderView() {
   
   const [OrderActionInfo,setOrderActionInfo] = useState(baseOrderInfo)
  
@@ -56,4 +56,4 @@ function Order() {
   </div> );
 }
 
-export default Order;
+export default OrderView;
