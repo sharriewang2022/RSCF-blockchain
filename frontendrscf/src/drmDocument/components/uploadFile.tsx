@@ -1,26 +1,20 @@
-import React, {Component} from 'react';
-import { SERVER_BASE_URL } from "../../config/sysConfig";
+import React, {useState } from "react"
 
-interface documentProps {
-}
+function DocumentView(){
+    // constructor(props:any) {
+    //     super(props);
+    //     this.state = {
+    //         fileURL: '',
+    //     };
+    //     this.handleUploadFile = this.handleUploadFile.bind(this);
+    // }
+    const [fileURL,setStateFileURL] = useState('')
+    const uploadInputRef = React.useRef<HTMLInputElement>(null);
+    
 
-interface documentState {
-    fileURL: string
-}
-
-class DocumentView  extends Component<documentProps, documentState> {
-    constructor(props:documentProps) {
-        super(props);
-        this.state = {
-            fileURL: '',
-        };
-        this.handleUploadFile = this.handleUploadFile.bind(this);
-    }
-    uploadInputRef = React.useRef<HTMLInputElement>(null);    
-
-    handleUploadFile(e: React.FormEvent<HTMLFormElement>) {
+    function handleUploadFile(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        const files = this.uploadInputRef.current?.files;
+        const files = uploadInputRef.current?.files;
         if (files) {
             // get the `FormData` for the whole form
             const formData = new FormData(e.currentTarget);
@@ -34,30 +28,32 @@ class DocumentView  extends Component<documentProps, documentState> {
 
             console.log("upload fileName is : " + files[0].name);
 
-            fetch(SERVER_BASE_URL+'/file/upload', {
+            fetch('http://localhost:8000/upload', {
                 method: 'POST',
                 body: formData,
             }).then((response) => {
                 response.json().then((body) => {
-                    // this.setState({ fileURL: SERVER_BASE_URL + `/${body.file}` });
+                     setStateFileURL(`http://localhost:8000/${body.file}`);
                 });
             });
         }
     }
 
-    render() {
+   
         return (
-            <form onSubmit={this.handleUploadFile}>
+            <form onSubmit={handleUploadFile}>
                 <div>
                 {/* onInput={(e: React.FormEvent<HTMLFormElement>) => {this.handleUploadFile(e);}}  */}
-                    <input id="avaInput" ref={ this.uploadInputRef }  type="file" />
+                    <input id="avaInput" ref={ uploadInputRef }  type="file" />
                 </div>
                 <br />
                 <div>
                     <button type = "submit">Upload</button>
-                </div>                
+                </div>
+
+                
             </form>
         );
-    }
-}
+    } 
+
 export default DocumentView;

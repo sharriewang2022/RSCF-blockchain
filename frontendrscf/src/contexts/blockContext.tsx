@@ -1,10 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import Web3 from "web3";
+import Web3, {Contract} from "web3";
+import fs from "fs";
 // import { ethers } from 'ethers';
 import SupplyChainRSCF from '../abis/SupplyChainRSCF.json'
 import web3Load from "../trace/metamask/web3Load"
 import { Web3Provider } from '@ethersproject/providers';
 import { SMART_CONTRACT_ADDRESS } from '../config/sysConfig';
+import { supplyChainAbiType } from '../util/smartContractTypeforJson';
+
 
 interface Props {
   children: JSX.Element
@@ -27,22 +30,23 @@ export function useBlock(){
 }
 
 export function BlockProvider({children}: Props){
-    const [account , setAccount] = useState("");
-    const [supplyChainABI ,setSupplyChainABI] = useState<any>();
-    // const [smartContract ,setSmartContract] = useState<any>();
-    const [isMetamask, setIsMetamask] = useState(false);
-    const [web3,setWeb3] = useState<any>();
- 
-    useEffect(() => {
-      web3Load()
-      if(window.ethereum){
-          loadBlockChainData()
-          window.ethereum.on('accountsChanged', function (accounts:any) {
-          setAccount(accounts[0])
+  const supplyChainAbi = JSON.parse(fs.readFileSync('../abis/SupplyChainRSCF.json', 'utf-8')).abi as unknown as supplyChainAbiType;
+  const [account , setAccount] = useState("");
+  const [supplyChainABI ,setSupplyChainABI] = useState<Contract<supplyChainAbiType>>(new Contract<supplyChainAbiType>(supplyChainAbi));
+  // const [smartContract ,setSmartContract] = useState<any>();
+  const [isMetamask, setIsMetamask] = useState(false);
+  const [web3,setWeb3] = useState<any>();
+
+  useEffect(() => {
+    web3Load()
+    if(window.ethereum){
+        loadBlockChainData()
+        window.ethereum.on('accountsChanged', function (accounts:any) {
+        setAccount(accounts[0])
       })
       return window.ethereum.off
     }
-    },[])
+  },[])
   
   // re-register MetaMask provider whenever network changes
   useEffect(() => {
@@ -111,14 +115,49 @@ export function BlockProvider({children}: Props){
         const networkId = await web3.eth.net.getId();
         const chainId = await web3.eth.getChainId();
 
-        const contractABI = SupplyChainRSCF.abi;
+
         const contractAddress = SMART_CONTRACT_ADDRESS;
         // const contractAddress = supplyJson.networks["5777"].address;
         // const contractAddress = supplyJson.networks[networkId].address; //supplyJson.networks[42]        
 
         //get smart contract in supplyChain.json. parameters: (contractABI, contractAddress）
-        const productContractAbi = new web3.eth.Contract(contractABI, contractAddress);
+        
+        
+        // productContractAbi.options.gas = 500000
+
+        // const nonceAbi = [
+        //   {
+        //   inputs: [{ internalType: 'address', name: '', type: 'address' }],
+        //   name: 'nonces',
+        //   outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+        //   stateMutability: 'view',
+        //   type: 'function',
+        //   },
+        //   {
+        //     "inputs": [
+        //       {
+        //         "internalType": "uint256",
+        //         "name": "_id",
+        //         "type": "uint256"
+        //       }
+        //     ],
+        //     "name": "fetchInfo",
+        //     "outputs": [
+        //       {
+        //         "internalType": "string",
+        //         "name": "",
+        //         "type": "string"
+        //       }
+        //     ],
+        //     "stateMutability": "view",
+        //     "type": "function"
+        //   },
+        //   ] as const;
+        // const productContractAbi = new web3.eth.Contract(nonceAbi, contractAddress); --can work
+        const productContractAbi = new web3.eth.Contract(supplyChainAbi, contractAddress);
+        // productContractAbi.methods.fetchInfo("e").call();
         setSupplyChainABI(productContractAbi)
+   
         console.log(productContractAbi)    
 
         // call the  `name` method. which is a view method.
@@ -164,8 +203,18 @@ export function BlockProvider({children}: Props){
           return;
         }
         console.info("contract addProduct result: ", supplyChainABI);     
-        // call smart contract method.  
+        // call smart contract method.
+        // (contract.methods.transfer as any)('0xe4beef667408b99053dc147ed19592ada0d77f59', 12)  
         return supplyChainABI.methods.addProduct(name).send({from : account})
+          .on('transactionHash', function(hash:any){
+            console.log("supplyChainABI addProduct transactionHash:" + hash)
+          })
+          .on('receipt', function(receipt:any){
+            console.log("supplyChainABI addProduct receipt:" + receipt)
+          })
+          .on('error', function(error:any){
+            console.log("supplyChainABI addProduct error:" + error)
+          })
       }
 
       function updateLocation(location: string, id: string, address: string){
@@ -174,6 +223,13 @@ export function BlockProvider({children}: Props){
 
       function trackProduct(id:string){
         return supplyChainABI.methods.fetchInfo(id).call()
+          .then(function(balance){
+            console.log("supplyChainABI fetchInfo:" + balance)
+          }).catch(function(error){
+            console.log("supplyChainABI fetchInfo error:" + error)
+          })
+        
+
       }
       function productCount(){
         return supplyChainABI.methods.productCount().call()
