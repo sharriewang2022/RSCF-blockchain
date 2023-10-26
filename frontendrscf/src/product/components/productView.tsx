@@ -1,201 +1,125 @@
-import React, {Component} from 'react'
+import React, { useState }from 'react'
 // import { declare } from "@babel/helper-plugin-utils";
 // declare module '@babel/helper-plugin-utils';
 import { Card, Row, Col, Container, Form, Button} from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import {AddProductToDataBase} from "../../api/productApi";
-// import { ProductType} from "../../util/variableTypes";
-import {blockContext} from "../../contexts/blockContext";
+import { ProductType} from "../../util/variableTypes";
+import {useBlock} from "../../contexts/blockContext";
 import '../../../src/App.css';
 
-interface productProps {
-}
+function ProductView () {
+  const {addProduct,productCount,updateLocation} = useBlock();
 
-interface productState {
-  productId: string,
-  productName: string,
-  price: number,
-  amount: number,
-  productItem: string
-  blockchainHash: string
-  category: string
-  manufacturer: string
-  supplier: string
-  specific:string
-  // createDate: Date
-}
+  const [formData, setFormData] = useState<ProductType>({
+    productId: '',
+    productName: '',
+    price: 0,
+    amount: 0,
+    productItems: '',
+    blockchainHash: '',
+    category: '',
+    manufacturer: '',
+    supplier: '',
+    specific:'',
+    // createDate: Date
+  })
 
-export class ProductView extends Component<productProps, productState> {
-  static contextType = blockContext;
-  declare context: React.ContextType<typeof blockContext>;  
+  const [ errors, setErrors ] = useState([])
 
-  constructor(props: productProps) {
-    super(props);
-    this.onChangeProductName = this.onChangeProductName.bind(this);
-    this.onChangePrice = this.onChangePrice.bind(this);
-    this.onChangeAmount = this.onChangeAmount.bind(this);
-    this.onChangeProductItem = this.onChangeProductItem.bind(this);
-    this.onChangeBlockchainHash = this.onChangeBlockchainHash.bind(this);
-    this.onChangeCategory = this.onChangeCategory.bind(this);
-    this.onChangeManufacturer = this.onChangeManufacturer.bind(this);
-    this.onChangeSupplier = this.onChangeSupplier.bind(this);
-    this.onChangeSpecific = this.onChangeSpecific.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-
-    this.state = {
-      productId:"",
-      productName: "",
-      price: 0,
-      amount: 0,
-      productItem: "",
-      blockchainHash: "",
-      category: "",
-      manufacturer: "",
-      supplier: "",
-      specific:"",
-    };    
+  function handleFormChange(e:React.ChangeEvent<HTMLInputElement>) {
+      const key = e.target.name;
+      const value = e.target.value;
+      //get value from user's input
+      setFormData({...formData, [key]: value})
   }
 
-  onChangeProductName(e:React.ChangeEvent<HTMLInputElement>) {
-    this.setState({
-      productName: e.target.value,
-    });
+  function handleFormSubmit(e:React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();  
+    if(formData.productName){
+      addProduct(formData.productName);
+    }  
+    AddProductToDataBase(formData);     
   }
 
-  onChangePrice(e:React.ChangeEvent<HTMLInputElement>) {
-    this.setState({
-      price: Number(e.target.value),
-    });
-  }
-
-  onChangeAmount(e:React.ChangeEvent<HTMLInputElement>) {
-    this.setState({
-      amount: Number(e.target.value),
-    });
-  }
-
-  onChangeProductItem(e:React.ChangeEvent<HTMLInputElement>) {
-    this.setState({
-      productItem: e.target.value,
-    });
-  }
-
-  onChangeBlockchainHash(e:React.ChangeEvent<HTMLInputElement>) {
-    this.setState({
-      blockchainHash: e.target.value,
-    });
-  }
-
-  onChangeCategory(e:React.ChangeEvent<HTMLInputElement>) {
-    this.setState({
-      category: e.target.value,
-    });
-  }
-
-  onChangeManufacturer(e:React.ChangeEvent<HTMLInputElement>) {
-    this.setState({
-      manufacturer: e.target.value,
-    });
-  }
-
-  onChangeSupplier(e:React.ChangeEvent<HTMLInputElement>) {
-    this.setState({
-      supplier: e.target.value,
-    });
-  }
-
-  onChangeSpecific(e:React.ChangeEvent<HTMLInputElement>) {
-    this.setState({
-      specific: e.target.value,
-    });
-  }
-
-  handleSubmit(e:React.FormEvent<HTMLFormElement>) {
-    const product = {       
-      productId: this.state.productId,
-      productName: this.state.productName,
-      //Number() 、parseInt()、 parseFloat()
-      price: Number(this.state.price),
-      amount: Number(this.state.amount),
-      productItem: this.state.productItem,
-      blockchainHash: this.state.blockchainHash,
-      category: this.state.category,   
-      manufacturer: this.state.manufacturer,
-      supplier: this.state.supplier,         
-      specs: this.state.specific,
-      current: 0,
-      size: 0,
-    };
-    AddProductToDataBase(product);
-    this.context.addProduct(product.productName);
-  }
-
-  render() {return (
+  return (
     <div className="App-header">
     <div>
       <h1>Product</h1>
-      <Form onSubmit={this.handleSubmit} id="productForm" >
-          <Form.Group className="mb-3" controlId="formProductName" >  
-              <Form.Label>ProductName: </Form.Label>
-              <Form.Control type="text" placeholder="product name" required
-                value={this.state.productName}
-                onChange={this.onChangeProductName}
+      <div className="form-inline">
+    <div className="col-md-12 form-group">
+         <label className="col-sm-2 col-form-label"  >Name</label>
+         <input type="text" className="form-control" name="name" id="name" disabled/>
+    </div>
+</div>
+      <Form onSubmit={ handleFormSubmit} id="productForm" >
+          <Form.Group className="form-inline mb-3" controlId="formProductName" >  
+              <Form.Label class="col-sm-2 col-form-label">ProductName: </Form.Label>
+              <Form.Control name="productName" type="text" placeholder="product name" required
+                value={formData.productName}
+                onChange={handleFormChange}
               />
           </Form.Group>
           <Form.Group className="mb-3" controlId=" formPrice"> 
               <Form.Label>Price: </Form.Label>
-              <Form.Control type="number" placeholder="" required
-                value={this.state.price}
-                onChange={this.onChangePrice}
+              <Form.Control id="price" name="price" type="number" placeholder="" required
+                value={formData.price}
+                onChange={handleFormChange}
               />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formAmount"> 
                <Form.Label>Amount: </Form.Label>
-               <Form.Control type="number" placeholder="" required
-                value={this.state.amount}
-                onChange={this.onChangeAmount}
+               <Form.Control name="amount" type="number" placeholder="" required
+                value={formData.amount}
+                onChange={handleFormChange}
               />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formProductItem"> 
                <Form.Label>Product Item: </Form.Label>
-               <Form.Control type="text" placeholder="" required
-                value={this.state.productItem}
-                onChange={this.onChangeProductItem}
+               <Form.Control name="productItems" type="text" placeholder="" required
+                value={formData.productItems}
+                onChange={handleFormChange}
               />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formCategory"> 
                <Form.Label>Category: </Form.Label>
-               <Form.Control type="text" placeholder="" required
-                value={this.state.category}
-                onChange={this.onChangeCategory}
+               <Form.Control name="category" type="text" placeholder="" required
+                value={formData.category}
+                onChange={handleFormChange}
               />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formManufacturer"> 
                <Form.Label>Manufacturer: </Form.Label>
-               <Form.Control type="text" placeholder="" required
-                value={this.state.manufacturer}
-                onChange={this.onChangeManufacturer}
+               <Form.Control name="manufacturer" type="text" placeholder="" required
+                value={formData.manufacturer}
+                onChange={handleFormChange}
               />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formSupplier"> 
                <Form.Label>Supplier: </Form.Label>
-               <Form.Control type="text" placeholder="" required
-                value={this.state.supplier}
-                onChange={this.onChangeSupplier}
+               <Form.Control name="supplier" type="text" placeholder="" required
+                value={formData.supplier}
+                onChange={handleFormChange}
               />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formSpecific"> 
                <Form.Label>Discription: </Form.Label>
-               <Form.Control type="text" placeholder="" required
-                value={this.state.specific}
-                onChange={this.onChangeSpecific}
+               <Form.Control name="specific" type="text" placeholder="" required
+                value={formData.specific}
+                onChange={handleFormChange}
               />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBlockchainHash"> 
                <Form.Label>Blockchain Hash: </Form.Label>
-               <Form.Control type="text" placeholder="" required
-                value={this.state.blockchainHash}
-                onChange={this.onChangeBlockchainHash}
+               {/* <Form.Control name="blockchainHash" type="text" placeholder="" required
+                value={formData.blockchainHash}
+                onChange={handleFormChange}
+              /> */}
+              <Form.Control  name="blockchainHash" type="text" placeholder="" 
+                value={formData.blockchainHash}
+                onChange={handleFormChange}              
               />
+              {errors.length > 0 ? <div className="error-container">{errors.map(error => <p className="error" key={error}>{error}</p>)}</div> : <div></div>}
           </Form.Group>
           <Button variant="success" type="submit" form="productForm">
               Add Product
@@ -204,7 +128,6 @@ export class ProductView extends Component<productProps, productState> {
   </div>
       </div>
     );
-  }
 }
 
 export default ProductView;

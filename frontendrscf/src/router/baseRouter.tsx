@@ -9,7 +9,8 @@ import LazyLoad from "../util/LazyLoad"
 import DashView from '../admin/views/dashView';
 import DocumentView from "../drmDocument/components/uploadFile";
 import TrackProductView from "../trace/components/trackProduct";
-import Register from "../login/components/register";
+import RegisterView from "../admin/views/registerView";
+import {Manufacturer} from "../admin/components/manufacturer";
 
 
 
@@ -22,10 +23,12 @@ const baseRouter = [
             element:LazyLoad('/dashView'),
         }]
     },
+    // {path:'/register', element:<RegisterView/>},
+    
+    {path:'/register', element:<Manufacturer/>},
     {path:'/prodcut', element:<ProductView/>},
     {path:'/file', element:<DocumentView/>},
     {path:'/trackProduct', element:<TrackProductView/>},
-    // {path:'/Register', element:<Register userName={''} userPassword={''} role={''} userEmail={''} userID={''} waddress={''}/>}
     {path:'/category', element:<CategoryView/>},
     {path:'/order', element:<OrderView/>}
 ];

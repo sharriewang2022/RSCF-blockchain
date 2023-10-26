@@ -6,10 +6,5 @@ import {useBlock} from "../contexts/blockContext";
 export const getProductList = () => request.post("/product/allProducts")
 
 export function AddProductToDataBase(productParam: ProductType){
-  const {addProduct,productCount,updateLocation} = useBlock();
-
-  if(productParam.productId){
-    addProduct(productParam.productId);
-  }
   return request.post("/product/addProduct",productParam)
 }

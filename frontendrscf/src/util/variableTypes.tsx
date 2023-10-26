@@ -24,7 +24,7 @@ export interface ProductType {
     category?:string
     manufacturer?:string
     supplier?:string
-    specs?:string
+    specific?:string
     size?:number
     current?:number
 }

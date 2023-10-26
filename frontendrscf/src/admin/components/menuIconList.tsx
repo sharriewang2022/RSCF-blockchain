@@ -5,10 +5,8 @@ import {
   } from "@ant-design/icons";
   
 export const iconList = {
-  "/home": <UserOutlined/>,
-  "/user-manage": <UserOutlined/>, 
-   
-  "/product-manage": <UserOutlined/>, 
-  
-  "/order-manage": <UserOutlined/>
+  "/": <NotificationOutlined/>,
+  "/file": <LaptopOutlined/>,    
+  "/product": <UserOutlined/>,   
+  "/order": <UserOutlined/>
 }

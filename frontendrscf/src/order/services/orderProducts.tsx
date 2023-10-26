@@ -22,29 +22,51 @@ function OrderProducts(props:Iprops) {
   // activity products list
 const columns = [
   {
-    title:"Product ID",dataIndex:'productId'},
-  {title:"Specific",dataIndex:'specs'},
-  {title:"Product Name",dataIndex:'productName'},
-  {title:"Price",dataIndex:'price'},
+    title:"Product ID",
+    dataIndex:'productId'
+  },
   {
-    title:"Sale Price",dataIndex:'salePrice',
+    title:"Specific",
+    dataIndex:'specs'
+  },
+  {
+    title:"Product Name",
+    dataIndex:'productName'
+  },
+  {
+    title:"Price",
+    dataIndex:'price'
+  },
+  {
+    title:"Sale Price",
+    dataIndex:'salePrice',
     render:(value:string,row:ActitivyProType,index:number)=>{
      
       return <Input 
-      onChange={(e)=>{
-        var list = actionProductList;
-        // e is form inputted value
-        list[index].salePrice = e.target.value
-        console.log(list,list[index]);
-        setActionProductList([...list]);
-      }}
-      value={value}/>
+        onChange={(e)=>{
+          var list = actionProductList;
+          // e is form inputted value
+          list[index].salePrice = e.target.value
+          console.log(list,list[index]);
+          setActionProductList([...list]);
+        }}
+        value={value}/>
     }
   },
-   {title:"amount",dataIndex:'limitBuy'},
-  {title:"stokc",dataIndex:'stock'},
-  {title:"order",dataIndex:'order'},
+  {
+    title:"amount",
+    dataIndex:'limitBuy'
+  },
+  {
+    title:"stokc",
+    dataIndex:'stock'
+  },
+  {
+    title:"order",
+    dataIndex:'order'
+  },
 ]
+
   useEffect(()=>{
     var list = selProductList.map((item:any)=>{
       var obj = {...item};
@@ -62,16 +84,16 @@ const columns = [
   },[selProductList])
  
   async function chooseFinish (){
-    // add order actitivy to server and then get activityId
+  // add order actitivy to server and then get activityId
   const activity =  await addOrderAction(props.orderActionInfo)
   var orderPurchaseId = activity.data.data.insertId; 
-    // order products with id
+  // order products with id
   var list = actionProductList.map((item:any)=>addOrderChainProduct({...item,orderPurchaseId})) 
-    // several promise
+  // several promise
   const gplist = await Promise.all(list)
-    // several gplist  join together
+  // several gplist  join together
   var products = gplist.map(item=>item.data.data.insertId).join(",")
-   //  update order products
+  //  update order products
   const result = await UpdateOrderAction({id:orderPurchaseId,products})
   if(result.data.code===0){
     props.setCurrent(2);
@@ -81,18 +103,19 @@ const columns = [
   }
   
   return ( <div className="SelectProducts">
-   <p style={{textAlign:'center'}}><Button type='primary' onClick={()=>setShowSelectProduct(true)}>Choose Product:</Button></p>
+    <p style={{textAlign:'center'}}>
+      <Button type='primary' onClick={()=>setShowSelectProduct(true)}>Choose Product:</Button>
+    </p>
    <Table rowKey="productId" pagination={false} dataSource={actionProductList} columns={columns}/>
    {showSelectProduct&&<SelectProduct 
-   selectProductList={selProductList} 
-   setShowSelectProduct={setShowSelectProduct} 
-   setSelectProductList={setSelProductList}></SelectProduct>} 
+      selectProductList={selProductList} 
+      setShowSelectProduct={setShowSelectProduct} 
+      setSelectProductList={setSelProductList}></SelectProduct>} 
    <p>
      <Button onClick={()=>props.setCurrent(0)}>Edit Product</Button>  
      <Button onClick={()=>chooseFinish()}>Done</Button>
    </p>
    {/* <p>{JSON.stringify(orderChainProductList)}</p> */}
-    </div> );
+  </div> );
 }
-
 export default OrderProducts;

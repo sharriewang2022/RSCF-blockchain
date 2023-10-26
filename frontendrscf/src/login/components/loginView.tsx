@@ -288,15 +288,14 @@ function LoginView() {
 
                <Grid container justifyContent = "center" alignItems = "center">
                    <Button type = "submit" className = {style.button} size = "large" >Login</Button>
-                   </Grid>
+               </Grid>
 
                    <Grid container justifyContent = "center" alignItems = "center">
                    <Link href="./#/register" variant="body2" style = {{
                        paddingTop: "20px",
                        color:"#EDF5E1",
                        fontSize:"16px"
-                   }} underline = "hover">
-                      Don't have an account? Sign Up
+                   }} underline = "hover">                      
                     </Link>
                   </Grid>
            </Grid>

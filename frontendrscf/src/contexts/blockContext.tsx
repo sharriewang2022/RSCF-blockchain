@@ -1,12 +1,15 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import Web3, {Contract} from "web3";
-import fs from "fs";
 // import { ethers } from 'ethers';
-import SupplyChainRSCF from '../abis/SupplyChainRSCF.json'
+// import SupplyChainRSCF from '../abis/SupplyChainRSCF.json'
 import web3Load from "../trace/metamask/web3Load"
 import { Web3Provider } from '@ethersproject/providers';
 import { SMART_CONTRACT_ADDRESS } from '../config/sysConfig';
 import { supplyChainAbiType } from '../util/smartContractTypeforJson';
+import supplyChainjson from '../abis/SupplyChainRSCF.json';
+import * as fs from "fs";
+import path from 'path';
+
 
 
 interface Props {
@@ -30,7 +33,13 @@ export function useBlock(){
 }
 
 export function BlockProvider({children}: Props){
-  const supplyChainAbi = JSON.parse(fs.readFileSync('../abis/SupplyChainRSCF.json', 'utf-8')).abi as unknown as supplyChainAbiType;
+  // 1. fs, path could not run on client sideconst supplyChainAbi = JSON.parse(fs.readFileSync('../abis/SupplyChainRSCF.json', 
+  // {encoding: "utf-8",})).abi as unknown as supplyChainAbiType;
+  // //json file is in /public/src/abis/SupplyChainRSCF.json
+  // const filePath = path.resolve('./public', 'src', 'abis', 'SupplyChainRSCF.json');
+  // const supplyChainjson = fs.readFileSync(filePath);
+  // const supplyChainAbi = JSON.parse(supplyChainjson?.toString()).abi as unknown as supplyChainAbiType;
+  const supplyChainAbi =  supplyChainjson.abi as unknown as supplyChainAbiType;
   const [account , setAccount] = useState("");
   const [supplyChainABI ,setSupplyChainABI] = useState<Contract<supplyChainAbiType>>(new Contract<supplyChainAbiType>(supplyChainAbi));
   // const [smartContract ,setSmartContract] = useState<any>();
@@ -114,7 +123,6 @@ export function BlockProvider({children}: Props){
         // Get the network data from the contract JSON
         const networkId = await web3.eth.net.getId();
         const chainId = await web3.eth.getChainId();
-
 
         const contractAddress = SMART_CONTRACT_ADDRESS;
         // const contractAddress = supplyJson.networks["5777"].address;

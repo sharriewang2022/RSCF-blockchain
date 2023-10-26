@@ -1,0 +1,37 @@
+{
+    "presets": [
+        [
+        "@babel/preset-typescript",
+        { 
+            "onlyRemoveTypeImports": true, 
+            "rewriteImportExtensions": true,
+            "allowDeclareFields":true
+        }
+        ]
+    ],
+    "plugins": [
+        [
+          "@babel/plugin-transform-typescript",
+          {
+            "allowDeclareFields": true
+          }
+        ]
+    ],
+    "env": {
+        "test": {
+        "presets": [
+            [
+            "@babel/preset-typescript",
+            { 
+                "onlyRemoveTypeImports": true, 
+                "rewriteImportExtensions": false,
+                "allowDeclareFields":true
+            }
+            ]
+        ]
+        }
+    },
+    "targets": {
+        "node": "18.0"
+    }
+}

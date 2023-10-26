@@ -1,10 +1,6 @@
-/*colors scheme #05386B #379683 #5cdb95 #8ee4af #EDF5E1 */
-
 import React, { useState } from "react"
 import {useAuth} from "../../contexts/authContext";
 import {ROLES} from "../../util/constant";
-import {useNavigate} from "react-router-dom";
-
 import {makeStyles} from "@material-ui/core/styles";
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -22,8 +18,6 @@ import {
 } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import { UserType } from "../../util/variableTypes";
-
-
 
 function Alert(props:any) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -74,9 +68,9 @@ const validationSchema = yup.object({
             background:"#EDF5E1 !important"
         }
   }))
-function Register(props: UserType) {
-    const {signUp} = useAuth()
-    const {writeData} = useAuth()
+
+function RegisterView() {
+    const {signUp, writeData} = useAuth()
     const style = useStyle()
     const [err,setErr] = useState(0);
     const [open ,setOpen] = useState(false)
@@ -97,11 +91,10 @@ function Register(props: UserType) {
 
         async function submitValues(values:UserType){
             try{
-                await signUp( values )  
-                            
+                await signUp( values )                            
                 await writeData(values.userName,values.role,values.userID,values.waddress)
                 setOpen(true);
-                useNavigate.call("./home/trackproduct")                     
+                               
             } catch(error:any){
                 setErr(error.message)
                 setOpenErr(true)
@@ -305,8 +298,7 @@ function Register(props: UserType) {
                     paddingTop: "20px",
                     color:"#EDF5E1",
                     fontSize:"16px"
-                }} underline = "hover">
-            Already have an account? Login
+                }} underline = "hover">            
             </Link>
                     </Grid>
             </Grid>
@@ -317,4 +309,4 @@ function Register(props: UserType) {
         ) 
     }
 
-export default Register;
+export default RegisterView;

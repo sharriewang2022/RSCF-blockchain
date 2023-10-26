@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
 import {useAuth} from '../../contexts/authContext';
-import UpdateProfile from "../../login/components/updateProfile";
+// import UpdateProfile from "../../login/components/updateProfile";
+// import TrackProduct from "../../trace/components/trackProduct";
+// import ProductView from "../../product/components/productView" ;
 import {useNavigate, Route} from "react-router-dom"; 
-import TrackProduct from "../../trace/components/trackProduct";
-import ProductView from "../../product/components/productView" ;
-import "./navbar.scss";
+import "../../css/navbar.css";
 import {About} from "./about";
 import {Nav ,Navbar , NavDropdown,Container} from "react-bootstrap";
 
-
+// Button Link is on the top. could use in product:add product; product List
 export function Manufacturer(props:any){
 
     const [icon, setIcon] = useState(true);
@@ -53,7 +53,7 @@ export function Manufacturer(props:any){
               <Navbar.Collapse>
           <Nav onSelect={() => setIcon(prev => !prev)}>
               <Nav.Link href="./#/home/addproduct" >Add Product</Nav.Link>
-              <Nav.Link href="./#/home/trackproduct" >Track Product</Nav.Link>
+              <Nav.Link href="./#/product" >Track Product</Nav.Link>
               <Nav.Link onClick = {handleOpen} >About</Nav.Link>
               {/* drop menu */}
               < NavDropdown title = "Profile">
@@ -63,10 +63,7 @@ export function Manufacturer(props:any){
               </Nav>
               </Navbar.Collapse>
             </Navbar>
-            <Container>
-                <Route path = "/home/profile" Component = {UpdateProfile}></Route>
-                <Route path = "/home/trackproduct" Component = {TrackProduct}></Route>
-                <Route path = "/home/addproduct" Component = {ProductView}></Route>
+            <Container>                
                 <About open = {open} setOpen = {setOpen}/>
             </Container>
             </div>
