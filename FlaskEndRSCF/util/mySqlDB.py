@@ -40,7 +40,7 @@ class MySqlDB():
             self.cursor.execute(sql)        
             self.dbConnection.commit()
         except Exception as e:
-            print("Error：{}".format(e))
+            print("Error:{}".format(e))
             self.dbConnection.rollback()
 
 mySqlDB = MySqlDB(MYSQLDB_HOST, MYSQLDB_PORT, MYSQLDB_USER, MYSQLDB_PASSWORD, MYSQLDB_NAME)

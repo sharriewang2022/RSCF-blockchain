@@ -41,7 +41,12 @@ def addProduct():
     manufacturerID = request.json.get("manufacturerID", "").strip()
     description = request.json.get("description", "").strip()
     # blockchainHash = request.json.get("blockchainHash", "").strip()
-    createDate = datetime.now().date
+    blockchainHash = "undefined"
+    # createDate = datetime.now().date
+    # createDate = datetime.date.today()
+    createDate = datetime.today().date()
+    print("Add product createDate ==>> {}".format(createDate))
+    
 
     if productName : # if "", the false
         queryProductNameSql = "SELECT productName FROM product WHERE productname = '{}'".format(productName)
@@ -49,13 +54,15 @@ def addProduct():
         print("Querey product result ==>> {}".format(isProductExist))
   
         if isProductExist:
+            print("The product name already exists！ name: ==>> {}".format(productName))
             return jsonify({"code": 1001, "msg": "The product name already exists！"})
         else:
              
             addProductSql = "INSERT INTO product(productId, productName, productNumber, productPrice, "\
-                "productItems, categoryID, supplierID, manufacturerID, description, createDate) "\
-                "VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(productId, productName, productNumber, productPrice,
-                    productItems, categoryID, supplierID, manufacturerID, description, createDate)
+                "productItems, categoryID, supplierID, manufacturerID, description, blockchainHash, createDate) "\
+                "VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(
+                    productId, productName, productNumber, productPrice, productItems, 
+                    categoryID, supplierID, manufacturerID, description, blockchainHash, createDate)
             mySqlDB.executeMysqldb(addProductSql)
             print("Add product SQL ==>> {}".format(addProductSql))
             return jsonify({"code": 0, "msg": "The product is added successfully！"})

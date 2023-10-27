@@ -5,7 +5,7 @@ values('001', '001', 'sa', 1, 'saFirst', 'saLast', '3001', '@', '020999','2024-0
 -----------------------------MENU---------------------------
 delete from menu;
 insert into MENU (MenuID, MenuName, Component, Path, Label, ParentID, Description, CreateDate)
-values('1001','Administration Module','AdminView','/admin','Administate',null,'System management module','2024-02-25');
+values('1001','Administration Module','RegisterView','/register','Administate',null,'System management module','2024-02-25');
 
 insert into MENU (MenuID, MenuName, Component, Path, Label, ParentID, Description, CreateDate)
 values('1002','Category Module','CategoryView','/category','Category',null,'Category management module','2024-02-25');
