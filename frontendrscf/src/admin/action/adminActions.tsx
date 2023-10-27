@@ -18,7 +18,7 @@ export function login(data:UserType,callback?:Function){
     // LoginResponseType is AxiosResponse'data type
     // LoginResponseType is login return type; AxiosResponse is axios turn type
     .then((res:AxiosResponse<LoginResponseType>)=>{
-      if(res.data !== undefined )
+      if(res.data !== undefined ){
         if(res.data.code===200){     
           // run local storage
           sessionStorage.setItem("token",res.data.token);
@@ -33,7 +33,8 @@ export function login(data:UserType,callback?:Function){
           // login success then get menus
           dispatch(getMenus(data.userName))
         }else{
-          console.log("The user information is" + res.data.msg);         
+          console.log("The user information is" + res.data.msg);  
+        }       
       }else{
         console.log("The user could not login");
       }

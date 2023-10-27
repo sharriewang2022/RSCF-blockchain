@@ -3,7 +3,7 @@ import {useAuth} from '../../contexts/authContext';
 // import UpdateProfile from "../../login/components/updateProfile";
 // import TrackProduct from "../../trace/components/trackProduct";
 // import ProductView from "../../product/components/productView" ;
-import {useNavigate, Route} from "react-router-dom"; 
+import {useNavigate} from "react-router-dom"; 
 import "../../css/navbar.css";
 import {About} from "./about";
 import {Nav ,Navbar , NavDropdown,Container} from "react-bootstrap";
@@ -14,10 +14,11 @@ export function Manufacturer(props:any){
     const [icon, setIcon] = useState(true);
     const [open,setOpen] = useState(false);
     const {logout} = useAuth();
+    const navigate = useNavigate(); 
 
     const handlelogout = async (e : React.MouseEvent<HTMLElement>) => {
       await logout(); 
-      useNavigate.call('./login')
+      navigate('./') // go to login
     }
       
     function handleOpen(){

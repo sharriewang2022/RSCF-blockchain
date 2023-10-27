@@ -14,7 +14,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #123446;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -26,6 +26,20 @@
 
 .App-link {
   color: #61dafb;
+}
+
+.labelMargin{
+  float:left;
+  /* width:150px; */
+  margin-right:10px; /*spacing to others*/
+  /* margin-bottom:10px;  */
+}
+
+.buttonMargin{
+  float:left;
+  /* width:150px; */
+  margin-right:10px; /*spacing to others*/
+  /* margin-bottom:10px;  */
 }
 
 @keyframes App-logo-spin {

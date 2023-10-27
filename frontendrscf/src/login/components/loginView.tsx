@@ -168,7 +168,7 @@ function LoginView() {
           padding:"20px",
           justifyContent:'center',
           alignItems:'center',
-          background:"#3399cc",
+          background:"#338bb7",
           color:"#EDF5E1",
           height: "540px"
         }}>
