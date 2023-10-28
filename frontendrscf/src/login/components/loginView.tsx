@@ -25,6 +25,7 @@ import {
 } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import { UserType } from "../../util/variableTypes";
+import { isImportTypeAssertionContainer } from "typescript";
 
 function Alert(props: any) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -64,16 +65,17 @@ const validationSchema = yup.object({
       button: {
         backgroundColor: "#C0D9D9",
         color: "#05386B",
+        textTransform: "none",  //not change all to capital
         justifySelf:"center",
         marginTop: "20px",
         marginleft: "100px",
         "&:hover" :{
-            backgroundColor:"#87CEFA"
+            backgroundColor:"#87CEFA",
         }
-    },
-    divide:{
-        background:"#87CEFA !important",
-    }
+      },
+      divide:{
+          background:"#87CEFA !important",
+      }
   }))
 
   

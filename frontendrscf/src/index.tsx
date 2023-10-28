@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {ConfigProvider} from 'antd'
+import {ConfigProvider} from 'antd';
 import enGB from 'antd/locale/en_GB';
 import 'antd/dist/reset.css';
 import sysStore from './store/sysStore'
@@ -20,15 +20,19 @@ const root = ReactDOM.createRoot(
 
 //must be wrapped in provider since using useDispatch, userSelector
 root.render(
+  <ConfigProvider locale={enGB}>
   <React.StrictMode>
+ 
     <Provider store={sysStore}>
-      <ConfigProvider locale={enGB}>
-<Compose components={[BlockProvider, AuthProvider]}>
-    <App />
-</Compose>
-      </ConfigProvider>
+     
+      <Compose components={[BlockProvider, AuthProvider]}>
+          <App />
+      </Compose>
+
     </Provider>
+
   </React.StrictMode>
+  </ConfigProvider>
 );
 
 // root.render(

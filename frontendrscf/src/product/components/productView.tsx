@@ -36,13 +36,15 @@ function ProductView () {
       setFormData({...formData, [key]: value})
   }
 
-  function handleFormSubmit(e:React.FormEvent<HTMLFormElement>) {
+  async function handleFormSubmit(e:React.FormEvent<HTMLFormElement>) {
     e.preventDefault();  
     if(formData.productName){
       addProduct(formData.productName);
     }  
-    const message = AddProductToDataBase(formData); 
-    alert(message);   
+    const message = await AddProductToDataBase(formData); 
+    if(message){
+      alert(message);
+    }       
   }
 
   function getProductsList(){
@@ -52,9 +54,9 @@ function ProductView () {
   return (
     <div className="App-header">
     <div>
-      <h1>Product</h1>
+      {/*<h1>Product</h1>
 
-      {/* <div className="input-group flex-nowrap">
+       <div className="input-group flex-nowrap">
     <span className="input-group-text" id="addon-wrapping">Article Title</span>
     <input type="text" className="form-control" placeholder="Please enter the new article name..." aria-label="Username" aria-describedby="addon-wrapping"/>
     <button className="btn btn-primary" type="submit" id="article-update-button">Update</button>

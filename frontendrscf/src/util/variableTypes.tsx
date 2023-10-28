@@ -29,6 +29,16 @@ export interface ProductType {
     current?:number
 }
 
+export interface DocumentType {
+    id?:number|string
+    documentId?:string
+    documentName?:string
+    documentPaths?:string
+    documentItems?:string
+    blockchainHash?:string
+}
+
+
 //type used in Order management
 export type ActitivyProType = ProductType&{
     groupBuyId?:number|string
