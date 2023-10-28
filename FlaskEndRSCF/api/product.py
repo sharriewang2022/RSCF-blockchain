@@ -65,9 +65,9 @@ def addProduct():
                     categoryID, supplierID, manufacturerID, description, blockchainHash, createDate)
             mySqlDB.executeMysqldb(addProductSql)
             print("Add product SQL ==>> {}".format(addProductSql))
-            return jsonify({"code": 0, "msg": "The product is added successfully！"})
+            return jsonify({"code": 200, "msg": "The product is added successfully！"})
     else:
-        return jsonify({"code": 2001, "msg": "product name could not be null"})
+        return jsonify({"code": 1001, "msg": "product name could not be null"})
 
 
 
