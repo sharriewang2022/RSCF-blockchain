@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, session
 import os, sys
 
 from flask_cors import CORS
@@ -16,6 +16,11 @@ BASE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, BASE_PATH)
 
 app = Flask(__name__)
+app.secret_key = os.urandom(24)
+app.config['SESSION_TYPE'] = 'filesystem'
+# session(app)
+
+# CORS(app, expose_headers='Authorization')
 CORS(app, resources={r"/*": {"origins": "*"}})
 # Allow CORS requests
 
@@ -30,6 +35,7 @@ app.register_blueprint(menu.MenuBP)
 
 if __name__ == '__main__':
     # url_map shows all flask route info
+    app.secret_key = os.urandom(24)
     print("\n url_map = {0} \n".format(app.url_map))
     app.run(host="0.0.0.0", port=SERVER_PORT, debug=True)
 

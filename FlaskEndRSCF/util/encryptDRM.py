@@ -14,7 +14,7 @@ from web3 import HTTPProvider, Web3, WebsocketProvider
 from web3.exceptions import BadFunctionCallOutput
 from web3.middleware import geth_poa_middleware
 from config.setting import IPFS_HOST, IPFS_PORT, IPFS_SCHEME, INFURA_USE, INFURA_PROJECT_ID, ALCHE_KEY
-
+from config.setting import IPFS_CONNECT_URL
 # ipfsapi = ipfshttpclient.Client(f"/dns/{IPFSAPI_HOST}/tcp/{IPFSAPI_PORT}/http")
 # ipfsapi = ipfshttpclient.Client('http://localhost', 9999)
 #The host is form 'ipfs.infura.io' and not include 'https://'.
@@ -30,18 +30,20 @@ class UnsupportedNetworkException(Exception):
 
 
 """function to encrypt a file which takes a key (a password which has been hashed) and the file name"""
-def encrypt(key, filename):
+def encrypt(key, filename, filePath):
     #size of chunks to be encrypted
     chunksize = 64*1024
-    outputfile= f"encryped{filename}"
+    originalFile="/".join([filePath, filename])
+    encrypedFilename= f"encryped{filename}"
+    outputfile="/".join([filePath, encrypedFilename])
     #make sure all sized are 16 bits
-    filesize = str(os.path.getsize(filename)).zfill(16)
+    filesize = str(os.path.getsize(originalFile)).zfill(16)
     #The Initialization vector
     IV = Random.new().read(16)
     #AES (acronym of Advanced Encryption Standard) is a symmetric encryption algorithm
     encryptor = AES.new(key, AES.MODE_CBC, IV)
     
-    with open(filename, "rb") as infile:
+    with open(originalFile, "rb") as infile:
         with open(outputfile, "wb") as outfile:
             outfile.write(filesize.encode('utf-8'))
             outfile.write(IV)
@@ -96,7 +98,8 @@ def getIpfs(host=None, port= IPFS_PORT):
     if host is None:
         clientConnectString = f'/dns/{IPFS_HOST}/tcp/{IPFS_PORT}/{IPFS_SCHEME}'
     else:
-        clientConnectString = f'/dns/{host}/tcp/{IPFS_PORT}/https'
+        # clientConnectString = f'/dns/{host}/tcp/{IPFS_PORT}/https'
+        clientConnectString = IPFS_CONNECT_URL
     try:
         return ipfshttpclient.connect(clientConnectString)
     except CommunicationError as e:
@@ -189,14 +192,30 @@ def getWeb3(network, sockets=False, chain='std'):
 
     raise UnsupportedNetworkException(network)
 
+
+def addEncryptedFiletoIPFS(filename, filePath):
+    password = getKey("password")
+    encrypted = encrypt(password, filename, filePath)
+    try:
+        api = getIpfs('127.0.0.1', 5001)
+        #add encrypted file to IPFS
+        encryp = api.add(encrypted)         
+        print(api)
+        print(encryp['Hash']) 
+        return encryp['Hash']       
+    except IPFSCantConnectException as ce:
+        print(str(ce))
+    
+
 #Test encryption of image
 def main():
     password = getKey("password")
     encrypted = encrypt(password, "009.jpg")
     decrypted = decrypt(getKey("abc123"),"Qma2bA7dREcfhtNcSXaFFxhgGtdrnqRaa3qKsCLhTdaY62")
-    #Try add encrypted file to IPFS   
+ 
     try:
-        api = getIpfs('127.0.0.1', 5001) 
+        api = getIpfs('127.0.0.1', 5001)
+        #add encrypted file to IPFS
         encryp = api.add(encrypted)
         original = api.add("009.jpg")
         decryp = api.add(decrypted)

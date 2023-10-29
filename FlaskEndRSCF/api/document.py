@@ -1,38 +1,36 @@
-# https://gist.githubusercontent.com/radtech/a6165b28d4486bf7f15795fafaeb155f/raw/4187883018f0e7a9f7d8d89c2f6787f4a9a12837/FileUpload.py
-
 from flask import Flask, jsonify, request, flash, redirect, url_for, session, Blueprint
-from util.mySqlDB import mySqlDB
-from util.redisUtil import redisUtil
 import os
 from werkzeug.utils import secure_filename
 from flask_cors import CORS, cross_origin
 import logging
 from datetime import datetime
 import uuid
+from util.mySqlDB import mySqlDB
+from util.redisUtil import redisUtil
+from util.encryptDRM import addEncryptedFiletoIPFS
 
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
 DocumentBP = Blueprint("DocumentBP", __name__)
 
-UPLOAD_FOLDER = '/path/to/the/uploads'
+UPLOAD_FOLDER = './uploadedFiles'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
 
 logging.basicConfig(level=logging.INFO)
 
 logger = logging.getLogger('Supply chain document')
 
-if __name__ == "__main__":
-    app.secret_key = os.urandom(24)
-    app.run(debug=True,host="0.0.0.0",use_reloader=False)
-
-CORS(app, expose_headers='Authorization')
+# if __name__ == "__main__":
+    # app.secret_key = os.urandom(24)
+#     app.run(debug=True,host="0.0.0.0",use_reloader=False)
 
 
-@app.route('/file/upload', methods=['POST'])
+
+
+@DocumentBP.route('/file/upload', methods=['POST'])
 def fileUpload():
-    target=os.path.join(UPLOAD_FOLDER,'test_docs')
+    target=os.path.join(UPLOAD_FOLDER,'test')
     if not os.path.isdir(target):
         os.mkdir(target)
     logger.info("welcome to upload`")
@@ -41,13 +39,43 @@ def fileUpload():
     destination="/".join([target, filename])
     file.save(destination)
     session['uploadFilePath']=destination
-    response="Whatever you wish too return"
+    fileIPFSHash = addEncryptedFiletoIPFS(filename, target)
+    userName = request.json.get("userName", "").strip()
+    descrip = request.json.get("spesific", "").strip()
+    saveFiletoDataBase(filename, target, fileIPFSHash, userName, descrip)
+    response="File " + filename +" is uploaded successfully"
     return response
 
+def saveFiletoDataBase(fileName, filePath, fileIPFSHash, userName, descrip):
+    documentId = uuid.uuid1()
+    documentName = fileName.strip() 
+    extensionName = os.path.splitext(fileName)[1]
+    realPath = filePath.strip()
+    authorID = userName.strip()
+    description = descrip.strip()
+    blockchainHash = fileIPFSHash.strip()
+    createDate = datetime.today().date()
+
+    if documentName : # if "", the false
+        queryDocumentNameSql = "SELECT documentName FROM document WHERE documentname = '{}'".format(documentName)
+        isDocumentExist = mySqlDB.selectMysqldb(queryDocumentNameSql)
+        print("Querey document result ==>> {}".format(isDocumentExist))
+  
+        if isDocumentExist:
+            return jsonify({"code": 8001, "msg": "The document name already exists！"})
+        else:             
+            addDocumentSql = "INSERT INTO document (documentId, documentName, extensionName, realPath, "\
+                "authorID, blockchainHash, description, createDate) "\
+                "VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(documentId, documentName, extensionName,
+                    realPath, authorID, blockchainHash, description, createDate)
+            mySqlDB.executeMysqldb(addDocumentSql)
+            print("Add document SQL ==>> {}".format(addDocumentSql))
+            return jsonify({"code": 200, "msg": "The document is added successfully！"})
+    else:
+        return jsonify({"code": 8008, "msg": "The name of document could not be null"})
 
 
-
-@app.route("/file/allDocuments", methods=["GET"])
+@DocumentBP.route("/file/allDocuments", methods=["GET"])
 def getAllDocuments():
     """all document info"""
     sql = "SELECT * FROM document"
@@ -56,7 +84,7 @@ def getAllDocuments():
     return jsonify({"code": 0, "data": data, "msg": "success"})
 
 
-@app.route("/file/getSomeDocument/<string:documentId>", methods=["GET"])
+@DocumentBP.route("/file/getSomeDocument/<string:documentId>", methods=["GET"])
 def getSomeDocumentByFileId(documentId):
     """some document"""
     sql = "SELECT * FROM document WHERE documentId = '{}'".format(documentId)
@@ -66,7 +94,7 @@ def getSomeDocumentByFileId(documentId):
         return jsonify({"code": 0, "data": data, "msg": "success"})
     return jsonify({"code": "1004", "msg": "no document"})
 
-@app.route("/file/userDocument/<string:userId>", methods=["GET"])
+@DocumentBP.route("/file/userDocument/<string:userId>", methods=["GET"])
 def getSomeDocumentByUser(userId):
     """some document"""
     sql = "SELECT * FROM document WHERE authorId = '{}'".format(userId)
@@ -77,7 +105,7 @@ def getSomeDocumentByUser(userId):
     return jsonify({"code": "1004", "msg": "no document"})
 
 
-@app.route("/file/addDocument", methods=['POST'])
+@DocumentBP.route("/file/addDocument", methods=['POST'])
 def addDocument():
     """add document"""
     documentId = uuid.uuid1()
@@ -103,13 +131,13 @@ def addDocument():
                     realPath, authorID, blockchainHash, description, createDate)
             mySqlDB.executeMysqldb(addDocumentSql)
             print("Add document SQL ==>> {}".format(addDocumentSql))
-            return jsonify({"code": 0, "msg": "The document is added successfully！"})
+            return jsonify({"code": 200, "msg": "The document is added successfully！"})
     else:
         return jsonify({"code": 8008, "msg": "The name of document could not be null"})
 
 
 
-@app.route("/file/updateDocument/<int:id>", methods=['PUT'])
+@DocumentBP.route("/file/updateDocument/<int:id>", methods=['PUT'])
 def UpdateDocument(id):  
     """update document"""
     documentManufacturer = request.json.get("documentManufacturer", "").strip()  
@@ -152,7 +180,7 @@ def UpdateDocument(id):
         return jsonify({"code": 8001, "msg": "The details of document could not be empty"})
     
 
-@app.route("/file/deleteDocument/<string:id>", methods=['POST'])
+@DocumentBP.route("/file/deleteDocument/<string:id>", methods=['POST'])
 def deleteDocument(id):
     adminUser = request.json.get("adminUser", "").strip()  
     token = request.json.get("token", "").strip()  
