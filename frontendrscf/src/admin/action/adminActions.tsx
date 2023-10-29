@@ -22,7 +22,8 @@ export function login(data:UserType,callback?:Function){
         if(res.data.code===200){     
           // run local storage
           sessionStorage.setItem("token",res.data.token);
-          sessionStorage.setItem("userInfo",JSON.stringify(res.data.loginInfo))
+          sessionStorage.setItem("userInfo",JSON.stringify(res.data.loginInfo));
+          sessionStorage.setItem("userName", res.data.loginInfo.name);
           // run reducer 
           dispatch({type:SET_TOKEN,payload:res.data.token})
           dispatch({type:SET_USER,payload:res.data.loginInfo})
