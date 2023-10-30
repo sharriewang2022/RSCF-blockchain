@@ -36,11 +36,12 @@ def addCategory():
     categoryId = uuid.uuid1()   
     categoryName = request.json.get("categoryName", "").strip()  
     parentID = request.json.get("ParentID", "").strip() 
+    parentName = request.json.get("ParentName", "").strip() 
     supplierID = request.json.get("supplierID", "").strip()
     manufacturerID = request.json.get("manufacturerID", "").strip()
     description = request.json.get("description", "").strip()
     # blockchainHash = request.json.get("blockchainHash", "").strip()
-    createDate = datetime.now().date
+    createDate = datetime.today().date()
 
     if categoryName : # if "", the false
         queryCategoryNameSql = "SELECT categoryName FROM category WHERE categoryname = '{}'".format(categoryName)
