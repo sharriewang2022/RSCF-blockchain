@@ -146,7 +146,7 @@ function ProductView () {
             {errors.length > 0 ? <div className="error-container">{errors.map(error => <p className="error" key={error}>{error}</p>)}</div> : <div></div>}
         </Form.Group>
         <Button className="btn btn-primary buttonMargin"  type="submit" form="productForm">
-            Add Product
+            Save
         </Button>
         <Button className="btn btn-primary" variant="primary" onClick={getProductsList}>
             Product List

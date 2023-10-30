@@ -94,11 +94,11 @@ export interface LoginResponseType {
     token:string
     msg?:string
     loginInfo:{
-        name: string
-        id: number
-        score: number
-        user_group: number
-        avator: string
+        userId: string
+        id: string
+        userName: string
+        token: string
+        loginTime: any
     }
 }
 

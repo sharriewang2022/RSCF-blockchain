@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {AddCategoryToDataBase} from "../../api/categoryApi";
+import {getCategoryList, AddCategoryToDataBase} from "../../api/categoryApi";
 import { CategoryType} from "../../util/variableTypes";
 
 interface categoryProps {
@@ -13,6 +13,8 @@ interface categoryState {
   manufacturer: string,
   supplier: string,
   specific:string,
+  selectOptions: CategoryType[],
+  selectedItems: [],
   // createDate: Date
 }
 
@@ -34,6 +36,8 @@ export class CategoryView extends Component<categoryProps, categoryState> {
       manufacturer: "",
       supplier: "",
       specific:"",
+      selectOptions:[],
+      selectedItems:[],
     };
   }
 
@@ -43,7 +47,7 @@ export class CategoryView extends Component<categoryProps, categoryState> {
     });
   }
 
-  onChangeParentName(e:React.ChangeEvent<HTMLInputElement>) {
+  onChangeParentName(e:React.ChangeEvent<HTMLSelectElement>) {
     this.setState({
       parentName: e.target.value,
     });
@@ -67,11 +71,22 @@ export class CategoryView extends Component<categoryProps, categoryState> {
     });
   }
 
-  onSubmit(e:React.FormEvent<HTMLFormElement>) {
+
+  componentDidMount(): void {
+    setTimeout(async () => {
+      let allCategorys= await getCategoryList();
+      this.setState({
+        selectOptions: allCategorys
+      })
+    }
+    )
+  }
+
+
+  async onSubmit(e:React.FormEvent<HTMLFormElement>) {
     const category = {       
       categoryId: this.state.categoryId,
-      categoryName: this.state.categoryName,
-      //Number() 、parseInt()、 parseFloat()      
+      categoryName: this.state.categoryName,   
       parentId: this.state.parentId, 
       parentName: this.state.parentName,   
       manufacturer: this.state.manufacturer,
@@ -79,124 +94,85 @@ export class CategoryView extends Component<categoryProps, categoryState> {
       specs: this.state.specific,
       current: 0,
       size: 0,
-    };
-    AddCategoryToDataBase(category);
+    };    
+    const message = await AddCategoryToDataBase(category);; 
+    if(message){
+      alert(message);
+    }       
   }
 
   render() {
+    const { parentName, selectOptions } = this.state;
+    const filteredOptions = selectOptions.filter(o => !parentName.includes(o.categoryName));
     return (
       <div>
-        <h3>Create New Category</h3>
-
-        <form className="row g-3">
+        <h3>Category</h3>
+        <form className="row g-3" onSubmit={this.onSubmit}>
           <div className="col-md-6">
-            <label htmlFor="inputEmail4" className="form-label">Email</label>
-            <input type="email" className="form-control" id="inputEmail4"/>
-          </div>
-          <div className="col-md-6">
-            <label htmlFor="inputPassword4" className="form-label">Password</label>
-            <input type="password" className="form-control" id="inputPassword4"/>
-          </div>
-          <div className="col-12">
-            <label htmlFor="inputAddress" className="form-label">Address</label>
-            <input type="text" className="form-control" id="inputAddress" placeholder="1234 Main St"/>
-          </div>
-          <div className="col-12">
-            <label htmlFor="inputAddress2" className="form-label">Address 2</label>
-            <input type="text" className="form-control" id="inputAddress2" placeholder="Apartment, studio, or floor"/>
-          </div>
-          <div className="col-md-6">
-            <label htmlFor="inputCity" className="form-label">City</label>
-            <input type="text" className="form-control" id="inputCity"/>
-          </div>
-          <div className="col-md-4">
-            <label htmlFor="inputState" className="form-label">State</label>
-            <select id="inputState" className="form-select">
-              <option selected>Choose...</option>
-              <option>...</option>
-            </select>
-          </div>
-          <div className="col-md-2">
-            <label htmlFor="inputZip" className="form-label">Zip</label>
-            <input type="text" className="form-control" id="inputZip"/>
-          </div>
-          <div className="col-12">
-            <div className="form-check">
-              <input className="form-check-input" type="checkbox" id="gridCheck"/>
-              <label className="form-check-label" htmlFor="gridCheck">
-                Check me out
-              </label>
-            </div>
-          </div>
-          <div className="col-12">
-            <button type="submit" className="btn btn-primary">Add</button>
-          </div>
-          <div className="col-12">
-            <button className="btn btn-primary">List</button>
-          </div>
-        </form>
-
-
-
-        <form onSubmit={this.onSubmit}>
-          <div className="form-group">
-            <label>CategoryName: </label>
-            <input
-              type="text"
-              required
-              className="form-control"
+            <label htmlFor="inputCategoryName" className="form-label">Category Name: </label>
+            <input type="text" className="form-control" id="inputCategoryName"
+              required            
               value={this.state.categoryName}
               onChange={this.onChangeCategoryName}
             />
-          </div>          
-           
-          <div className="form-group">
-            <label>Parent Name: </label>
-            <select
-              required
-              className="form-control"
+          </div>
+          <div className="col-md-4">
+            <label htmlFor="inputParentName" className="form-label">Parent Name: </label>
+            <select id="inputParentName" className="form-select"              
+              placeholder="Choose Parent Category"
               value={this.state.parentName}
-              // onSelect={this.onChangeParentName}
-            />
-          </div>          
-          <div className="form-group">
-            <label>Manufacturer: </label>
-            <input
-              type="text"
-              required
-              className="form-control"
+              onChange={this.onChangeParentName}
+              // onSelect={this.onChangeParentName} 
+              >
+              <option selected>Choose...</option>
+              {/* {ROLES.map( (role , index)=>(
+                      <MenuItem value={role} key = {index}>{role}</MenuItem>
+                    ))} */}
+              {this.state.selectOptions.map((item:CategoryType) => (                    
+                      <Option>
+                        {item.categoryName}
+                      </Option>                  
+              ))}
+                {this.state.selectOptions.map(option=> (
+    <Option value={option.categoryId}>{option.categoryName}</Option>
+  ))}
+            </select>
+          </div>
+          <div className="col-md-8">
+            <label htmlFor="inputManufacturer" className="form-label">Manufacturer:</label>
+            <input type="text" className="form-control" id="inputManufacturer" placeholder=""
               value={this.state.manufacturer}
               onChange={this.onChangeManufacturer}
             />
           </div>
-          <div className="form-group">
-            <label>Supplier: </label>
-            <input
-              type="text"
-              required
-              className="form-control"
+          <div className="col-md-8">
+            <label htmlFor="inputSupplier" className="form-label">Supplier:</label>
+            <input type="text" className="form-control" id="inputSupplier" placeholder=""
               value={this.state.supplier}
               onChange={this.onChangeSupplier}
             />
           </div>
-          <div className="form-group">
-            <label>Discriptiion: </label>
-            <input
-              type="text"
-              required
-              className="form-control"
-              value={this.state.specific}
-              onChange={this.onChangeSpecific}
+          <div className="col-md-8">
+            <label htmlFor="inputSpecific" className="form-label">Discription:</label>
+            <input type="text" className="form-control" id="inputSpecific"
+               value={this.state.specific}
+               onChange={this.onChangeSpecific}
             />
+          </div>       
+          {/* <div className="col-12">
+            <div className="form-check">
+              <input className="form-check-input" type="checkbox" id="gridCheck"/>
+              <label className="form-check-label" htmlFor="gridCheck">
+                default 
+              </label>
+            </div>
+          </div> */}
+          <div className="col-12">
+            <button type="submit" className="btn btn-primary buttonMargin"            
+                value="Add Category" >Add</button>
+            <button className="btn btn-primary">List</button>
           </div>
-          <div className="form-group">
-            <input
-              type="submit"
-              value="Add Category"
-              className="btn btn-primary"
-            />
-          </div>
-        </form>
+        </form>  
       </div>
     );
   }
