@@ -2,8 +2,8 @@
 
 export interface CategoryType {
     id?:number|string
-    categoryId?:string
-    categoryName?:string
+    CategoryID?:string
+    CategoryName?:string
     parentID?:string 
     parentName?:string
     manufacturer?:string
@@ -67,7 +67,8 @@ export interface OrderPurchaseType {
     order?:string
     products?:string
     shop?:string
-    slogan?:string
+    orderLogan?:string
+    orderIntroduction?:string
     preTime?:string
     showHome?:string
     tag?:string|number

@@ -7,8 +7,7 @@ import type {ProductType} from "../../util/variableTypes";
 // IType select id from productType
 interface ITtype extends Pick<ProductType, "id"> {};
 //List: uniArray<productType> 
-function uniArray<T extends ITtype>(list:T[]){
- 
+function uniArray<T extends ITtype>(list:T[]){ 
   return list.filter((item:T,index:number)=>{
     // item.id to find index
     var ind = list.findIndex((target:T)=>target.id===item.id)
@@ -17,6 +16,7 @@ function uniArray<T extends ITtype>(list:T[]){
     else{return false}
   })
 }
+
 interface Iprops{
   setShowSelectProduct:Function
   setSelectProductList:Function
@@ -33,7 +33,7 @@ const columns:ColumnsType<ProductType> = [
   render:(urls:string)=>{
       var temp;
       if(urls.includes(",")){
-      temp = urls.split(",")
+        temp = urls.split(",")
       }else{
         temp = urls.split("|")
       }
@@ -57,9 +57,13 @@ function SelectProduct(props:Iprops) {
   const getProduct = ()=>{
     getProduts({...params,size:pagination.pageSize,current:pagination.current})
     .then(res=>{
-      setOriginData(res.data.data)
-      var pa = res.data.pagination;
-      setPagination({current:Number(pa.current),pageSize:pa.size,total:pa.total})
+      if(res.data !== undefined ){
+        if(res.data.code===200){    
+          setOriginData(res.data.data)
+          var paginationData = res.data.pagination;
+          setPagination({current:Number(paginationData.page),pageSize:paginationData.per_page,total:paginationData.total})
+        }
+      }
     })
   }
 

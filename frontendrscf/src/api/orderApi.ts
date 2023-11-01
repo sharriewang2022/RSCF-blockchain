@@ -27,7 +27,7 @@ export function getShops(params:Stype){
 }
  
 export function getProduts(params:ProductType){
-  return request.get("/api/yp/product",{params})
+  return request.get("/product/allProducts",{params})
 }
 
 export function addOrderChainProduct(data:OrderPurchaseType){

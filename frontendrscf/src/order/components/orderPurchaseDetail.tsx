@@ -3,7 +3,7 @@ import { useParams,Link} from 'react-router-dom';
 import { getOrderPurchase } from "../../api/orderApi";
 import { useEffect,useState } from 'react';
 import {Tabs,Button,Space} from 'antd';
-import OrderPurchaseInfo from '../services/ordrePurchaseInfo';
+import OrderPurchaseInfo from '../services/orderPurchaseInfo';
 import OrderChainProList from '../services/orderChainProList';
 import OrderChainShopList from '../services/orderChainShopList';
 

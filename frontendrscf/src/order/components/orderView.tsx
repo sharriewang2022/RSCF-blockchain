@@ -1,21 +1,21 @@
+import React, { useState } from 'react';
+import { Steps } from 'antd';
 import dayjs from  'dayjs'
-
 import CreateOrderActionFinish from '../services/createOrderActionFinish';
 import SelectProducts from '../services/orderProducts';
 import CreateOrderActionInfo from '../services/orderActionInfo'; 
-import { Steps } from 'antd'; 
-import { useState } from 'react';
+import homePic from "../../images/homePic.jpg";
+import banner from "../../images/banner.jpg";
  
 const baseOrderInfo = 
-{
-   
-  "name": "test order activity",
+{   
+  "name": "Order Activity",
   "startTime": dayjs().format("YYYY-MM-DD HH:mm:ss"),
   "endTime": dayjs().format("YYYY-MM-DD HH:mm:ss"),
-  "slogan": 'order action',
+  "orderLogan": 'Order Action',
   "showHome": "1",
-  "homePic": 'xxx.jpg',
-  "banner": 'xxx.jpg',
+  "homePic": `url(${homePic})`,
+  "banner": `url(${banner})`,
   "showType": 1,
   "target": 1,
   "limitBuy": 999,
@@ -28,31 +28,41 @@ const baseOrderInfo =
   "state": 1
 }
 
-function OrderView() {
-  
-  const [OrderActionInfo,setOrderActionInfo] = useState(baseOrderInfo)
- 
+function OrderView() {  
+  const [OrderActionInfo,setOrderActionInfo] = useState(baseOrderInfo) 
   const [current,setCurrent] = useState(0)
  
-  const items = [
-    {title: 'Order Info',content:<CreateOrderActionInfo  
-    setCurrent={setCurrent} 
-    setOrderActionInfo={setOrderActionInfo}
-    orderActionInfo={OrderActionInfo}/>},
-    {title: 'Set product',content:<SelectProducts   
-    setCurrent={setCurrent} 
-    setOrderActionInfo={setOrderActionInfo}
-    orderActionInfo={OrderActionInfo}/>},
-    {title: 'success',content:<CreateOrderActionFinish/>},
+  const stepItems = [
+    {
+      title:'Order Info',
+      content:<CreateOrderActionInfo  
+        setCurrent={setCurrent} 
+        setOrderActionInfo={setOrderActionInfo}
+        orderActionInfo={OrderActionInfo}
+      />
+    },
+    {
+      title:'Set product',
+      content:<SelectProducts   
+        setCurrent={setCurrent} 
+        setOrderActionInfo={setOrderActionInfo}
+        orderActionInfo={OrderActionInfo}
+      />
+    },
+    {
+      title:'success',
+      content:<CreateOrderActionFinish/>
+    },
   ]
   return ( <div>
-     <Steps 
-     onChange={e=>setCurrent(e)}
-     current={current} 
-     labelPlacement="vertical" 
-     items={items} 
-     style={{width:'50%',margin:'16px auto'}}/>
-     {items[current].content}
+    <Steps 
+      onChange={e=>setCurrent(e)}
+      current={current} 
+      labelPlacement="vertical" 
+      items={stepItems} 
+      style={{width:'50%',margin:'16px auto'}}
+    />
+    {stepItems[current].content}
   </div> );
 }
 

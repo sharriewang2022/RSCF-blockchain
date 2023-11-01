@@ -1,10 +1,11 @@
-import SelectShop from "./operateShop";
-import SelectTag from "./orderTag";
+import React, {useEffect, useState} from "react";
 import dayjs from "dayjs";
 import {Card, Input, DatePicker ,Button,Checkbox,Upload, Image,Radio,Select, Tag} from "antd";
 import {DATE_FORMAT} from "../../config/sysConfig";
+import SelectShop from "./operateShop";
+import SelectTag from "./orderTag";
 import type {OrderPurchaseType} from "../../util/variableTypes";
-import {useEffect, useState} from "react";
+
 const {RangePicker} = DatePicker;
  
 interface Iprops {
@@ -40,7 +41,7 @@ function CreateOrderActionInfo(props: Iprops) {
   return (
     <div className="CreateOrderActionInfo">
       <Card type="inner" title="Order Action">
-        {JSON.stringify(orderActionInfo)}
+        {/* {JSON.stringify(orderActionInfo)} */}
         <p>
           <span className="label">Order Name:</span>
           <span>
@@ -76,15 +77,48 @@ function CreateOrderActionInfo(props: Iprops) {
           <span className="label">Order Sign: </span>
           <span>            
             <Input
-              value={orderActionInfo.slogan}
+              value={orderActionInfo.orderLogan}
               onChange={(e) => {
-                setOrderActionInfo({ ...orderActionInfo, slogan: e.target.value });
+                setOrderActionInfo({ ...orderActionInfo, orderLogan: e.target.value });
               }}
             />
           </span>
         </p>
+
         <p>
-          <span className="label">Order Show: </span>
+          <span className="label"> Order Introduction: </span>
+          <span>            
+            <Input
+              value={orderActionInfo.orderIntroduction}
+              onChange={(e) => {
+                setOrderActionInfo({ ...orderActionInfo, orderIntroduction: e.target.value });
+              }}
+            />
+          </span>        
+        </p>
+
+        <p>
+        <span className="hidden" >            
+            <Upload        
+              showUploadList={false} 
+              listType="picture-card"
+              className="avatar-uploader"
+              onChange={info=>{
+                if(info.file&&info.file.response){         
+                setOrderActionInfo({...orderActionInfo,banner:'http://127.0.0.1:5000'+info.file.response.file.path})
+                }
+              }}
+              name="file"
+              action="http://127.0.0.1:5000/api/file/upload">
+                {
+                  orderActionInfo.banner?<Image  preview={false} src={orderActionInfo.banner} width={110} fallback={fallback} />:<Button>上传图片</Button>
+                }
+            </Upload>   
+          </span>
+        </p>
+
+        <p>
+          <span className="label">Order Show Home: </span>
           <span>            
              <Checkbox 
               onChange={(e) => {
@@ -96,74 +130,52 @@ function CreateOrderActionInfo(props: Iprops) {
         <p>
           <span className="label">Order Picture: </span>
           <span  style={{width:200,display:'inline-block',verticalAlign:'middle'}}>            
-        <Upload        
-        showUploadList={false} 
-        listType="picture-card"
-        className="avatar-uploader"
-        onChange={info=>{
-          if(info.file&&info.file.response){         
-          setOrderActionInfo({...orderActionInfo,homePic:'http://dida100.com:8888'+info.file.response.file.path})
-          }
-        }}
-        name="file"
-        action="http://dida100.com:8888/api/file/upload">
-          {
-             orderActionInfo.homePic?<Image preview={false}   src={orderActionInfo.homePic} width={110} fallback={fallback} />:<Button>上传图片</Button>
-          }
-        </Upload>
-          
+            <Upload        
+              showUploadList={false} 
+              listType="picture-card"
+              className="avatar-uploader"
+              onChange={info=>{
+                if(info.file&&info.file.response){         
+                setOrderActionInfo({...orderActionInfo,homePic:'http://127.0.0.1:5000'+info.file.response.file.path})
+                }
+              }}
+              name="file"
+              action= "http://127.0.0.1:5000/file/upload"
+              >
+              {
+                orderActionInfo.homePic?<Image preview={false}   src={orderActionInfo.homePic} width={110} fallback={fallback} />:<Button>Upload Picture</Button>
+              }
+            </Upload>          
           </span>
         </p>
-        
+
         <p>
-          <span className="label"> Order Introduction: </span>
-          <span  style={{width:200,display:'inline-block',verticalAlign:'middle'}}>            
-        <Upload 
-       
-        showUploadList={false} 
-        listType="picture-card"
-        className="avatar-uploader"
-        onChange={info=>{
-          if(info.file&&info.file.response){         
-          setOrderActionInfo({...orderActionInfo,banner:'http://dida100.com:8888'+info.file.response.file.path})
-          }
-        }}
-        name="file"
-        action="http://dida100.com:8888/api/file/upload">
-          {
-             orderActionInfo.banner?<Image  preview={false} src={orderActionInfo.banner} width={110} fallback={fallback} />:<Button>上传图片</Button>
-          }
-        </Upload>
-          
-          </span>
-        </p>
-        <p>
-          <span className="label">Order Style: </span>
-          <span>            
+          <span className="hidden">Order Style: </span>
+          <span className="hidden">            
           <Radio.Group onChange={e=>setOrderActionInfo({...orderActionInfo,showType:e.target.value})} value={orderActionInfo.showType}>
           <Radio value={1}>One Row One Column</Radio>
           <Radio value={2}>One Row Two Columns</Radio>
-          <Radio value={3}>One Row Three Columns</Radio>
-         
+          <Radio value={3}>One Row Three Columns</Radio>         
           </Radio.Group>
           </span>
         </p>
+
         <p>
-          <span className="label">Order Tag: </span>
-          <span>            
-          <Select
-          onChange={e=>{
-            setTagType(e)
-            setShowTag(true)
-          }}
-          defaultValue={1}
-          style={{ width: 120 }}         
-          options={[{ value: 1, label: 'Order' },{ value: 2, label: 'Action' }]}
-        />&emsp;&emsp;
-        <Image 
-        preview={false}
-        onClick={()=>setShowTag(true)}
-        src={tag.pic} fallback={fallback} width={64}/>
+          <span className="hidden">Order Tag: </span>
+          <span className="hidden">            
+            <Select
+              onChange={e=>{
+                setTagType(e)
+                setShowTag(true)
+              }}
+              defaultValue={1}
+              style={{ width: 120 }}         
+              options={[{ value: 1, label: 'Order' },{ value: 2, label: 'Action' }]}
+            />&emsp;&emsp;
+            <Image 
+            preview={false}
+            onClick={()=>setShowTag(true)}
+            src={tag.pic} fallback={fallback} width={64}/>
           </span>
         </p>
         {/* showTag is true and send setShowTag() */}
@@ -219,8 +231,8 @@ function CreateOrderActionInfo(props: Iprops) {
           </span>
         </p> 
         <p>
-          <span className="label">Shops: </span>
-          <span>            
+          <span className="hidden">Shops: </span>
+          <span className="hidden">            
           <Radio.Group onChange={e=>{
             setOrderActionInfo({...orderActionInfo,shop:e.target.value})
             if(e.target.value){

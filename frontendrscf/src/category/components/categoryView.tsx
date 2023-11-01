@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import { Select, Spin } from 'antd';
 import {getCategoryList, AddCategoryToDataBase} from "../../api/categoryApi";
 import { CategoryType} from "../../util/variableTypes";
 
@@ -6,17 +7,22 @@ interface categoryProps {
 }
 
 interface categoryState {
-  categoryId: string,
-  categoryName: string,
-  parentId: string,
-  parentName: string,
+  CategoryID: string,
+  CategoryName: string,
+  parentID: string,
+  parentName: any,
   manufacturer: string,
   supplier: string,
   specific:string,
-  selectOptions: CategoryType[],
+  selectOptions: categoryOptionType[],
   selectedItems: [],
   // createDate: Date
 }
+
+interface categoryOptionType {
+  label: string;
+  value: string | undefined;
+} 
 
 export class CategoryView extends Component<categoryProps, categoryState> {
   constructor(props: categoryProps) {
@@ -29,9 +35,9 @@ export class CategoryView extends Component<categoryProps, categoryState> {
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
-      categoryId:"",
-      categoryName: "",
-      parentId: "",
+      CategoryID:"",
+      CategoryName: "",
+      parentID: "",
       parentName: "",
       manufacturer: "",
       supplier: "",
@@ -43,13 +49,16 @@ export class CategoryView extends Component<categoryProps, categoryState> {
 
   onChangeCategoryName(e:React.ChangeEvent<HTMLInputElement>) {
     this.setState({
-      categoryName: e.target.value,
+      CategoryName: e.target.value,
     });
   }
 
-  onChangeParentName(e:React.ChangeEvent<HTMLSelectElement>) {
+  // onChangeParentName(e:React.ChangeEvent<HTMLSelectElement>) {
+  onChangeParentName(e:any) {
+    // this.setState({ parentName: categoryType as UserOrOrg })
     this.setState({
-      parentName: e.target.value,
+      parentName: e.label,
+      parentID: e.value,
     });
   }
 
@@ -71,23 +80,37 @@ export class CategoryView extends Component<categoryProps, categoryState> {
     });
   }
 
-
   componentDidMount(): void {
     setTimeout(async () => {
-      let allCategorys= await getCategoryList();
-      this.setState({
-        selectOptions: allCategorys
-      })
+      this.fetchCategoryOption();
+      console.log("componentDidMount get options of select");       
     }
     )
+  }
+
+  async fetchCategoryOption() {
+    console.log('fetching Category');
+    const categoryList = await getCategoryList();   
+    const categoryOptions = categoryList.map((item) => {
+      return {
+        // label: `${item.categoryId} ${item.parentID}`,
+        label: `${item.CategoryName}`,
+        value: item.CategoryID
+      }
+    }) 
+    this.setState({
+      selectOptions: categoryOptions
+    })
+    console.log(categoryOptions)
+    return categoryOptions;
   }
 
 
   async onSubmit(e:React.FormEvent<HTMLFormElement>) {
     const category = {       
-      categoryId: this.state.categoryId,
-      categoryName: this.state.categoryName,   
-      parentId: this.state.parentId, 
+      CategoryID: this.state.CategoryID,
+      CategoryName: this.state.CategoryName,   
+      parentID: this.state.parentID, 
       parentName: this.state.parentName,   
       manufacturer: this.state.manufacturer,
       supplier: this.state.supplier,         
@@ -102,41 +125,42 @@ export class CategoryView extends Component<categoryProps, categoryState> {
   }
 
   render() {
-    const { parentName, selectOptions } = this.state;
-    const filteredOptions = selectOptions.filter(o => !parentName.includes(o.categoryName));
     return (
-      <div>
+      <div style ={{margin:10}}>
         <h3>Category</h3>
         <form className="row g-3" onSubmit={this.onSubmit}>
           <div className="col-md-6">
             <label htmlFor="inputCategoryName" className="form-label">Category Name: </label>
             <input type="text" className="form-control" id="inputCategoryName"
               required            
-              value={this.state.categoryName}
+              value={this.state.CategoryName}
               onChange={this.onChangeCategoryName}
             />
           </div>
           <div className="col-md-4">
             <label htmlFor="inputParentName" className="form-label">Parent Name: </label>
-            <select id="inputParentName" className="form-select"              
+            <Select id="inputParentName" className="form-select" 
+              labelInValue
+              filterOption={false}           
               placeholder="Choose Parent Category"
+              // fetchOptions={this.fetchCategoryList}
               value={this.state.parentName}
               onChange={this.onChangeParentName}
+              options={this.state.selectOptions}
               // onSelect={this.onChangeParentName} 
               >
-              <option selected>Choose...</option>
               {/* {ROLES.map( (role , index)=>(
                       <MenuItem value={role} key = {index}>{role}</MenuItem>
                     ))} */}
-              {this.state.selectOptions.map((item:CategoryType) => (                    
+              {/* {this.state.selectOptions.map((item:CategoryType) => (                    
                       <Option>
                         {item.categoryName}
                       </Option>                  
               ))}
                 {this.state.selectOptions.map(option=> (
     <Option value={option.categoryId}>{option.categoryName}</Option>
-  ))}
-            </select>
+  ))} */}
+            </Select>
           </div>
           <div className="col-md-8">
             <label htmlFor="inputManufacturer" className="form-label">Manufacturer:</label>

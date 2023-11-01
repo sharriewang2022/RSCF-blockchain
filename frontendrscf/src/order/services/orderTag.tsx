@@ -32,12 +32,10 @@ function SelectTag(props:Iprops) {
   const handleOk = () => {
     props.setTag(selOrigin[0])
     props.setShowTag(false)
-
   };
  
   const handleCancel = () => {
-    props.setShowTag(false)
-   
+    props.setShowTag(false)   
   };
  
   const getTags = ()=>{
@@ -54,14 +52,13 @@ function SelectTag(props:Iprops) {
   },[pagination.current,props.tagType])
 
   //modelDialog
-  return (  <Modal title="Choose tag" open={true} onOk={handleOk} onCancel={handleCancel}>
+  return ( <Modal title="Choose tag" open={true} onOk={handleOk} onCancel={handleCancel}>
   <Table 
   rowSelection={{
     type: 'radio',
     onChange:(keys,rows)=>{
       console.log(rows);
       setSelOrigin(rows)
-
     }
   }}
   size='small' 

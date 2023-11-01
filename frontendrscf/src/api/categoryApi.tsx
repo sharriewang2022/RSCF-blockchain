@@ -3,10 +3,9 @@ import { AxiosResponse } from 'axios';
 import { CategoryType } from "../util/variableTypes";
  
 interface resultCategoryType{
-  code:number
-  msg?:string
-  token:string,
-  categoryInfo:any
+  code: number
+  msg?: string
+  categoryInfo: CategoryType[]
 }
 
 /* get all category list */
@@ -14,7 +13,7 @@ interface resultCategoryType{
 export async function getCategoryList(){
   sessionStorage.setItem("categoryName", "");
   var resultData : CategoryType[] = [];
-  await request.get("/category/addCategory").then((res:AxiosResponse<resultCategoryType>)=>{
+  await request.get("/category/allCategory").then((res:AxiosResponse<resultCategoryType>)=>{
     if(res.data !== undefined ){
       if(res.data.code===200){     
         resultData = res.data.categoryInfo;       
@@ -35,8 +34,8 @@ export async function AddCategoryToDataBase(categoryParam: CategoryType){
     if(res.data !== undefined ){
       if(res.data.code===200){     
         // save category Name to local storage
-        sessionStorage.setItem("categoryName", categoryParam.categoryName + "");
-        resultMessage = "categoryName:" + categoryParam.categoryName +" is added successfully!";       
+        sessionStorage.setItem("categoryName", categoryParam.CategoryName + "");
+        resultMessage = "Category name: " + categoryParam.CategoryName +" is added successfully!";       
       }else{        
         resultMessage = res.data.msg + "";
         console.log(resultMessage);

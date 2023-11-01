@@ -16,7 +16,7 @@ export const APP_TWO_DIGITS_AFTER_POINT_NUMBER_FORMAT = '0,0.[00]';
  
 export const DATETIME_FORMAT = "YYYY-MM-DD HH:mm:ss"
 export const DATE_FORMAT = "YYYY-MM-DD"
-export const SHOW_HOME = ["No","Yes"]
+
 
 export const IPFS_HOST = "http://localhost";
 export const IPFS_PORT = 5001;
