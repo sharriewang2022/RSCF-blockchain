@@ -205,6 +205,15 @@ def addEncryptedFiletoIPFS(filename, filePath):
         return encryp['Hash']       
     except IPFSCantConnectException as ce:
         print(str(ce))
+
+def getDecryptedFilefromIPFS(hashCode):
+    password = getKey("password")
+    decrypted = decrypt(getKey("abc123"),hashCode)
+    try:
+        api = getIpfs('127.0.0.1', 5001)
+        return api.cat(hashCode)      
+    except IPFSCantConnectException as ce:
+        print(str(ce))
     
 
 #Test encryption of image
@@ -212,7 +221,6 @@ def main():
     password = getKey("password")
     encrypted = encrypt(password, "009.jpg")
     decrypted = decrypt(getKey("abc123"),"Qma2bA7dREcfhtNcSXaFFxhgGtdrnqRaa3qKsCLhTdaY62")
- 
     try:
         api = getIpfs('127.0.0.1', 5001)
         #add encrypted file to IPFS

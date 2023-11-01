@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request, Blueprint
+from flask_paginate import Pagination, get_page_parameter
 from util.mySqlDB import mySqlDB
 from util.redisUtil import redisUtil
 from datetime import datetime
@@ -11,10 +12,20 @@ ProductBP = Blueprint("ProductBP", __name__)
 @ProductBP.route("/product/allProducts", methods=["GET"])
 def getAllProducts():
     """all product info"""
-    sql = "SELECT * FROM product"
-    data = mySqlDB.selectMysqldb(sql)
-    print("all products' data == >> {}".format(data))
-    return jsonify({"code": 0, "data": data, "msg": "success"})
+    page = request.args.get(get_page_parameter(), type=int, default=int(page))
+    page_num = page.size
+
+    queryAllSql = "SELECT * FROM product "
+    filterSql =  (" ORDER BY id ASC LIMIT {limit} offset {offset}".
+                  format(limit=page_num, offset = (page_num * int(page)-page_num)))
+    productFilterData = mySqlDB.dbConnection.fetch_rows(queryAllSql + filterSql, as_dict=True)
+    # data = mySqlDB.selectMysqldb(sql)
+    totalData = len(mySqlDB.dbConnection.fetch_rows(queryAllSql, as_dict=True))
+    paginationResult = Pagination(page=page, total=totalData, per_page=page_num)
+    print("all products' data == >> {}".format(totalData))
+    return jsonify({"code": 200, "data": productFilterData, "pagination":paginationResult, "msg": "success"})
+    # return render_template('xx.html', tableret = tabledata, pagination=paginate)
+    
 
 
 @ProductBP.route("/product/getSomeProduct/<string:productId>", methods=["GET"])
@@ -45,8 +56,7 @@ def addProduct():
     # createDate = datetime.now().date
     # createDate = datetime.date.today()
     createDate = datetime.today().date()
-    print("Add product createDate ==>> {}".format(createDate))
-    
+    print("Add product createDate ==>> {}".format(createDate))    
 
     if productName : # if "", the false
         queryProductNameSql = "SELECT productName FROM product WHERE productname = '{}'".format(productName)

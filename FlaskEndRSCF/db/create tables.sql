@@ -71,12 +71,12 @@ CREATE TABLE Product(
 CREATE TABLE Category(
   ID Int(30) NOT NULL AUTO_INCREMENT,
   CategoryID Varchar(50) NOT NULL,
-  CategoryName Varchar(50) NOT NULL,
-  ParentID Varchar(50) NOT NULL,   
-  ParentName Varchar(50) NOT NULL,
+  CategoryName Varchar(100) NOT NULL,
+  ParentID Varchar(50) ,   
+  ParentName Varchar(100) ,
   SupplierID Varchar(50) DEFAULT NULL,
   ManufacturerID Varchar(50) NOT NULL,
-  Description Varchar(30) NOT NULL,   
+  Description Varchar(30) DEFAULT NULL,   
   CreateDate date DEFAULT NULL,
   PRIMARY KEY (ID) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

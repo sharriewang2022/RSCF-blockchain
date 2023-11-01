@@ -16,7 +16,7 @@ def getAllCategory():
     sql = "SELECT * FROM category"
     data = mySqlDB.selectMysqldb(sql)
     print("all category' data == >> {}".format(data))
-    return jsonify({"code": 0, "data": data, "msg": "success"})
+    return jsonify({"code": 200, "categoryInfo": data, "msg": "success"})
 
 
 @CategoryBP.route("/category/getSomeCategory/<string:categoryId>", methods=["GET"])
@@ -26,7 +26,7 @@ def getSomeCategory(categoryId):
     data = mySqlDB.selectMysqldb(sql)
     print("gain {} category info == >> {}".format(categoryId, data))
     if data:
-        return jsonify({"code": 0, "data": data, "msg": "success"})
+        return jsonify({"code": 200, "categoryInfo": data, "msg": "success"})
     return jsonify({"code": "1004", "msg": "no category"})
 
 
@@ -34,12 +34,12 @@ def getSomeCategory(categoryId):
 def addCategory():
     """add category"""
     categoryId = uuid.uuid1()   
-    categoryName = request.json.get("categoryName", "").strip()  
-    parentID = request.json.get("ParentID", "").strip() 
-    parentName = request.json.get("ParentName", "").strip() 
-    supplierID = request.json.get("supplierID", "").strip()
-    manufacturerID = request.json.get("manufacturerID", "").strip()
-    description = request.json.get("description", "").strip()
+    categoryName = request.json.get("CategoryName", "").strip()  
+    parentID = request.json.get("parentID", "").strip() 
+    parentName = request.json.get("parentName", "").strip() 
+    supplierID = request.json.get("supplier", "").strip()
+    manufacturerID = request.json.get("manufacturer", "").strip()
+    description = request.json.get("specs", "").strip()
     # blockchainHash = request.json.get("blockchainHash", "").strip()
     createDate = datetime.today().date()
 
@@ -50,15 +50,15 @@ def addCategory():
   
         if isCategoryExist:
             return jsonify({"code": 6008, "msg": "The category name already exists！"})
-        else:
-             
+        else:             
             addCategorySql = "INSERT INTO category(categoryId, categoryName, parentID, "\
-                " supplierID, manufacturerID, description, createDate) "\
-                "VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(categoryId, categoryName, parentID, 
-                     supplierID, manufacturerID, description, createDate)
+                " parentName, supplierID, manufacturerID, description, createDate) "\
+                "VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(
+                    categoryId, categoryName, parentID, parentName,
+                    supplierID, manufacturerID, description, createDate)
             mySqlDB.executeMysqldb(addCategorySql)
             print("Add category SQL ==>> {}".format(addCategorySql))
-            return jsonify({"code": 0, "msg": "The category is added successfully！"})
+            return jsonify({"code": 200, "msg": "The category is added successfully！"})
     else:
         return jsonify({"code": 6002, "msg": "Category name could not be null"})
 
@@ -100,7 +100,7 @@ def UpdateCategory(id):
                                 "WHERE id = {}".format(newCategoryName, newParentID, newSupplierID, newManufacturerID, newDescription)
                     mySqlDB.executeMysqldb(updateCategorySql)
                     print("update category SQL ==>> {}".format(updateCategorySql))
-                    return jsonify({"code": 0, "msg": "The information of category was changed successfully！"})
+                    return jsonify({"code": 200, "msg": "The information of category was changed successfully！"})
                 else:
                     return jsonify({"code": 6004, "msg": "Only Manufacturer could update category information"})
             else:
@@ -134,7 +134,7 @@ def deleteCategory(id):
                         delCategorySql = "DELETE FROM category WHERE id = '{}'".format(id)
                         mySqlDB.executeMysqldb(delCategorySql)
                         print("Delete category information SQL ==>> {}".format(delCategorySql))
-                        return jsonify({"code": 0, "msg": "The category is deleted successfully！"})
+                        return jsonify({"code": 200, "msg": "The category is deleted successfully！"})
                 else:
                     return jsonify({"code": 6004, "msg": "Only administrator could delete category information"})
             else:
