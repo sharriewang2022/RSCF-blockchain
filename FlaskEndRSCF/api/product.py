@@ -12,18 +12,51 @@ ProductBP = Blueprint("ProductBP", __name__)
 @ProductBP.route("/product/allProducts", methods=["GET"])
 def getAllProducts():
     """all product info"""
-    page = request.args.get(get_page_parameter(), type=int, default=int(page))
-    page_num = page.size
+    page = request.args.get(get_page_parameter(), type=int, default=1)
+    currentPage =  int(request.args.get('current'))
+    pageSize =  int(request.args.get('size'))
 
-    queryAllSql = "SELECT * FROM product "
+    filterWhere =""
+    productName =  request.args.get('productName')
+    if productName:
+        filterWhere  = " Where productName like %" + productName +"%"
+   
+
+    queryAllSql = "SELECT * FROM product " + filterWhere
+
+    pageOffset = pageSize * int(currentPage) - pageSize
     filterSql =  (" ORDER BY id ASC LIMIT {limit} offset {offset}".
-                  format(limit=page_num, offset = (page_num * int(page)-page_num)))
-    productFilterData = mySqlDB.dbConnection.fetch_rows(queryAllSql + filterSql, as_dict=True)
-    # data = mySqlDB.selectMysqldb(sql)
-    totalData = len(mySqlDB.dbConnection.fetch_rows(queryAllSql, as_dict=True))
-    paginationResult = Pagination(page=page, total=totalData, per_page=page_num)
+                  format(limit=pageSize, offset = pageOffset))
+    
+    # productFilterData = mySqlDB.dbConnection.fetch_rows(queryAllSql + filterSql, as_dict=True)
+    # data = mySqlDB.selectMysqldb(queryAllSql)
+    # cursor = mySqlDB.dbConnection.cursor()
+    # cursor.execute(queryAllSql + filterSql)
+    # productFilterData = cursor.fetchall()
+
+    productFilterData = mySqlDB.selectMysqldb(queryAllSql + filterSql)
+    cursor = mySqlDB.dbConnection.cursor()
+    cursor.execute(queryAllSql)
+    totalData = cursor.fetchall()
+    # totalData = len(mySqlDB.dbConnection.fetch_rows(queryAllSql, as_dict=True))
+    
+    search = False
+    sear = request.args.get('sear')
+    if sear:
+        search = True
+
+    paginationReturn = {
+       'per_page': pageSize,
+       'total': len(totalData),
+       'page': currentPage
+    }
+
+    # paginationResult = Pagination(page=currentPage, total=totalData, per_page=pageSize)
+    paginationResult = Pagination(page=page, per_page=pageSize, offset=pageOffset, total=len(totalData), 
+            search=search, record_name='products')
+        
     print("all products' data == >> {}".format(totalData))
-    return jsonify({"code": 200, "data": productFilterData, "pagination":paginationResult, "msg": "success"})
+    return jsonify({"code": 200, "data": productFilterData, "pagination":paginationReturn, "msg": "success"})
     # return render_template('xx.html', tableret = tabledata, pagination=paginate)
     
 
