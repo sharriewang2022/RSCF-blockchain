@@ -3,14 +3,15 @@ import {Button,Card,Row,Col,Input,Table,Image} from 'antd'
 import { useEffect, useState } from 'react';
 import type { ColumnsType } from 'antd/es/table';
 import type {ProductType} from "../../util/variableTypes";
+import homePic from "../../images/homePic.jpg";
 
 // IType select id from productType
-interface ITtype extends Pick<ProductType, "id"> {};
+interface ITtype extends Pick<ProductType, "ID"> {};
 //List: uniArray<productType> 
 function uniArray<T extends ITtype>(list:T[]){ 
   return list.filter((item:T,index:number)=>{
     // item.id to find index
-    var ind = list.findIndex((target:T)=>target.id===item.id)
+    var ind = list.findIndex((target:T)=>target.ID===item.ID)
     // If index == ind
     if(index===ind){return true}
     else{return false}
@@ -25,13 +26,16 @@ interface Iprops{
 
 const columns:ColumnsType<ProductType> = [
   { title: 'Product ID',
-  dataIndex: 'id'}, 
+  dataIndex: 'ProductID'}, 
   { title: 'Product Name',
-  dataIndex: 'productName'},
+  dataIndex: 'ProductName'},
   { title: 'Product Picture',
   dataIndex: 'picture',  
   render:(urls:string)=>{
       var temp;
+      if(!urls){
+        return <Image src={homePic} width={60}/>  
+      }
       if(urls.includes(",")){
         temp = urls.split(",")
       }else{
@@ -41,9 +45,17 @@ const columns:ColumnsType<ProductType> = [
     }
   },
   { title: 'Price',
-  dataIndex: 'price'},
+  dataIndex: 'ProductPrice'},
+  { title: 'Number',
+  dataIndex: 'ProductNumber'},
+  { title: 'Category',
+  dataIndex: 'CategoryID'},
+  { title: 'BlockchainInfo',
+  dataIndex: 'BlockchainHash'},
+  { title: 'Items',
+  dataIndex: 'ProductItems'},
   { title: 'Specific',
-  dataIndex: 'specs'} 
+  dataIndex: 'Specific'} 
 ]
 
 function SelectProduct(props:Iprops) {
@@ -70,26 +82,29 @@ function SelectProduct(props:Iprops) {
   useEffect(()=>{
     getProduct()
   },[pagination.current])
+
   useEffect(()=>{
-    //shopList 
+    //productList 
     setTargetData(props.selectProductList)
   },[])
 
+  // Add product
   function toRight(){
-    const list = selOrignRows.concat(targetData)
-    setTargetData(uniArray<ProductType>(list))
+    const totalSelectedlist = selOrignRows.concat(targetData)
+    setTargetData(uniArray<ProductType>(totalSelectedlist))
     var leftList = originData.filter(item=>{
-      var flag = selOrignRows.some(target=>target.id===item.id)
-      return !flag;
-    })
+      var flag = selOrignRows.some(target=>target.ID===item.ID)
+        return !flag;
+      })
     setOriginData(leftList)
   }
 
+  //cancel product
   function toLeft(){
-    const list = selTargetRows.concat(originData)
-    setOriginData(uniArray<ProductType>(list))
+    const totalSelectedlist = selTargetRows.concat(originData)
+    setOriginData(uniArray<ProductType>(totalSelectedlist))
     var rightList = targetData.filter(item=>{    
-      var flag = selTargetRows.some(target=>target.id===item.id)      
+      var flag = selTargetRows.some(target=>target.ID===item.ID)      
       return !flag;
     })
     setTargetData(rightList)
@@ -110,7 +125,7 @@ function SelectProduct(props:Iprops) {
               </Col>
             </Row>
             <Table 
-            rowKey="id"
+             rowKey="ProductID"
              rowSelection={{
               type: 'checkbox',
               onChange:(keys,rows)=>{
@@ -132,9 +147,9 @@ function SelectProduct(props:Iprops) {
           <Button onClick={()=>toLeft()}>&lt;&lt;Cancel</Button>
       </div>
       <div className='target'>
-        <Card type='inner' title="Selected Shop">
+        <Card type='inner' title=" Cancel selected product">
         <Table 
-            rowKey="id"
+            rowKey="ID"
              rowSelection={{
               type: 'checkbox',
               onChange:(keys,rows)=>{
@@ -152,7 +167,7 @@ function SelectProduct(props:Iprops) {
       <Button onClick={()=>props.setShowSelectProduct(false)}>Cancel</Button>
       <Button type='primary' onClick={()=>{
         props.setSelectProductList(targetData);
-        props.setShowSelectProduct(false)
+        props.setShowSelectProduct(true)
       }}>Confirm</Button>
     </div>
   </div> );

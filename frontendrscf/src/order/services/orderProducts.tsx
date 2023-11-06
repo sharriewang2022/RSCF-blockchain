@@ -17,31 +17,26 @@ function OrderProducts(props:Iprops) {
   //order product
   const [actionProductList,setActionProductList] =useState<any>([]) 
   //product list
-  const [selProductList,setSelProductList] =useState([])
+  const [selProductList,setSelProductList] =useState<any>([])
  
   // activity products list
 const columns = [
   {
     title:"Product ID",
-    dataIndex:'productId'
-  },
-  {
-    title:"Specific",
-    dataIndex:'specs'
+    dataIndex:'ProductID'
   },
   {
     title:"Product Name",
-    dataIndex:'productName'
+    dataIndex:'ProductName'
   },
   {
     title:"Price",
-    dataIndex:'price'
+    dataIndex:'ProductPrice'
   },
   {
     title:"Sale Price",
     dataIndex:'salePrice',
-    render:(value:string,row:ActitivyProType,index:number)=>{
-     
+    render:(value:string,row:ActitivyProType,index:number)=>{     
       return <Input 
         onChange={(e)=>{
           var list = actionProductList;
@@ -54,17 +49,21 @@ const columns = [
     }
   },
   {
-    title:"amount",
-    dataIndex:'limitBuy'
+    title:"Amount",
+    dataIndex:'ProductNumber'
   },
   {
-    title:"stokc",
+    title:"Stock",
     dataIndex:'stock'
   },
   {
-    title:"order",
-    dataIndex:'order'
+    title:"Specific",
+    dataIndex:'Specific'
   },
+  // {
+  //   title:"order",
+  //   dataIndex:'order'
+  // },
 ]
 
   useEffect(()=>{
@@ -72,41 +71,43 @@ const columns = [
       var obj = {...item};
       // delete product according to its id
       delete obj.id; 
-      obj.productId =item.id;
-      obj.salePrice=obj.price
-      obj.rate = 1;
-      obj.limitBuy = 1;
+      obj.ProductID = item.ProductID;
+      obj.ProductName = item.ProductName;
+      obj.ProductPrice = item.ProductPrice;
+      obj.ProductNumber = item.ProductNumber;
+      obj.ProductItems = item.ProductItems
       obj.stock = 999;
       obj.order = 0;
       return obj;
     }) 
     setActionProductList(list)
+    setSelProductList(list)
   },[selProductList])
  
   async function chooseFinish (){
-  // add order actitivy to server and then get activityId
-  const activity =  await addOrderAction(props.orderActionInfo)
-  var orderPurchaseId = activity.data.data.insertId; 
-  // order products with id
-  var list = actionProductList.map((item:any)=>addOrderChainProduct({...item,orderPurchaseId})) 
-  // several promise
-  const gplist = await Promise.all(list)
-  // several gplist  join together
-  var products = gplist.map(item=>item.data.data.insertId).join(",")
-  //  update order products
-  const result = await UpdateOrderAction({id:orderPurchaseId,products})
-  if(result.data.code===0){
-    props.setCurrent(2);
-  }else{
-    console.log("fail")
-  }
+    // add order actitivy to server and then get activityId
+    const activity =  await addOrderAction(props.orderActionInfo)
+    var orderPurchaseId = activity.data.data.insertId; 
+    // order products with id
+    var list = actionProductList.map((item:any)=>addOrderChainProduct({...item,orderPurchaseId})) 
+    // several promise
+    const gplist = await Promise.all(list)
+    // several gplist  join together
+    var products = gplist.map(item=>item.data.data.insertId).join(",")
+    //  update order products
+    const result = await UpdateOrderAction({id:orderPurchaseId,products})
+    if(result.data.code===0){
+      props.setCurrent(2);
+    }else{
+      console.log("fail")
+    }
   }
   
   return ( <div className="SelectProducts">
     <p style={{textAlign:'center'}}>
       <Button type='primary' onClick={()=>setShowSelectProduct(true)}>Choose Product:</Button>
     </p>
-   <Table rowKey="productId" pagination={false} dataSource={actionProductList} columns={columns}/>
+   <Table rowKey="ProductID" pagination={false} dataSource={actionProductList} columns={columns}/>
    {showSelectProduct&&<SelectProduct 
       selectProductList={selProductList} 
       setShowSelectProduct={setShowSelectProduct} 
@@ -115,7 +116,6 @@ const columns = [
      <Button onClick={()=>props.setCurrent(0)}>Edit Product</Button>  
      <Button onClick={()=>chooseFinish()}>Done</Button>
    </p>
-   {/* <p>{JSON.stringify(orderChainProductList)}</p> */}
   </div> );
 }
 export default OrderProducts;
