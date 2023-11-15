@@ -1,12 +1,15 @@
 Cloud-based Blockchain and DRM for Traceability and Security in Retail Supply Chain Finance
 
 1.Introduction
+
 In recent years, financial information traceability and security for all stakeholders in the supply chain have emerged as the main issues that have to be resolved in the development of traditional retail supply chain finance. This application developed a RSCF platform that creatively combines cloud-based blockchain with DRM technologies, which have the characteristics of information sharing, data traceability, and tamper resistance.
 
 2.Architecture
+
 This system uses smart contracts to track product information. Solidity is being used to write the smart contract, which is subsequently compiled, migrated, and deployed on the private blockchain network Ganache in the Truffle framework. The frontend is created using the React.js framework, and it leverages Web3.js to interface with the local blockchain network and smart contract. The Flask framework is used by the backend to manage MySQL database data and offer RESTful APIs. For double protection, this application encrypts data using DRM before uploading it to IPFS.  
  
 3. Installation and Setup
+   
 Before getting started, it is necessary to make sure all the prerequisites for development environment configuration are met in the following table.
 (1)	Visual Studio Code	--1.84.0
 (2) Node.js	--18.15.0
@@ -22,7 +25,7 @@ Before getting started, it is necessary to make sure all the prerequisites for d
 (12) Metamask	
 (13) IPFS	
 
-4. Quick Start
+5. Quick Start
 
 (1) Setting up Smart Contract:
 
