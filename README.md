@@ -68,7 +68,6 @@ Install ganache-cli:
 <br> npm i -g ganache-cli
 
 Set up gasLimit to 6721975000 and above, then configure ganache-cli for 10 accounts. This will ensure that there is sufficient gas for the smart contract migration and data flow for the prototype.
-
 <br> ganache-cli --accounts 10 --gasLimit 6721975000
 
 Install all packages in the package.json file:
