@@ -34,27 +34,27 @@ git clone https://github.com/sharriewang2022/RSCF-blockchain/tree/master/truffle
 Go to the above project folder in terminal then execute :
 
 compile the smart contract:
-truffle compile
+<br> truffle compile
 
 Migrating the smart contract to ganach needs to change truffle.js port settings the Ganache server listing on port : 7545. 
 migrate the smart contract:
-truffle migrate development
+<br> truffle migrate development
 
 deploy the smart contract:
-truffle deploy –reset 
+<br> truffle deploy –reset 
   
 Test on ganache:
-truffle test
+<br> truffle test
  
 (2) Start BackEnd DApp 
 
 git clone https://github.com/sharriewang2022/RSCF-blockchain/tree/master/FlaskEndRSCF.git
 
 Open the second terminal and enter the above folder.
-Install dependencies in terminal and execute:
-npm i
+<br> Install dependencies in terminal and execute:
+<br> npm i
 Run the backend service:
-flask run
+<br> flask run
 
 (3) Start FrontEnd DApp 
 
@@ -62,20 +62,20 @@ git clone https://github.com/sharriewang2022/RSCF-blockchain/tree/master/fronten
 
 Open the thrid terminal and enter the above folder.
 Install dependencies:
-npm i
+<br> npm i
 
 Install ganache-cli:
-npm i -g ganache-cli
+<br> npm i -g ganache-cli
 
 Set up gasLimit to 6721975000 and above, then configure ganache-cli for 10 accounts. This will ensure that there is sufficient gas for the smart contract migration and data flow for the prototype.
 
-ganache-cli --accounts 10 --gasLimit 6721975000
+<br> ganache-cli --accounts 10 --gasLimit 6721975000
 
 Install all packages in the package.json file:
-npm i
+<br> npm i
 
 Run the application:
-npm start
+<br> npm start
 
 By default, the application is hosted on port 3000.
 
