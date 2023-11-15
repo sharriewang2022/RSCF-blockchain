@@ -11,9 +11,8 @@ import * as fs from "fs";
 import path from 'path';
 
 
-
-interface Props {
-  children: JSX.Element
+interface BlockProviderProps {
+  children: JSX.Element | JSX.Element[]
 }
 
 interface BlockContextData {
@@ -32,7 +31,7 @@ export function useBlock(){
   return useContext(blockContext)
 }
 
-export function BlockProvider({children}: Props){
+export function BlockProvider({children}:BlockProviderProps){
   // 1. fs, path could not run on client sideconst supplyChainAbi = JSON.parse(fs.readFileSync('../abis/SupplyChainRSCF.json', 
   // {encoding: "utf-8",})).abi as unknown as supplyChainAbiType;
   // //json file is in /public/src/abis/SupplyChainRSCF.json
@@ -88,7 +87,7 @@ export function BlockProvider({children}: Props){
         if (window.ethereum) {
           setIsMetamask(true)
           window.web3 = new Web3(window.ethereum)
-          await window.ethereum.enable()
+          // await window.ethereum.enable()
         }
         else if (window.web3) {
           setIsMetamask(true)

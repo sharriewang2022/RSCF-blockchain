@@ -8,10 +8,11 @@ import OrderView from "../order/components/orderView";
 import Private from '../util/private'
 import LazyLoad from "../util/LazyLoad"
 import DashView from '../admin/views/dashView';
+import Dashboard from '../dashboard/Dashboard';
 import UploadFileView from "../drmDocument/components/uploadFile";
 import TrackProductView from "../trace/components/trackProduct";
 import RegisterView from "../admin/views/registerView";
-import {Manufacturer} from "../admin/components/manufacturer";
+import {ManageView} from "../admin/views/manageView";
 
 
 
@@ -21,15 +22,15 @@ const baseRouter = [
     {path:"/admin/*", element:<Private><AdminView/></Private>, 
          children:[{
             path:'',
-            element:LazyLoad('/dashView'),
+            element:LazyLoad('/DashView'),
         }]
     },
     // {path:'/register', element:<RegisterView/>},
     
-    {path:'/register', element:<Manufacturer/>},
+    // {path:'/sysManage', element:<ManageView/>},
+    {path:'/sysManage', element:<Dashboard/>},
     {path:'/prodcut', element:<ProductView/>},
     {path:'/prodcut/ProduceList', element:<ProductList/>},
-    
     {path:'/file', element:<UploadFileView/>},
     {path:'/trackProduct', element:<TrackProductView/>},
     {path:'/category', element:<CategoryView/>},
