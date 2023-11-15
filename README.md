@@ -23,23 +23,24 @@ Before getting started, it is necessary to make sure all the prerequisites for d
 (13) IPFS	
 
 4. Quick Start
+
 (1) Setting up Smart Contract:
 
 git clone https://github.com/sharriewang2022/RSCF-blockchain/tree/master/trufflerscf.git
 
 Go to the above project folder in terminal then execute :
 
+compile the smart contract:
 truffle compile
-truffle migrate development
-truffle deploy –reset
 
-or execute:
-truffle compile
-truffle migrate –network Ganache development --reset –all
- 
 Migrating the smart contract to ganach needs to change truffle.js port settings the Ganache server listing on port : 7545. 
+migrate the smart contract:
+truffle migrate development
+
+deploy the smart contract:
+truffle deploy –reset 
   
-Testing on ganache:
+Test on ganache:
 truffle test
  
 (2) Start BackEnd DApp 
