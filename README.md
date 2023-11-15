@@ -13,17 +13,17 @@ This system uses smart contracts to track product information. Solidity is being
 Before getting started, it is necessary to make sure all the prerequisites for development environment configuration are met in the following table.
 <br> (1)	Visual Studio Code	--1.84.0
 <br> (2) Node.js	--18.15.0
-(3) DatabaseMySQL	--8.1.0
-(4) Window10	
-(5) React.js	--18.2.0
-(6) Typescript	--4.9.5
-(7) Web3.js	--4.1.2
-(8) Python	3.11
-(9) Solidity	0.8.19
-(10) Ganache	2.7.1
-(11) Truffle	2.1.15
-(12) Metamask	
-(13) IPFS	
+<br> (3) DatabaseMySQL	--8.1.0
+<br> (4) Window10	
+<br> (5) React.js	--18.2.0
+<br> (6) Typescript	--4.9.5
+<br> (7) Web3.js	--4.1.2
+<br> (8) Python	3.11
+<br> (9) Solidity	0.8.19
+<br> (10) Ganache	2.7.1
+<br> (11) Truffle	2.1.15
+<br> (12) Metamask	
+<br> (13) IPFS	
 
 ## 4. Quick Start
 
