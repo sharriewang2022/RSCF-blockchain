@@ -53,6 +53,7 @@ git clone https://github.com/sharriewang2022/RSCF-blockchain/tree/master/FlaskEn
 Open the second terminal and enter the above folder.
 <br> Install dependencies in terminal and execute:
 <br> npm i
+
 Run the backend service:
 <br> flask run
 
@@ -67,7 +68,7 @@ Install dependencies:
 Install ganache-cli:
 <br> npm i -g ganache-cli
 
-Set up gasLimit to 6721975000 and above, then configure ganache-cli for 10 accounts. This will ensure that there is sufficient gas for the smart contract migration and data flow for the prototype.
+Set up gasLimit to 6721975000 and above, then configure ganache-cli for 10 accounts. This will ensure that there is sufficient gas for the smart contract migration and data flow for the prototype:
 <br> ganache-cli --accounts 10 --gasLimit 6721975000
 
 Install all packages in the package.json file:
