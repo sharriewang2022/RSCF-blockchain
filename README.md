@@ -27,7 +27,7 @@ Before getting started, it is necessary to make sure all the prerequisites for d
 
 ## 4. Quick Start
 
-(1) Setting up Smart Contract:
+### (1) Setting up Smart Contract:
 
 git clone https://github.com/sharriewang2022/RSCF-blockchain/tree/master/trufflerscf.git
 
@@ -46,7 +46,7 @@ deploy the smart contract:
 Test on ganache:
 <br> truffle test
  
-(2) Start BackEnd DApp 
+### (2) Start BackEnd DApp 
 
 git clone https://github.com/sharriewang2022/RSCF-blockchain/tree/master/FlaskEndRSCF.git
 
@@ -56,7 +56,7 @@ Open the second terminal and enter the above folder.
 Run the backend service:
 <br> flask run
 
-(3) Start FrontEnd DApp 
+### (3) Start FrontEnd DApp 
 
 git clone https://github.com/sharriewang2022/RSCF-blockchain/tree/master/frontendrscf.git
 
