@@ -46,7 +46,7 @@ deploy the smart contract:
 Test on ganache:
 <br> truffle test
 
-### (2) start the MySQL database
+### (2) Start the MySQL database
 Build a MySQL instance and execute all the database scripts in the Flask project, FlaskEndRSCF\db. Then set the MySQL database information in the FlaskEndRSCF\config\setting.py.
  
 ### (3) Start BackEnd DApp 
