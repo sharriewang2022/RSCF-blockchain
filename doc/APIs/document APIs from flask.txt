@@ -1,0 +1,17 @@
+1)Interface for uploading files
+Method of request: GET
+Requested address: http://{serverIP}:{serverPort}/file/upload
+ 
+
+2)Interface for getting some documents' information accoding to the document ID
+Method of request: GET
+Requested address: http://{serverIP}:{serverPort}/file/getSomeDocument/<string:documentID>
+
+3)Interface for getting some documents' information accoding to the user ID
+Method of request: GET
+Requested address: http://{serverIP}:{serverPort}/file/userDocument/<string:userId>
+
+
+ 
+
+ 
