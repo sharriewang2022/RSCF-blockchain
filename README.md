@@ -45,8 +45,11 @@ deploy the smart contract:
   
 Test on ganache:
 <br> truffle test
+
+### (2) start the MySQL database
+Build a MySQL instance and execute all the database scripts in the Flask project, FlaskEndRSCF\db. Then set the MySQL database information in the FlaskEndRSCF\config\setting.py.
  
-### (2) Start BackEnd DApp 
+### (3) Start BackEnd DApp 
 
 git clone https://github.com/sharriewang2022/RSCF-blockchain/tree/master/FlaskEndRSCF.git
 
@@ -57,7 +60,7 @@ Open the second terminal and enter the above folder.
 Run the backend service:
 <br> flask run
 
-### (3) Start FrontEnd DApp 
+### (4) Start FrontEnd DApp 
 
 git clone https://github.com/sharriewang2022/RSCF-blockchain/tree/master/frontendrscf.git
 
@@ -76,7 +79,6 @@ Install all packages in the package.json file:
 
 Run the application:
 <br> npm start
-
 By default, the application is hosted on port 3000.
 
 ## 5. License
