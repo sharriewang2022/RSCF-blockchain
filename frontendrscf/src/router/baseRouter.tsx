@@ -18,17 +18,15 @@ import {ManageView} from "../admin/views/manageView";
 
 const baseRouter = [
     {path:"/", element:<LoginView/>, children:[] },
-    // {path:'/dashboard', element:<DashView/>}, --lazylaod 
+    {path:'/dashboard', element:<Dashboard/>},
     {path:"/admin/*", element:<Private><AdminView/></Private>, 
          children:[{
             path:'',
-            element:LazyLoad('/DashView'),
+            element:LazyLoad('/adminView'),
         }]
     },
-    // {path:'/register', element:<RegisterView/>},
-    
-    // {path:'/sysManage', element:<ManageView/>},
-    {path:'/sysManage', element:<Dashboard/>},
+    {path:'/register', element:<RegisterView/>},
+    {path:'/sysManage', element:<ManageView/>},
     {path:'/prodcut', element:<ProductView/>},
     {path:'/prodcut/ProduceList', element:<ProductList/>},
     {path:'/file', element:<UploadFileView/>},

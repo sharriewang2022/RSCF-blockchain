@@ -5,6 +5,9 @@ import type {Dispatch} from 'redux'
 import type { AxiosResponse } from 'axios';
 import type { UserType, LoginResponseType} from '../../util/variableTypes';
 import LazyLoad from '../../util/LazyLoad';
+import { 
+  ContainerOutlined,
+} from '@ant-design/icons';
 
 // log in api
 // asynchronous login action
@@ -47,6 +50,7 @@ export function login(data:UserType,callback?:Function){
 interface MenuItemType {
   label:string
   key:string
+  icon?: React.ReactNode
   children?:Array<MenuItemType>
 }
 
@@ -54,7 +58,8 @@ interface MenuItemType {
 interface OriginMenuItemType {
   path:string
   name:string
-  component?:string,
+  icon?: React.ReactNode
+  component?:string
   children?:Array<OriginMenuItemType>
 }
  
@@ -63,7 +68,7 @@ function formaterMenu(list:Array<OriginMenuItemType>):Array<MenuItemType>{
   var temp:Array<MenuItemType>= [];
  
   list.forEach((element) => {
-    var obj:MenuItemType= {key:element.path,label:element.name}
+    var obj:MenuItemType= {key:element.path,label:element.name,icon:<ContainerOutlined />}
     if(element.children){       
       obj.children = formaterMenu(element.children)  
     }

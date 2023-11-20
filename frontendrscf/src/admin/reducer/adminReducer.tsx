@@ -1,12 +1,16 @@
 import { SET_USER,SET_TOKEN,SET_MENU, SET_ROUTES} from "../../util/constant"
 import type { ActionType } from "../../util/variableTypes"
+import { 
+  ContainerOutlined,
+} from '@ant-design/icons';
 
 const initialState = {
   userInfo:{},
   token:"",
   menu:[
     {label: 'Overview',
-      key: '/admin/dash'
+      key: '/dashboard',
+      icon: <ContainerOutlined />
     }
   ],//Dynamic Menu
   routes:[],//Dynamic route
