@@ -16,7 +16,7 @@ def getAllOrders():
     sql = "SELECT * FROM orderProduct"
     data = mySqlDB.selectMysqldb(sql)
     print("all orders' data == >> {}".format(data))
-    return jsonify({"code": 0, "data": data, "msg": "success"})
+    return jsonify({"code": 200, "data": data, "msg": "success"})
 
 
 @OrderBP.route("/order/getSomeOrder/<string:orderId>", methods=["GET"])
@@ -26,7 +26,7 @@ def getSomeOrder(orderId):
     data = mySqlDB.selectMysqldb(sql)
     print("gain {} order info == >> {}".format(orderId, data))
     if data:
-        return jsonify({"code": 0, "data": data, "msg": "success"})
+        return jsonify({"code": 200, "data": data, "msg": "success"})
     return jsonify({"code": "7007", "msg": "no order"})
 
 
@@ -61,7 +61,7 @@ def addOrder():
                     OrderStatus, ProductID, UserID, Quantity, UnitPrice, blockchainHash, description, createDate)
             mySqlDB.executeMysqldb(addOrderSql)
             print("Add order SQL ==>> {}".format(addOrderSql))
-            return jsonify({"code": 0, "msg": "The order is added successfully！"})
+            return jsonify({"code": 200, "msg": "The order is added successfully！"})
     else:
         return jsonify({"code": 7001, "msg": "order name could not be null"})
 
@@ -109,7 +109,7 @@ def UpdateOrder(id):
                                 newOrderStatus, newProductID, newUserID, newQuantity, newUnitPrice, newBlockchainHash, newDescription)
                     mySqlDB.executeMysqldb(updateOrderSql)
                     print("update order SQL ==>> {}".format(updateOrderSql))
-                    return jsonify({"code": 0, "msg": "The information of order was changed successfully！"})
+                    return jsonify({"code": 200, "msg": "The information of order was changed successfully！"})
                 else:
                     return jsonify({"code": 7004, "msg": "Only Manufacturer could update order information"})
             else:
@@ -143,7 +143,7 @@ def deleteOrder(id):
                         delOrderSql = "DELETE FROM orderProduct WHERE id = '{}'".format(id)
                         mySqlDB.executeMysqldb(delOrderSql)
                         print("Delete order information SQL ==>> {}".format(delOrderSql))
-                        return jsonify({"code": 0, "msg": "The order is deleted successfully！"})
+                        return jsonify({"code": 200, "msg": "The order is deleted successfully！"})
                 else:
                     return jsonify({"code": 7004, "msg": "Only administrator could delete order information"})
             else:

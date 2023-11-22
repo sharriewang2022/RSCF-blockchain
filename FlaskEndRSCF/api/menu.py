@@ -18,7 +18,7 @@ def getAllMenus():
 @MenuBP.route("/menu/getSomeMenu/<string:userId>", methods=["GET"])
 def getSomeMenu(userId):
     """some menu"""
-    sql = "SELECT menuID, menuName as name,Component as component,Path as path,Label as label FROM v_user_role_menu WHERE userId = '{}' or userName = '{}'".format(userId, userId)
+    sql = "SELECT menuID, menuName as name,Component as component,Path as path,Label as label, Icon as icon FROM v_user_role_menu WHERE userId = '{}' or userName = '{}'".format(userId, userId)
     data = mySqlDB.selectMysqldb(sql)
     print("gain {} menu info == >> {}".format(userId, data))
     if data:

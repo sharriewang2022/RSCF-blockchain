@@ -59,7 +59,36 @@ def getAllProducts():
     return jsonify({"code": 200, "data": productFilterData, "pagination":paginationReturn, "msg": "success"})
     # return render_template('xx.html', tableret = tabledata, pagination=paginate)
     
+@ProductBP.route("/product/allProductsNoPagination", methods=["GET"])
+def getAllProductNoPagination():
+    """all product info"""
+    page = request.args.get(get_page_parameter(), type=int, default=1)
 
+
+    filterWhere =""
+    productName =  request.args.get('productName')
+    if productName:
+        filterWhere  = " Where productName like %" + productName +"%"
+   
+
+    queryAllSql = "SELECT * FROM product " + filterWhere + " ORDER BY id ASC"
+
+
+    productFilterData = mySqlDB.selectMysqldb(queryAllSql)
+    cursor = mySqlDB.dbConnection.cursor()
+    cursor.execute(queryAllSql)
+    totalData = cursor.fetchall()
+    # totalData = len(mySqlDB.dbConnection.fetch_rows(queryAllSql, as_dict=True))
+    
+    search = False
+    sear = request.args.get('sear')
+    if sear:
+        search = True
+       
+    print("all products' data == >> {}".format(totalData))
+    return jsonify({"code": 200, "data": productFilterData, "msg": "success"})
+    # return render_template('xx.html', tableret = tabledata, pagination=paginate)
+ 
 
 @ProductBP.route("/product/getSomeProduct/<string:productId>", methods=["GET"])
 def getSomeProduct(productId):
@@ -68,7 +97,7 @@ def getSomeProduct(productId):
     data = mySqlDB.selectMysqldb(sql)
     print("gain {} product info == >> {}".format(productId, data))
     if data:
-        return jsonify({"code": 0, "data": data, "msg": "success"})
+        return jsonify({"code": 200, "data": data, "msg": "success"})
     return jsonify({"code": "1004", "msg": "no product"})
 
 
@@ -154,7 +183,7 @@ def UpdateProduct(id):
                                 newProductItems, newCategoryID, newSupplierID, newManufacturerID, newDescription)
                     mySqlDB.executeMysqldb(updateProductSql)
                     print("update product SQL ==>> {}".format(updateProductSql))
-                    return jsonify({"code": 0, "msg": "The information of product was changed successfully！"})
+                    return jsonify({"code": 200, "msg": "The information of product was changed successfully！"})
                 else:
                     return jsonify({"code": 5004, "msg": "Only Manufacturer could update product information"})
             else:
@@ -188,7 +217,7 @@ def deleteProduct(id):
                         delProductSql = "DELETE FROM product WHERE id = '{}'".format(id)
                         mySqlDB.executeMysqldb(delProductSql)
                         print("Delete product information SQL ==>> {}".format(delProductSql))
-                        return jsonify({"code": 0, "msg": "The product is deleted successfully！"})
+                        return jsonify({"code": 200, "msg": "The product is deleted successfully！"})
                 else:
                     return jsonify({"code": 5004, "msg": "Only administrator could delete product information"})
             else:

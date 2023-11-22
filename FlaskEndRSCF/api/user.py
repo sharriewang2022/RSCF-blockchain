@@ -16,7 +16,7 @@ def getAllUsers():
     sql = "SELECT * FROM user"
     data = mySqlDB.selectMysqldb(sql)
     print("all users' data == >> {}".format(data))
-    return jsonify({"code": 0, "data": data, "msg": "success"})
+    return jsonify({"code": 200, "data": data, "msg": "success"})
 
 
 @UserBP.route("/user/getSomeUser/<string:username>", methods=["GET"])
@@ -26,7 +26,7 @@ def getSomeUser(username):
     data = mySqlDB.selectMysqldb(sql)
     print("gain {} user info == >> {}".format(username, data))
     if data:
-        return jsonify({"code": 0, "data": data, "msg": "success"})
+        return jsonify({"code": 200, "data": data, "msg": "success"})
     return jsonify({"code": "1004", "msg": "no user"})
 
 
@@ -62,7 +62,7 @@ def userRegister():
                     roleID, email, telephone, createDate)
             mySqlDB.executeMysqldb(addUserSql)
             print("Add user SQL ==>> {}".format(addUserSql))
-            return jsonify({"code": 0, "msg": "The user is registered successfully！"})
+            return jsonify({"code": 200, "msg": "The user is registered successfully！"})
     else:
         return jsonify({"code": 2001, "msg": "Username, password,and telephone could not be null"})
 
