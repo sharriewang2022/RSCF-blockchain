@@ -1,6 +1,8 @@
 import request from "../util/request";
 import type {TagType, OrderPurchaseType, ProductType, ActitivyProType} from "../util/variableTypes";
 
+export const getOrderList = () => request.get("/order/allOrders")
+
 export function getOrderPurchase(params:OrderPurchaseType){
   return request.get("/api/yp/orderPurchase",{params})
 }

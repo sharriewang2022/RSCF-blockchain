@@ -10,7 +10,10 @@ interface resultProductType{
 }
 
 /* get all product list */
-export const getProductList = () => request.post("/product/allProducts")
+export const getProductList = () => request.get("/product/allProducts")
+
+/* get all product list without Paginatio */
+export const getProductListNoPagination = () => request.get("/product/allProductsNoPagination")
 
 export async function AddProductToDataBase(productParam: ProductType){
   sessionStorage.setItem("productName", "");

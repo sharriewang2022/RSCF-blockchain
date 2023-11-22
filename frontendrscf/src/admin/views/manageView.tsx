@@ -1,17 +1,13 @@
 import React, {useState} from 'react';
 import {Nav ,Navbar , NavDropdown,Container} from "react-bootstrap";
 import {useAuth} from '../../contexts/authContext';
-// import UpdateProfile from "../../login/components/updateProfile";
-// import TrackProduct from "../../trace/components/trackProduct";
-// import ProductView from "../../product/components/productView" ;
 import {useNavigate} from "react-router-dom"; 
 import "../../css/navbar.css";
 import {About} from "../components/about";
-
+import UserList from "./userList";
 
 // Button Link is on the top. could use in product:add product; product List
 export function ManageView(props:any){
-
     const [icon, setIcon] = useState(true);
     const [open,setOpen] = useState(false);
     const {logout} = useAuth();
@@ -28,11 +24,11 @@ export function ManageView(props:any){
 
     return(<div style = {{
       height:"100vh",
-        backgroundColor:"#5cdb95"
+        backgroundColor:"#C0D9D9"
       }}>
        {/* //navbar-expand-lg |xl|lg|md|sm screen stype*/}
       <Navbar expand ="lg" style = {{
-              background: "#8ee4af",
+              background: "#C0D9D9",
               overflow:"visible",
               borderBottom:"4px solid #05386B",
       }} sticky="top" collapseOnSelect>
@@ -42,8 +38,7 @@ export function ManageView(props:any){
                 fontWeight: "500",
                 fontSize:"22px",
                 flexGrow: "10"
-              }}>
-              
+              }}>              
               </Navbar.Brand>
               <Navbar.Toggle style = {{
                 border:"none",
@@ -54,7 +49,7 @@ export function ManageView(props:any){
               </Navbar.Toggle>
               <Navbar.Collapse>
           <Nav onSelect={() => setIcon(prev => !prev)}>
-              <Nav.Link href="./#/home/addproduct" >Add User</Nav.Link>
+              <Nav.Link href="./#/register" >Add User</Nav.Link>
               <Nav.Link href="./#/product" >Permission</Nav.Link>
               <Nav.Link onClick = {handleOpen} >About</Nav.Link>
               {/* drop menu */}
@@ -68,6 +63,8 @@ export function ManageView(props:any){
             <Container>                
                 <About open = {open} setOpen = {setOpen}/>
             </Container>  
+            
+            <UserList></UserList> 
             </div>            
           )
 }

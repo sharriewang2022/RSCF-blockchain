@@ -178,8 +178,7 @@ function LoginView() {
         <form onSubmit = {formik.handleSubmit}>
           <Grid container spacing = {2} style = {{
               marginTop: "100px"
-          }}>
-               
+          }}>               
             <Grid container>
                   <Typography variant = "h2" style = {{
                       fontSize: "20px"

@@ -24,9 +24,9 @@ export function getUserMenu(userID: string){
 /* get user list */
 export const getUserList = () =>
   // request<UserType>({
-    // url: '/api/search/users?q=${searchName}',
+    // url: '/user/users?q=${searchName}',
     // method: 'get',
-    request.post("/user/allUsers")
+    request.get("/user/allUsers")
   // });
 
 

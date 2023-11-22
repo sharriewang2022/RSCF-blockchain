@@ -24,7 +24,9 @@ function Alert(props:any) {
   }
 
 const validationSchema = yup.object({
-
+    role: yup
+      .string()
+      .email('Select a role'),
     email: yup
       .string()
       .email('Enter a valid email'),
@@ -39,33 +41,33 @@ const validationSchema = yup.object({
     root: {
         '& .MuiTextField-root': {
           margin: theme.spacing(1),
-          borderColor: "#5cdb95 !important",
+          borderColor: "#C0D9D9 !important",
           Color: "#EDF5E1 !important"
         }},
           input:{
-              color:"#EDF5E1 !important"
+              color:"#87CEFA !important"
           },
           label:{
-            color: "#EDF5E1 !important",
+            color: "#87CEFA !important",
             fontSize:"17px"
           },
           notchedOutline:{
             borderWidth: "2px",
-            borderColor: "#5cdb95 !important",
-            color:"#EDF5E1 !important"
+            borderColor: "#C0D9D9 !important",
+            color:"#87CEFA !important"
           },
           button: {
-            backgroundColor: "#5cdb95",
+            backgroundColor: "#C0D9D9",
             color: "#05386B",
             justifySelf:"center",
             marginTop: "20px",
             marginleft: "100px",
             "&:hover" :{
-                backgroundColor:"#EDF5E1"
+                backgroundColor:"#87CEFA"
             }
         },
         divide:{
-            background:"#EDF5E1 !important"
+            background:"#87CEFA !important"
         }
   }))
 
@@ -108,7 +110,6 @@ function RegisterView() {
             setOpen(false);
             setOpenErr(false);
         };
-      
 
         return(<div style = {{
             position:"absolute",
@@ -118,39 +119,40 @@ function RegisterView() {
               right:"0",
               height:"100%",
               width:"100%",
-              backgroundColor:"#5cdb95"
+              backgroundColor:"#C0D9D9"
           }}>
         <Container component = "main" maxWidth = "xs" style = {{
-            marginTop:"60px"
+            marginTop:"10px"
         }}>
         {open &&<Snackbar open={open} autoHideDuration={6000} onClose={()=>handleClose}>
-                <Alert onClose={handleClose} severity="success">
-                    Profile Created Successfully!!
-                </Alert>
-                </Snackbar>}
-                {openErr &&<Snackbar open={openErr} autoHideDuration={6000} onClose={()=>handleClose}>
-                <Alert onClose={handleClose} severity="error">
-                    {err}
-                </Alert>
+            <Alert onClose={handleClose} severity="success">
+                Profile Created Successfully!!
+            </Alert>
+            </Snackbar>}
+            {openErr &&<Snackbar open={openErr} autoHideDuration={6000} onClose={()=>handleClose}>
+            <Alert onClose={handleClose} severity="error">
+                {err}
+            </Alert>
         </Snackbar>}
         <Paper
         style = {{
-        padding:"25px",
-        justifyContent:'center',
-        alignItems:'center',
-        background:"#05386B",
-        color:"#EDF5E1",
-        height: "700px"
+            padding:"25px",
+            justifyContent:'center',
+            alignItems:'center',
+            background:"#05386B",
+            color:"#EDF5E1",
+            height: "620px"
         }}>
         <form onSubmit = {formik.handleSubmit}>
             <Grid container spacing = {2} style = {{
-                marginTop: "100px"
+                marginTop: "10px"
             }}>
                 
             <Grid container justifyContent = "center"  alignContent="center">
                 <Typography variant = "h2" style = {{
-                    fontSize: "50px"
-                }}>Sign Up</Typography></Grid>
+                    fontSize: "20px"
+                }}>Sign Up</Typography>
+            </Grid>
 
             <Grid item xs = { 12} >
                 <Divider className = {style.divide} style = {{marginBottom:"30px"}}/>
@@ -222,7 +224,7 @@ function RegisterView() {
                 helperText = {formik.touched.userPassword && formik.errors.userPassword}/>
             </Grid>
 
-            <Grid item xs = {12} alignContent="center">
+            <Grid item xs = {12} justifyContent = "center" alignContent="center">
             <TextField
                 id = "passwordConfirmation"
                 name = "passwordConfirmation"
@@ -244,7 +246,7 @@ function RegisterView() {
                 helperText = {formik.touched.passwordConfirmation && formik.errors.passwordConfirmation}></TextField>
             </Grid>
 
-            <Grid item xs = {12} alignContent="center">
+            <Grid item xs = {12} justifyContent = "center" alignContent="center">
             <TextField
                 id = "address"
                 name = "address"
@@ -265,7 +267,7 @@ function RegisterView() {
                 ></TextField>
             </Grid>
 
-            <Grid item xs = {12}>
+            <Grid item xs = {12} justifyContent = "center" alignContent="center">
             <TextField
                 fullWidth
                 select
@@ -289,11 +291,11 @@ function RegisterView() {
                 ))}</TextField>
             </Grid>
 
-            <Grid container xs = {12} justifyContent = "center">
-                <Button type = "submit" className = {style.button} size = "large">Signup</Button>
+            <Grid container xs = {12} justifyContent = "center" alignContent="center" >
+                <Button type = "submit" className = {style.button} size = "large">Sign Up</Button>
                 </Grid>
 
-                <Grid container xs = {12} justifyContent = "center">
+                <Grid container xs = {12} justifyContent = "center" alignContent="center">
                 <Link href="#/login" variant="body2" style = {{
                     paddingTop: "20px",
                     color:"#EDF5E1",

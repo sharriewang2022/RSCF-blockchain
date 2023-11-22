@@ -8,19 +8,14 @@ import type { RootState } from "../../store/sysStore";
 import {getMenus} from '../action/adminActions'
 import Dashboard from '../../dashboard/Dashboard';
 import {
-  AppstoreOutlined,
-  ContainerOutlined,
-  DesktopOutlined,
   MailOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  PieChartOutlined,
-  UserOutlined,
   LaptopOutlined,
   NotificationOutlined  
 } from '@ant-design/icons';
 
-const { Header, Sider, Content } = Layout;
+const { Header, Sider, Content, Footer } = Layout;
 
 const AdminView: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -57,10 +52,13 @@ const AdminView: React.FC = () => {
 
   return (
     <Layout>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
+      <Sider collapsible collapsed={collapsed} 
+             onCollapse={(value) => setCollapsed(value)} >      
         <div className="demo-logo-vertical" />
+        <br />
         <Menu
           theme="dark"
+          style={{ fontSize:15 }}
           onClick={onClick}       
           mode="inline"
           inlineCollapsed={collapsed}
@@ -88,8 +86,9 @@ const AdminView: React.FC = () => {
             background: colorBgContainer,
           }}
         >
-          Content
+          <Dashboard></Dashboard>  
         </Content>
+        <Footer style={{ textAlign: 'center' }}>@2024 Created</Footer>
       </Layout>
     </Layout>
   );

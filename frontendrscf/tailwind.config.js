@@ -2,9 +2,25 @@
 /* eslint-disable max-len */
 module.exports = {
   content: [
+    '../src/**/*.{js,jsx,ts,tsx}',
     "./src/**/*.{js,jsx,ts,tsx}",
+    "./dashboard/**/*.{js,ts,jsx,tsx}",
     "../node_modules/@tremor/**/*.{js,ts,jsx,tsx}",
   ],
+//   purge: [
+//     '../src/**/*.{js,jsx,ts,tsx}',
+//     './src/**/*.{js,jsx,ts,tsx}',
+//     './dashboard/**/*.{js,ts,jsx,tsx}',
+//     '../node_modules/@tremor/**/*.{js,ts,jsx,tsx}',
+//     './components/**/*.{js,ts,jsx,tsx}'
+// ],
+purge: [
+  './src/**/*.js','./src/**/*.ts','./src/**/*.jsx','./src/**/*.tsx',
+  './dashboard/**/*.js','./dashboard/**/*.ts','./dashboard/**/*.jsx','./dashboard/**/*.tsx',
+  '../node_modules/@tremor/**/*.{js,ts,jsx,tsx}',
+  './components/**/*.{js,ts,jsx,tsx}'
+],
+  darkMode: 'class',
   theme: {
     transparent: "transparent",
     current: "currentColor",
