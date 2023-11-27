@@ -34,31 +34,30 @@ def getSomeUser(username):
 def userRegister():
     """user register"""
     userId = uuid.uuid1()
-    userName = request.json.get("username", "").strip()  
+    userName = request.json.get("userName", "").strip()  
     userPassword = request.json.get("userPassword", "").strip()
-    firstName = request.json.get("firstName", "").strip()
-    lastName = request.json.get("lastName", "").strip()
-    telephone = request.json.get("telephone", "").strip() 
-    email = request.json.get("email", "").strip()
-    roleID = request.json.get("roleID", "").strip()
-    createDate = datetime.now().date
+    telephone = request.json.get("telephone", "").strip()
+    email = request.json.get("userEmail", "").strip()
+    roleID = request.json.get("role", "").strip()
+    createDate = datetime.today().date()
 
-    if userName and userPassword and telephone: # if "", the false
+    if userName and userPassword and email: # if "", the false
         queryUserNameSql = "SELECT username FROM user WHERE username = '{}'".format(userName)
         isUserExist = mySqlDB.selectMysqldb(queryUserNameSql)
         print("Querey user result ==>> {}".format(isUserExist))
-        queryTelephoneSql = "SELECT telephone FROM user WHERE telephone = '{}'".format(telephone)
-        isTelephoneExist = mySqlDB.selectMysqldb(queryTelephoneSql)
-        print("The selected telephone ==>> {}".format(isTelephoneExist))
+        queryEmailSql = "SELECT telephone FROM user WHERE email = '{}'".format(email)
+        isEmailExist = mySqlDB.selectMysqldb(queryEmailSql)
+        print("The selected telephone ==>> {}".format(isEmailExist))
         if isUserExist:
             return jsonify({"code": 1001, "msg": "The user name already exists！"})
         #elif not (len(telephone) == 11 and re.match("^1[3,5,7,8]\d{9}$", telephone)):
-        elif isTelephoneExist:
+        elif isEmailExist:
             return jsonify({"code": 1002, "msg": "The telephone already exists！"})
         else:
-            password = md5Encrypt(userName, userPassword) # encode password
-            addUserSql = "INSERT INTO user(userId, userName, userPassword, firstName, lastName, roleID, email, telephone, createDate) " \
-                  "VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(userId, userName, userPassword, firstName, lastName,
+            encryptPassword = md5Encrypt(userName, userPassword) # encode password
+            addUserSql = "insert into User(userId, userName, userPassword, firstName, lastName, roleID, email, telephone, createDate) " \
+                  "values('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(
+                    userId, userName, encryptPassword, userName, userName,
                     roleID, email, telephone, createDate)
             mySqlDB.executeMysqldb(addUserSql)
             print("Add user SQL ==>> {}".format(addUserSql))

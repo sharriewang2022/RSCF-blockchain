@@ -1,6 +1,6 @@
 CREATE TABLE User(
   ID Int(30) NOT NULL AUTO_INCREMENT,
-  UserID Varchar(30) NOT NULL,
+  UserID Varchar(60) NOT NULL,
   UserName Varchar(30) NOT NULL,
   UserPassword Varchar(255) NOT NULL,
   FirstName Varchar(30) NOT NULL,
