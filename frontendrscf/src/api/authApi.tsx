@@ -4,33 +4,30 @@ import { AuthTokenError } from '../util/authError'
 import { signOut } from '../contexts/authContext'
 import { SERVER_BASE_URL } from "../config/sysConfig";
 
-export function setupAPIClient(ctx = undefined){
-  let cookies = parseCookies(ctx);
+export function authAPIClient(cookiesContext = undefined){
+  let cookies = parseCookies(cookiesContext);
 
-  const api = axios.create({
+  const authApi = axios.create({
     // baseURL: process.env.NEXT_PUBLIC_API_URL,
     baseURL: SERVER_BASE_URL,
-    headers:{
-      Authorization: `Bearer ${cookies['@barber.token']}`
-    }
+    // headers:{
+    //   Authorization: `Bearer ${cookies['@rscf.token']}`
+    // }
+    timeout: 50000,
   })
 
-  api.interceptors.response.use(response => {
+  authApi.interceptors.response.use(response => {
     return response;
   }, (error: AxiosError) => {
     if(error.response?.status === 401){
       if(typeof window !== undefined){
-        signOut();
-    
+        signOut();    
       }else{
         return Promise.reject(new AuthTokenError())
       }
     }
-
     return Promise.reject(error);
-
   })
 
-
-  return api;
+  return authApi;
 }

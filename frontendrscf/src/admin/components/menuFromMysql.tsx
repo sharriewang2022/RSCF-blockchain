@@ -7,7 +7,7 @@ const FetchDashboard = async () => {
     groupId: localStorage.getItem('groupId')
   }
 
-  const result = await axios.post(SERVER_BASE_URL + 'sits_api/login/dashboard.php', sendData);
+  const result = await axios.post(SERVER_BASE_URL + '/menu/getSomeMenu', sendData);
     // return the result
     return result;
   }
@@ -21,7 +21,7 @@ export const FetchDashboardSubList = async () => {
     moduleId: 1 // this parameter for each menu
   }
 
-  const result = await axios.post(SERVER_BASE_URL + '/sits_api/login/dashboardSubList.php', sendData);
+  const result = await axios.post(SERVER_BASE_URL + '/menu/getAllMenus', sendData);
   // return the result
   return result;
 }

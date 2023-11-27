@@ -8,7 +8,6 @@ import NProgress from "nprogress";
 import 'nprogress/nprogress.css'
 // import Nprogress from 'nprogress/nprogress.js';
 
-
 NProgress.settings.showSpinner = false;
 
 const request = axios.create({
@@ -59,7 +58,7 @@ function requestTest(){
   };
 
   axios
-    .post("http://localhost:8090/product", product, { headers: headers })
+    .post("http://localhost:3000/product/getSomeProduct", product, { headers: headers })
     .then((res) => console.log(res));
 }
 

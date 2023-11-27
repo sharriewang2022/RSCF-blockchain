@@ -98,8 +98,6 @@ function LoginView() {
     const callback = ()=>{
       navigate(redirect);
       // navigate("/admin/123")
-      // navigate("/trackProduct")
-      // navigate("/ProductView")
     }
 
     const formik = useFormik({
@@ -109,7 +107,7 @@ function LoginView() {
         role:"",
         userEmail:"",
         userID:"",
-        waddress:""
+        telephone:0
       },
       validationSchema: validationSchema,
       onSubmit: handleLogin
@@ -180,22 +178,22 @@ function LoginView() {
               marginTop: "100px"
           }}>               
             <Grid container>
-                  <Typography variant = "h2" style = {{
-                      fontSize: "20px"
-                  }}>Login</Typography>
+              <Typography variant = "h2" style = {{
+                  fontSize: "20px"
+              }}>Login</Typography>
             </Grid>
 
-                <Grid item xs = {12} >
-                  <Divider className = {style.divide} />
-                </Grid>
+              <Grid item xs = {12} >
+                <Divider className = {style.divide} />
+              </Grid>
 
-                <Grid item xs = {12} style = {{
-                    fontSize: "70px",
-                }}>
-                <i className="fas fa-sign-in-alt" ></i>
-                </Grid>
+              <Grid item xs = {12} style = {{
+                  fontSize: "70px",
+              }}>
+              <i className="fas fa-sign-in-alt" ></i>
+              </Grid>
 
-               <Grid item xs = {12}>
+              <Grid item xs = {12}>
                <TextField
                 id = "userName"
                 name = "userName"
@@ -216,10 +214,10 @@ function LoginView() {
                 error={formik.touched.userName && Boolean(formik.errors.userName)}
                 helperText={formik.touched.userName && formik.errors.userName}
                 />
-               </Grid>
+              </Grid>
 
-               <Grid item xs = {12}>
-               <TextField
+                <Grid item xs = {12}>
+                <TextField
                    id = "userPassword"
                    name = "userPassword"
                    label = "Password"
@@ -241,7 +239,7 @@ function LoginView() {
                </Grid>
 
               <Grid item xs={8}>
-              {isRole?<TextField
+                {isRole?<TextField
                     id = "role"
                     name = "role"
                     fullWidth
@@ -250,8 +248,7 @@ function LoginView() {
                     label="Select Role:"
                     className = {style.notchedOutline}
                     InputLabelProps = {{
-                        className : style.label,
-                        
+                        className : style.label,                        
                      }}
                      InputProps={{
                          classes: {

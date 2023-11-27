@@ -87,7 +87,7 @@ export interface UserType {
     role:string
     userEmail:string
     userID: string
-    waddress: string
+    telephone: number
 }
 
 export interface LoginResponseType {

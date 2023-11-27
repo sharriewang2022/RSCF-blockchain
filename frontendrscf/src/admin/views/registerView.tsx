@@ -26,15 +26,15 @@ function Alert(props:any) {
 const validationSchema = yup.object({
     role: yup
       .string()
-      .email('Select a role'),
-    email: yup
+      .required('Select a role'),
+    userEmail: yup
       .string()
       .email('Enter a valid email'),
-    password: yup
+    userPassword: yup
       .string()
-      .min(8, 'Password should be of minimum 8 characters length'),
+      .min(8, 'Password should be of minimum 8 characters length').required('Enter a password'),
     passwordConfirmation: yup.string()
-      .oneOf([yup.ref('password')], 'Passwords must match')
+      .oneOf([yup.ref('userPassword')], 'Passwords must match')
   });
 
   const useStyle = makeStyles((theme)=>({
@@ -72,11 +72,12 @@ const validationSchema = yup.object({
   }))
 
 function RegisterView() {
-    const {signUp, writeData} = useAuth()
+    const {signUp} = useAuth()
     const style = useStyle()
     const [err,setErr] = useState(0);
     const [open ,setOpen] = useState(false)
     const [openErr,setOpenErr] = useState(false)
+
     const formik = useFormik({
         initialValues: {
             userName:"",
@@ -84,57 +85,63 @@ function RegisterView() {
             role:"",
             userEmail:"",
             userID:"",
-            waddress:"",
+            telephone:0,
             passwordConfirmation:""
         },
         validationSchema: validationSchema,
-        onSubmit: submitValues
-        })
+        onSubmit: handleSignUp
+    })
 
-        async function submitValues(values:UserType){
-            try{
-                await signUp( values )                            
-                await writeData(values.userName,values.role,values.userID,values.waddress)
-                setOpen(true);
-                               
-            } catch(error:any){
-                setErr(error.message)
-                setOpenErr(true)
-            }
+    async function handleSignUp(values:any){
+        const userInfo :UserType={
+            userName: values.userName,
+            userPassword: values.userPassword,
+            role: values.role,
+            userEmail:values.userEmail,
+            userID:"",
+            telephone: values.telephone
         }
+        try{
+            await signUp(userInfo)
+            setOpen(true);                               
+        } catch(error:any){
+            setErr(error.message)
+            setOpenErr(true)
+        }
+    }
 
-        const handleClose = (event:React.ChangeEvent, reason:string) => {
-            if (reason === 'clickaway') {
-                return;
-            }
-            setOpen(false);
-            setOpenErr(false);
-        };
+    const handleEventClose = (event:React.ChangeEvent, reason:string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+        setOpenErr(false);
+    };
 
-        return(<div style = {{
-            position:"absolute",
-              top:"0",
-              left:"0",
-              bottom:"0",
-              right:"0",
-              height:"100%",
-              width:"100%",
-              backgroundColor:"#C0D9D9"
-          }}>
-        <Container component = "main" maxWidth = "xs" style = {{
-            marginTop:"10px"
+    return(<div style = {{
+        position:"absolute",
+            top:"0",
+            left:"0",
+            bottom:"0",
+            right:"0",
+            height:"100%",
+            width:"100%",
+            backgroundColor:"#C0D9D9"
         }}>
-        {open &&<Snackbar open={open} autoHideDuration={6000} onClose={()=>handleClose}>
-            <Alert onClose={handleClose} severity="success">
-                Profile Created Successfully!!
-            </Alert>
-            </Snackbar>}
-            {openErr &&<Snackbar open={openErr} autoHideDuration={6000} onClose={()=>handleClose}>
-            <Alert onClose={handleClose} severity="error">
-                {err}
-            </Alert>
+    <Container component = "main" maxWidth = "xs" style = {{
+        marginTop:"10px"
+    }}>
+    {open &&<Snackbar open={open} autoHideDuration={8000} onClose={()=>handleEventClose}>
+        <Alert onClose={handleEventClose} severity="success">
+            User Created Successfully!!
+        </Alert>
         </Snackbar>}
-        <Paper
+        {openErr &&<Snackbar open={openErr} autoHideDuration={8000} onClose={()=>handleEventClose}>
+        <Alert onClose={handleEventClose} severity="error">
+            {err}
+        </Alert>
+    </Snackbar>}
+    <Paper
         style = {{
             padding:"25px",
             justifyContent:'center',
@@ -143,172 +150,175 @@ function RegisterView() {
             color:"#EDF5E1",
             height: "620px"
         }}>
-        <form onSubmit = {formik.handleSubmit}>
-            <Grid container spacing = {2} style = {{
-                marginTop: "10px"
-            }}>
-                
-            <Grid container justifyContent = "center"  alignContent="center">
-                <Typography variant = "h2" style = {{
-                    fontSize: "20px"
-                }}>Sign Up</Typography>
-            </Grid>
+    <form onSubmit = {formik.handleSubmit}>
+        <Grid container spacing = {2} style = {{
+            marginTop: "10px"
+        }}>
+            
+        <Grid container justifyContent = "center"  alignContent="center">
+            <Typography variant = "h2" style = {{
+                fontSize: "20px"
+            }}>Sign Up</Typography>
+        </Grid>
 
-            <Grid item xs = { 12} >
-                <Divider className = {style.divide} style = {{marginBottom:"30px"}}/>
-            </Grid>
-            <Grid item xs = { 12} justifyContent = "center" alignContent="center">
-                <TextField
-                    id = "Username"
-                    name = "Username"
-                    label = "User Name"
-                    type = "text"
-                    variant="outlined"
-                    className = {style.input}
-                    InputLabelProps = {{
+        <Grid item xs = { 12} >
+            <Divider className = {style.divide} style = {{marginBottom:"30px"}}/>
+        </Grid>
+        <Grid item xs = { 12}>
+            <TextField
+                id = "userName"
+                name = "userName"
+                label = "User Name"
+                type = "text"
+                variant="outlined"
+                className = {style.input}
+                InputLabelProps = {{
                     className : style.label,                
                 }}
-                InputProps={{
+            InputProps={{
+            classes: {
+                notchedOutline: style.notchedOutline,
+                input : style.input
+            }
+            }}
+            value={formik.values.userName}
+            onChange = {formik.handleChange}
+        />
+        </Grid> 
+
+        <Grid item xs = {12}>
+        <TextField
+            id = "userEmail"
+            name = "userEmail"
+            label = "Email"
+            type = "text"
+            variant="outlined"
+            InputLabelProps = {{
+                className : style.label,                
+            }}
+            InputProps={{
                 classes: {
                     notchedOutline: style.notchedOutline,
                     input : style.input
                 }
-                }}
-                value={formik.values.userName}
-                onChange = {formik.handleChange}
-            />
-            </Grid> 
+            }}
+            value={formik.values.userEmail}
+            onChange = {formik.handleChange}
+            error={formik.touched.userEmail && Boolean(formik.errors.userEmail)}
+            helperText={formik.touched.userEmail && formik.errors.userEmail}
+        />
+        </Grid>
 
-            <Grid item xs = {12} justifyContent = "center" alignContent="center">
-            <TextField
-                id = "email"
-                name = "email"
-                label = "Email"
-                type = "text"
-                variant="outlined"
-                InputLabelProps = {{
-                className : style.label,                
-                }}
-                InputProps={{
-                    classes: {
+        <Grid item xs = {12}>
+        <TextField
+            id = "userPassword"
+            name = "userPassword"
+            label = "Password"
+            variant = "outlined"
+            type = "password"
+            value={formik.values.userPassword}
+            onChange={formik.handleChange}
+            InputProps = {{
+                classes:{
                     notchedOutline: style.notchedOutline,
-                    input : style.input
-                    }
-                }}
-                value={formik.values.userEmail}
-                onChange = {formik.handleChange}
-                error={formik.touched.userEmail && Boolean(formik.errors.userEmail)}
-                helperText={formik.touched.userEmail && formik.errors.userEmail}
-            />
-            </Grid>
+                    input:style.input
+                }
+            }}
+            InputLabelProps = {{
+                className: style.label
+            }}
+            error = {formik.touched.userPassword && Boolean(formik.errors.userPassword)}
+            helperText = {formik.touched.userPassword && formik.errors.userPassword}/>
+        </Grid>
 
-            <Grid item xs = {12} justifyContent = "center" alignContent="center">
-            <TextField
-                id = "password"
-                name = "password"
-                label = "password"
-                variant = "outlined"
-                type = "password"
-                value={formik.values.userPassword}
-                onChange={formik.handleChange}
-                InputProps = {{
-                    classes:{
-                        notchedOutline: style.notchedOutline,
-                        input:style.input
-                    }
-                }}
-                InputLabelProps = {{
-                    className: style.label
-                }}
-                error = {formik.touched.userPassword && Boolean(formik.errors.userPassword)}
-                helperText = {formik.touched.userPassword && formik.errors.userPassword}/>
-            </Grid>
+        <Grid item xs = {12}>
+        <TextField
+            id = "passwordConfirmation"
+            name = "passwordConfirmation"
+            label = "Confirm Password"
+            variant = "outlined"
+            type = "password"
+            value={formik.values.passwordConfirmation}
+            onChange={formik.handleChange}
+            InputProps = {{
+                classes:{
+                    notchedOutline: style.notchedOutline,
+                    input:style.input
+                }
+            }}
+            InputLabelProps = {{
+                className: style.label
+            }}
+            error = {formik.touched.passwordConfirmation && Boolean(formik.errors.passwordConfirmation)}
+            helperText = {formik.touched.passwordConfirmation && formik.errors.passwordConfirmation}></TextField>
+        </Grid>
 
-            <Grid item xs = {12} justifyContent = "center" alignContent="center">
-            <TextField
-                id = "passwordConfirmation"
-                name = "passwordConfirmation"
-                label = "Confirm Password"
-                variant = "outlined"
-                type = "password"
-                value={formik.values.passwordConfirmation}
-                onChange={formik.handleChange}
-                InputProps = {{
-                    classes:{
-                        notchedOutline: style.notchedOutline,
-                        input:style.input
-                    }
-                }}
-                InputLabelProps = {{
-                    className: style.label
-                }}
-                error = {formik.touched.passwordConfirmation && Boolean(formik.errors.passwordConfirmation)}
-                helperText = {formik.touched.passwordConfirmation && formik.errors.passwordConfirmation}></TextField>
-            </Grid>
+        <Grid item xs = {12}>
+        <TextField
+            id = "telephone"
+            name = "telephone"
+            label = "Telephone"
+            variant = "outlined"
+            type = "number"
+            value={formik.values.telephone}
+            onChange={formik.handleChange}
+            InputProps = {{
+                classes:{
+                    notchedOutline: style.notchedOutline,
+                    input:style.input
+                }
+            }}
+            InputLabelProps = {{
+                className: style.label
+            }}
+            error = {formik.touched.telephone && Boolean(formik.errors.telephone)}
+            helperText = {formik.touched.telephone && formik.errors.telephone}
+            ></TextField>
+        </Grid>
 
-            <Grid item xs = {12} justifyContent = "center" alignContent="center">
-            <TextField
-                id = "address"
-                name = "address"
-                label = "Wallet Address"
-                variant = "outlined"
-                type = "text"
-                value={formik.values.waddress}
-                onChange={formik.handleChange}
-                InputProps = {{
-                    classes:{
-                        notchedOutline: style.notchedOutline,
-                        input:style.input
-                    }
-                }}
-                InputLabelProps = {{
-                    className: style.label
-                }}
-                ></TextField>
-            </Grid>
+        <Grid item xs = {8}>
+        <TextField
+            fullWidth
+            select
+            id = "role"
+            name = "role"
+            label = "Select your Role"
+            variant = "outlined"
+            value={formik.values.role}
+            onChange={formik.handleChange}
+            InputProps = {{
+                classes:{
+                    notchedOutline: style.notchedOutline,
+                    input:style.input
+                }
+            }}
+            InputLabelProps = {{
+                className: style.label
+            }}
+            >
+            {ROLES.map((role , index)=>(
+                <MenuItem value={role} key = {index}>{role}</MenuItem>
+            ))}</TextField>
+        </Grid>
 
-            <Grid item xs = {12} justifyContent = "center" alignContent="center">
-            <TextField
-                fullWidth
-                select
-                id = "role"
-                name = "role"
-                label = "Select your Role"
-                variant = "outlined"
-                onChange={formik.handleChange}
-                InputProps = {{
-                    classes:{
-                        notchedOutline: style.notchedOutline,
-                        input:style.input
-                    }
-                }}
-                InputLabelProps = {{
-                    className: style.label
-                }}
-                >
-                {ROLES.map((role , index)=>(
-                    <MenuItem value={role} key = {index}>{role}</MenuItem>
-                ))}</TextField>
-            </Grid>
+        <Grid container justifyContent = "center" alignContent="center" >
+            <Button type = "submit" className = {style.button} size = "large">Sign Up</Button>
+        </Grid>
 
-            <Grid container xs = {12} justifyContent = "center" alignContent="center" >
-                <Button type = "submit" className = {style.button} size = "large">Sign Up</Button>
-                </Grid>
-
-                <Grid container xs = {12} justifyContent = "center" alignContent="center">
-                <Link href="#/login" variant="body2" style = {{
-                    paddingTop: "20px",
-                    color:"#EDF5E1",
-                    fontSize:"16px"
-                }} underline = "hover">            
-            </Link>
-                    </Grid>
-            </Grid>
-            </form>
-           </Paper>
-           </Container>
-           </div>
-        ) 
-    }
+        <Grid container justifyContent = "center" alignContent="center">
+        <Link href="#/login" variant="body2" style = {{
+                paddingTop: "20px",
+                color:"#EDF5E1",
+                fontSize:"16px"
+            }} underline = "hover">            
+        </Link>
+        </Grid>
+    </Grid>
+    </form>
+    </Paper>
+    </Container>
+    </div>
+    ) 
+}
 
 export default RegisterView;

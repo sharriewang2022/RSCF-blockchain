@@ -11,15 +11,6 @@ import { Provider } from 'react-redux';
 import {BlockProvider} from "./contexts/blockContext";
 import {AuthProvider} from "./contexts/authContext";
 import Compose from "./util/compose";
-import {
-  Admin,
-  CustomRoutes,
-  Resource,
-  localStorageStore,
-  useStore,
-  StoreContextProvider,
-} from 'react-admin';
-
 
 
 const root = ReactDOM.createRoot(

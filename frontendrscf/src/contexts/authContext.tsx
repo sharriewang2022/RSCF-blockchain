@@ -2,10 +2,9 @@ import React from 'react';
 import { createContext, useContext, ReactNode, useState, useEffect } from 'react'
 import { destroyCookie, setCookie, parseCookies } from 'nookies'
 import { useNavigate } from "react-router-dom"
-import { api } from '../api/authApiClient'
+import { authApi } from '../api/authApiClient'
 import { UserType } from '../util/variableTypes';
 import { addUser } from '../api/adminApi';
-
 
 interface AuthContextData {
   currentUser: UserType | undefined | null;
@@ -14,7 +13,6 @@ interface AuthContextData {
   login: (username:string, password:string, role:string) => Promise<void>;
   signUp: (credentials: UserType) => Promise<void>;
   logout: () => Promise<void>;
-  writeData : (userName:string, role:string, id:string, address:string) => Promise<void>;
   updatemail : (email:string) => void;
   updatePass : (pass:string) => void;
   updateRoleInBase : (role:string, id:string) => void;
@@ -29,7 +27,7 @@ interface SubscriptionProps {
 }
 
 type AuthProviderProps = {
-  children: ReactNode;
+  children: ReactNode | JSX.Element | JSX.Element[];
 } 
 
 interface SignInProps {
@@ -51,12 +49,11 @@ export function useAuth(){
 }
 
 export function signOut(){
-  console.log("ERORR LOGOUT");
+  console.log("ERORR signOut");  
   try{
-    destroyCookie(null, '@barber.token', { path: '/' })
-    useNavigate.call('/login');
+    destroyCookie(null, '@rscf.token', { path: '/' })
   }catch(err){
-    console.log("Error ao sair")
+    console.log("Error is from signOut")
   }
 }
 
@@ -65,67 +62,56 @@ export function AuthProvider({ children }: AuthProviderProps){
   const isAuthenticated = !!currentUser;
 
   useEffect(() => {
-    const { '@barber.token': token } = parseCookies();
+    const { '@rscf.token': token } = parseCookies();
 
     if(token){
-      api.get('/me').then(response => {
-        const { userName, userPassword, role, userEmail, uid, waddress} = response.data;
+      authApi.get('/user/getSomeUser/'+token).then(response => {
+        const { userName, userPassword, role, userEmail, uid, telephone} = response.data;
         setCurrentUser({    
           userName,
           userPassword,
           role,
           userEmail,
           userID: uid,
-          waddress
+          telephone
         })
-
       })
       .catch(()=> {
         signOut()
       })
-
     }
   }, [])
 
   async function login( username:string , password:string, userRole:string ){
   // async function login({ email, password }: SignInProps){
     try{
-      const response = await api.post("/user/login", {
+      const response = await authApi.post("/user/login", {
         username, password, userRole
       })
-
-      const {userName, userPassword, role, userEmail, uid, waddress, token} = response.data;
-
-      setCookie(undefined, '@barber.token', token, {
+      const {userName, userPassword, role, userEmail, uid, telephone, token} = response.data;
+      setCookie(undefined, '@rscf.token', userName, {
         maxAge: 60 * 60 * 24 * 30, // Expirar em 1 mês
         path: '/'
       })
-
       setCurrentUser({
         userName,
         userPassword,
         role,
         userEmail,
         userID: uid,
-        waddress
+        telephone
       })
-
-      api.defaults.headers.common['Authorization'] = `Bearer ${token}`
-      
-      useNavigate.call('/dashboard')
-
+      authApi.defaults.headers.common['Authorization'] = `Bearer ${token}`
     }catch(err){
-      console.log("ERRO AO ENTRAR", err)
+      console.log("Error to login system!", err)
     }
   }
-
-
-  async function signUp({ userName, userEmail, userPassword, role, userID: uid, waddress}: UserType){
+  //add new user
+  async function signUp({ userName, userEmail, userPassword, role, userID, telephone}: UserType){
     try{
       addUser({
-        userName, userEmail, userPassword, role, userID: uid, waddress
+        userName, userEmail, userPassword, role, userID, telephone
       })
-      useNavigate.call('/login')
     }catch(err){
       console.log(err);
     }
@@ -133,24 +119,11 @@ export function AuthProvider({ children }: AuthProviderProps){
 
   async function logout(){
     try{
-      destroyCookie(null, '@barber.token', { path: '/' })
-      useNavigate.call('/login')
+      destroyCookie(null, '@rscf.token', { path: '/' })
       setCurrentUser(undefined);
     }catch(err){
       console.log("logoutUser error", err)
     }
-}
-
-async function writeData(userName:string, role:string, id:string, address:string) {
-
-    // await database.ref("owners/" + address).set({
-    //     username:userName
-    // })
-    // return database.ref( "users/" + id).set({
-    //     username: userName,
-    //     role: role,
-    //     waddress: address
-    // })
 }
 
 function updateRoleInBase(role:string, id:string) {
@@ -188,7 +161,7 @@ function updatemail(emailStr: string) {
        // setCurrentUser((prev:UserType|undefined) => ({prev}));
         setCurrentUser({ userName:currentUser.userName, 
             userPassword : currentUser.userPassword,
-            waddress : currentUser.waddress,
+            telephone : currentUser.telephone,
             userID : currentUser.userID,
             role: currentUser.role,
             userEmail: emailStr});
@@ -198,7 +171,7 @@ function updatePass(pass:string) {
     if(currentUser !== undefined){
         setCurrentUser({ userName:currentUser.userName, 
             userPassword :  pass,
-            waddress : currentUser.waddress,
+            telephone : currentUser.telephone,
             userID : currentUser.userID,
             role: currentUser.role,
             userEmail: currentUser.userEmail});
@@ -215,13 +188,13 @@ async function addressToName(address:string){
     // }})
  
     try{
-        const response = await api.post("/addressToName", {
+        const response = await authApi.post("/addressToName", {
           address,
         })
   
-        const {userName, userPassword, role, userEmail, uid, waddress, token} = response.data;
+        const {userName, userPassword, role, userEmail, uid, telephone, token} = response.data;
   
-        setCookie(undefined, '@barber.token', token, {
+        setCookie(undefined, '@rscf.token', token, {
           maxAge: 60 * 60 * 24 * 30, // Expirar em 1 
           path: '/'
         })
@@ -232,10 +205,9 @@ async function addressToName(address:string){
           role,
           userEmail,
           userID: uid,
-          waddress
-        })
-  
-        api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+          telephone
+        })  
+        authApi.defaults.headers.common['Authorization'] = `Bearer ${token}`
     }catch(err){
         console.log("addressToName error", err) 
     }
@@ -243,21 +215,19 @@ async function addressToName(address:string){
 
 return(
     <AuthContext.Provider 
-        value={{ 
-            currentUser, 
-            isAuthenticated, 
-            login,
-            signUp,
-            logout, 
-            addressToName,  
-            writeData,
-            updatemail,
-            updatePass,
-            updateRoleInBase,
-            updateUserInBase,
-            updateAddressInBase,
-
-        }}>
+      value={{ 
+          currentUser, 
+          isAuthenticated, 
+          login,
+          signUp,
+          logout, 
+          addressToName,
+          updatemail,
+          updatePass,
+          updateRoleInBase,
+          updateUserInBase,
+          updateAddressInBase,
+      }}>
       {children}
     </AuthContext.Provider>
   )

@@ -25,7 +25,7 @@ interface TableParams {
 
 const columns: ColumnsType<DataType> = [
   {
-    title: 'Name',
+    title: 'User Name',
     dataIndex: 'name',
     sorter: true,
     render: (name) => `${name.first} ${name.last}`,
@@ -43,6 +43,14 @@ const columns: ColumnsType<DataType> = [
   {
     title: 'Email',
     dataIndex: 'email',
+  },
+  {
+    title: 'Telephone',
+    dataIndex: 'telephone',
+  },
+  {
+    title: 'Role',
+    dataIndex: 'role',
   },
 ];
 

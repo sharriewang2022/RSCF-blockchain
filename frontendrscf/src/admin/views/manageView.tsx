@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Nav ,Navbar , NavDropdown,Container} from "react-bootstrap";
+import {Nav, Navbar, NavDropdown, Container} from "react-bootstrap";
 import {useAuth} from '../../contexts/authContext';
 import {useNavigate} from "react-router-dom"; 
 import "../../css/navbar.css";
@@ -15,7 +15,7 @@ export function ManageView(props:any){
 
     const handlelogout = async (e : React.MouseEvent<HTMLElement>) => {
       await logout(); 
-      navigate('./') // go to login
+      navigate('/') // go to login
     }
       
     function handleOpen(){
@@ -51,10 +51,10 @@ export function ManageView(props:any){
           <Nav onSelect={() => setIcon(prev => !prev)}>
               <Nav.Link href="./#/register" >Add User</Nav.Link>
               <Nav.Link href="./#/product" >Permission</Nav.Link>
-              <Nav.Link onClick = {handleOpen} >About</Nav.Link>
+              {/* <Nav.Link onClick = {handleOpen} >About</Nav.Link> */}
               {/* drop menu */}
-              < NavDropdown title = "Profile">
-                <NavDropdown.Item href="./#/home/updateProfile">Update Profile</NavDropdown.Item>
+              < NavDropdown title = "other">
+                <NavDropdown.Item onClick = {handleOpen}>About</NavDropdown.Item>
                 <NavDropdown.Item onClick = {handlelogout} >Logout</NavDropdown.Item>
             </NavDropdown>
               </Nav>
@@ -65,6 +65,7 @@ export function ManageView(props:any){
             </Container>  
             
             <UserList></UserList> 
+            
             </div>            
           )
 }
