@@ -14,11 +14,11 @@ Before getting started, it is necessary to make sure all the prerequisites for d
 <br> (1)	Visual Studio Code	--1.84.0
 <br> (2) Node.js	--18.15.0
 <br> (3) React.js	--18.2.0  
-<br> (4) Typescript	--4.9.5  Window10	
+<br> (4) Typescript	--4.9.5  	
 <br> (5) Web3.js	--4.1.2
 <br> (6) Python --3.11
 <br> (7) Solidity	0.8.19
-<br> (8) Database  MySQL	--8.1.0
+<br> (8) Database MySQL	--8.1.0
 <br> (9) InterPlanetary File System (IPFS) 	
 <br> (10) Ganache	2.7.1
 <br> (11) Truffle	2.1.15
