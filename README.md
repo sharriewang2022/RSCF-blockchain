@@ -87,13 +87,13 @@ The Truffle project uses an MIT license for Smart Contract.
 ## 6. Documentation of Tools
 (1) Documentation to help with Solidity
 https://docs.soliditylang.org/en/v0.8.4/
-(2) Documentation to help with React
+<br> (2) Documentation to help with React
 https://reactjs.org/docs/getting-started.html
-(3) Documentation to help with Truffle
+<br> (3) Documentation to help with Truffle
 https://www.trufflesuite.com/docs/truffle/reference/configuration
-(4) Documentation to help with Ganache-cli
+<br> (4) Documentation to help with Ganache-cli
 https://www.trufflesuite.com/docs/ganache/overview
-(5) Documentation to help Creating diagrams
+<br> (5) Documentation to help Creating diagrams
 https://www.draw.io/
 
 
