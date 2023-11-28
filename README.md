@@ -13,7 +13,7 @@ This system uses smart contracts to track product information. Solidity is being
 Before getting started, it is necessary to make sure all the prerequisites for development environment configuration are met in the following table.
 <br> (1)	Visual Studio Code	--1.84.0
 <br> (2) Node.js	--18.15.0
-<br> (3) React.js	--18.2.0  
+<br> (3) React.js	--18.2.0
 <br> (4) Typescript	--4.9.5  	
 <br> (5) Web3.js	--4.1.2
 <br> (6) Python --3.11
