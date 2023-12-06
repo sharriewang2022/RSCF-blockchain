@@ -13,17 +13,17 @@ This system uses smart contracts to track product information. Solidity is being
 Before getting started, it is necessary to make sure all the prerequisites for development environment configuration are met in the following table.
 <br> (1)	Visual Studio Code	--1.84.0
 <br> (2) Node.js	--18.15.0
-<br> (3) DatabaseMySQL	--8.1.0
-<br> (4) Window10	
-<br> (5) React.js	--18.2.0
-<br> (6) Typescript	--4.9.5
-<br> (7) Web3.js	--4.1.2
-<br> (8) Python	3.11
-<br> (9) Solidity	0.8.19
+<br> (3) React.js	--18.2.0
+<br> (4) Typescript	--4.9.5  	
+<br> (5) Web3.js	--4.1.2
+<br> (6) Python --3.11
+<br> (7) Solidity	0.8.19
+<br> (8) Database MySQL	--8.1.0
+<br> (9) InterPlanetary File System (IPFS) 	
 <br> (10) Ganache	2.7.1
 <br> (11) Truffle	2.1.15
 <br> (12) Metamask	
-<br> (13) IPFS	
+<br> (13) Window10
 
 ## 4. Quick Start
 
@@ -87,13 +87,13 @@ The Truffle project uses an MIT license for Smart Contract.
 ## 6. Documentation of Tools
 (1) Documentation to help with Solidity
 https://docs.soliditylang.org/en/v0.8.4/
-(2) Documentation to help with React
+<br> (2) Documentation to help with React
 https://reactjs.org/docs/getting-started.html
-(3) Documentation to help with Truffle
+<br> (3) Documentation to help with Truffle
 https://www.trufflesuite.com/docs/truffle/reference/configuration
-(4) Documentation to help with Ganache-cli
+<br> (4) Documentation to help with Ganache-cli
 https://www.trufflesuite.com/docs/ganache/overview
-(5) Documentation to help Creating diagrams
+<br> (5) Documentation to help Creating diagrams
 https://www.draw.io/
 
 
