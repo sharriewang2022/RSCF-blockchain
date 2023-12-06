@@ -23,4 +23,4 @@ def getSomeMenu(userId):
     print("gain {} menu info == >> {}".format(userId, data))
     if data:
         return jsonify({"code":200, "list": data, "msg": "success"})
-    return jsonify({"code": "1004", "msg": "no user"})
+    return jsonify({"code": "1004", "msg": "no menu"})

@@ -2,13 +2,24 @@ from flask import Flask, jsonify, request, Blueprint
 from util.mySqlDB import mySqlDB
 from util.redisUtil import redisUtil
 from util.md5Util import md5Encrypt
-
 from datetime import datetime
 import uuid, re, time
 
 UserBP = Blueprint("UserBP", __name__)
 app = Flask(__name__)
 app.config["JSON_AS_ASCII"] = False
+
+# roleMap = dict(one="Sachin Tendulkar", two="Dravid")
+
+roleMap = {    
+    "Administrator":"3001",
+    "Supplier": "3002",
+    "Manufacturer": "3003", 
+    "Distributer": "3004",
+    "Retailer": "3005",
+    "Customer": "3006"
+}
+
 
 @UserBP.route("/user/allUsers", methods=["GET"])
 def getAllUsers():
@@ -36,9 +47,10 @@ def userRegister():
     userId = uuid.uuid1()
     userName = request.json.get("userName", "").strip()  
     userPassword = request.json.get("userPassword", "").strip()
-    telephone = request.json.get("telephone", "").strip()
+    telephone = request.json.get("telephone", "1111")
     email = request.json.get("userEmail", "").strip()
-    roleID = request.json.get("role", "").strip()
+    roleName = request.json.get("role", "").strip()
+    roleID = roleMap[roleName]
     createDate = datetime.today().date()
 
     if userName and userPassword and email: # if "", the false
