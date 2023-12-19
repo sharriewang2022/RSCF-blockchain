@@ -19,6 +19,7 @@ def getAllOrders():
     return jsonify({"code": 200, "data": data, "msg": "success"})
 
 
+
 @OrderBP.route("/order/getSomeOrder/<string:orderId>", methods=["GET"])
 def getSomeOrder(orderId):
     """some order"""
@@ -30,41 +31,66 @@ def getSomeOrder(orderId):
     return jsonify({"code": "7007", "msg": "no order"})
 
 
+
 @OrderBP.route("/order/addOrder", methods=['POST'])
 def addOrder():
-    """add order"""
-    orderId = uuid.uuid1()
-   
+    """add order head"""
+    orderId = uuid.uuid1()   
     orderName = request.json.get("orderName", "").strip()  
-    orderNumber = request.json.get("orderNumber", "").strip()
+    orderAmount = request.json.get("orderAmount", "").strip()
     OrderType = request.json.get("orderType", "").strip()
     OrderStatus = request.json.get("orderStatus", "").strip()
     ProductID = request.json.get("productID", "").strip() 
-    UserID = request.json.get("userID", "").strip()
-    Quantity = request.json.get("quantity", "").strip()
+    UserName = request.json.get("UserName", "").strip()
     UnitPrice = request.json.get("unitPrice", "").strip()
     description = request.json.get("description", "").strip()
     blockchainHash = request.json.get("blockchainHash", "").strip()
-    createDate = datetime.now().date
+    createDate = datetime.today().date()
 
     if orderName : # if "", the false
-        queryOrderNameSql = "SELECT orderName FROM orderProduct WHERE ordername = '{}'".format(orderName)
+        queryOrderNameSql = "SELECT orderName FROM orderHhead WHERE ordername = '{}'".format(orderName)
         isOrderExist = mySqlDB.selectMysqldb(queryOrderNameSql)
         print("Querey order result ==>> {}".format(isOrderExist))
   
         if isOrderExist:
-            return jsonify({"code": 7001, "msg": "The order name already exists！"})
-        else:           
-            addOrderSql = "INSERT INTO orderProduct(orderId, orderName, OrderNumber, OrderType, OrderStatus, ProductID, "\
-                "UserID, Quantity, UnitPrice, BlockchainHash, Description, CreateDate) "\
-                "VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}, '{}', '{}')".format(orderId, orderName, orderNumber, OrderType,
-                    OrderStatus, ProductID, UserID, Quantity, UnitPrice, blockchainHash, description, createDate)
-            mySqlDB.executeMysqldb(addOrderSql)
+            return jsonify({"code": 7002, "msg": "The order name already exists！"})
+        else: 
+            addOrderSql = "INSERT INTO orderHead(OrderID, OrderName, OrderAmount, OrderType,"\
+                "OrderStatus, UserName, UnitPrice, BlockchainHash, Description, CreateDate) "\
+                "VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{})".format(
+                    orderId, orderName, orderAmount, OrderType, OrderStatus,
+                    ProductID, UserName, UnitPrice, blockchainHash, description, createDate)
+            mySqlDB.executeMysqldb(addOrderSql)            
             print("Add order SQL ==>> {}".format(addOrderSql))
             return jsonify({"code": 200, "msg": "The order is added successfully！"})
     else:
         return jsonify({"code": 7001, "msg": "order name could not be null"})
+    
+    
 
+@OrderBP.route("/order/addOrderProductItem", methods=['POST'])
+def addOrderProductItem():
+    """add order product item"""
+    orderId = uuid.uuid1()   
+    ProductID = request.json.get("productID", "").strip() 
+    UserName = request.json.get("UserName", "").strip()
+    ProductQuantity = request.json.get("quantity", "").strip()
+    ProductPrice = request.json.get("ProductPrice", "").strip()
+    description = request.json.get("description", "").strip()
+    blockchainHash = request.json.get("blockchainHash", "").strip()
+    createDate = datetime.today().date()
+
+    if ProductID : # if "", the false  
+        addOrderProductItemSql = "INSERT INTO orderProduct(orderId,  ProductID, "\
+            "UserName, ProductNumber, ProductPrice, BlockchainHash, Description, CreateDate) "\
+            "VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}, '{}', '{}')".format(
+                orderId, ProductID, UserName, ProductQuantity, ProductPrice, blockchainHash, description, createDate)
+        mySqlDB.executeMysqldb(addOrderProductItemSql)
+        print("Add order SQL ==>> {}".format(addOrderProductItemSql))
+        return jsonify({"code": 200, "msg": "The order product details are added successfully！"})
+    else:
+        return jsonify({"code": 7001, "msg": "productID could not be null"})
+    
 
 
 @OrderBP.route("/order/updateOrder/<int:id>", methods=['PUT'])

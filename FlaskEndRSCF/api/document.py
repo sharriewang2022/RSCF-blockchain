@@ -26,8 +26,8 @@ logger = logging.getLogger('Supply chain document')
 #     app.run(debug=True,host="0.0.0.0",use_reloader=False)
 
 
-@DocumentBP.route('/file/upload/<string:userName>', methods=['POST'])
-def fileUpload(userName):
+@DocumentBP.route('/file/upload/<string:fileName>', methods=['POST'])
+def fileUpload(fileName):
     target=os.path.join(UPLOAD_FOLDER,'test')
     if not os.path.isdir(target):
         os.mkdir(target)
@@ -38,9 +38,8 @@ def fileUpload(userName):
     file.save(destination)
     session['uploadFilePath']=destination
     fileIPFSHash = addEncryptedFiletoIPFS(filename, target)
-    # userName = request.data['userName'] 
     descrip = " uploade file to ipfs"
-    response = saveFiletoDataBase(filename, target, fileIPFSHash, userName, descrip)
+    response = saveFiletoDataBase(filename, target, fileIPFSHash, fileName, descrip)
     return response
 
 def saveFiletoDataBase(fileName, filePath, fileIPFSHash, userName, descrip):
