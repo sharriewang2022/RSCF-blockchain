@@ -1,14 +1,14 @@
 import request from "../util/request";
-import type {TagType, OrderPurchaseType, ProductType, ActitivyProType} from "../util/variableTypes";
+import type {OrderMarkType, OrderPurchaseType, ProductType, ActitivyProType} from "../util/variableTypes";
 
 export const getOrderList = () => request.get("/order/allOrders")
 
 export function getOrderPurchase(params:OrderPurchaseType){
-  return request.get("/api/yp/orderPurchase",{params})
+  return request.get("/order/orderPurchase",{params})
 }
 
-export function getTag(params:TagType){
-  return request.get("/api/yp/tag",{params})
+export function getOrderMark(params:OrderMarkType){
+  return request.get("/order/getOrderMark",{params})
 }
 interface Ptype {
   orderPurchaseId?:string|number
@@ -16,7 +16,7 @@ interface Ptype {
 }
  
 export function getOrderPurchaseProducts(params:Ptype){
-  return request.get("/api/yp/orderPurchaseProduct",{params})
+  return request.get("/order/getOrderPurchaseProducts",{params})
 }
 interface Stype {
   id?:string|number
@@ -24,8 +24,8 @@ interface Stype {
   current?:number
 }
  
-export function getShops(params:Stype){
-  return request.get("/api/yp/shop",{params})
+export function getRetailers(params:Stype){
+  return request.get("/order/getRetailers",{params})
 }
  
 export function getProduts(params:ProductType){
@@ -33,13 +33,13 @@ export function getProduts(params:ProductType){
 }
 
 export function addOrderChainProduct(data:OrderPurchaseType){
-  return request.post("/api/yp/orderPurchaseProduct",data)
+  return request.post("/order/addOrderProductItem",data)
 }
  
 export function addOrderAction(data:OrderPurchaseType){
-  return request.post("/api/yp/orderPurchase",data)
+  return request.post("/order/addOrder",data)
 }
  
 export function UpdateOrderAction(data:OrderPurchaseType){
-  return request.put("/api/yp/orderPurchase",data)
+  return request.put("/order/updateOrder",data)
 }

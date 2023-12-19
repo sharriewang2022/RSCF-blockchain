@@ -11,8 +11,7 @@ interface Iprops{
 }
 // time picker
 const { RangePicker } = DatePicker;
-function SeachParams(props:Iprops) {
- 
+function SeachParams(props:Iprops) { 
   const params = props.params;
   const setParams = props.setParams;
   return ( <div className='searchParams'>
@@ -23,7 +22,7 @@ function SeachParams(props:Iprops) {
     </Col>
     <Col span={7}>
       <label>Order Name: </label>
-      <Input value={params.name} onChange={e=>setParams({...params,name:e.target.value})}/>
+      <Input value={params.orderName} onChange={e=>setParams({...params,name:e.target.value})}/>
     </Col>
     <Col span={10}>
       <label>Order Start Time:</label>
@@ -42,7 +41,7 @@ function SeachParams(props:Iprops) {
     </Col>
     <Col span={7}>
       <label>Order Shops: </label>
-      <Input  value={params.shop} onChange={e=>setParams({...params,shop:e.target.value})}/>
+      <Input  value={params.retailer} onChange={e=>setParams({...params,retailer:e.target.value})}/>
     </Col>
     <Col span={10}>
       <label>Order End time: </label>

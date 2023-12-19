@@ -1,10 +1,10 @@
  
-import {getShops} from '../../api/orderApi';
+import {getRetailers} from '../../api/orderApi';
 import {Button,Card,Row,Col,Input,Table} from 'antd';
 import { useEffect, useState } from 'react';
 import type { ColumnsType } from 'antd/es/table';
  
-interface ITtype extends Pick<shopType, "id"> {};
+interface ITtype extends Pick<retailerType, "id"> {};
  
 function uniArray<T extends ITtype>(list:T[]){
  
@@ -16,12 +16,12 @@ function uniArray<T extends ITtype>(list:T[]){
 }
 
 interface Iprops{
-  setShowShop:Function
-  setShopList:Function
-  shopList:shopType[]
+  setShowRetailer:Function
+  setRetailerList:Function
+  retailerList: retailerType[]
 }
 
-interface shopType{
+interface retailerType{
   id?:number
   name?:string
   type?:string
@@ -29,27 +29,27 @@ interface shopType{
 }
 
  
-const columns:ColumnsType<shopType> =[
-  { title: 'Shop ID',
+const columns:ColumnsType<retailerType> =[
+  { title: 'Retailer ID',
   dataIndex: 'id'}, 
-  { title: 'Shop Name',
+  { title: 'Retailer Name',
   dataIndex: 'name'},
   { title: 'Address',
   dataIndex: 'address'},
   { title: 'Type',
   dataIndex: 'type'} 
 ]
-function SelectShop(props:Iprops) {
+function SelectRetailer(props:Iprops) {
  
-  const [params,setParams] = useState<shopType>({}) 
+  const [params,setParams] = useState<retailerType>({}) 
   const [pagination,setPagination] =useState({current:1,total:1,pageSize:5}) 
-  const [originData,setOriginData] = useState<shopType[]>([])
-  const [targetData,setTargetData] = useState<shopType[]>([])
-  const [selOrignRows,setSelOriginRows] = useState<shopType[]>([])
-  const [selTargetRows,setSelTargetRows] =useState<shopType[]>([])
+  const [originData,setOriginData] = useState<retailerType[]>([])
+  const [targetData,setTargetData] = useState<retailerType[]>([])
+  const [selOrignRows,setSelOriginRows] = useState<retailerType[]>([])
+  const [selTargetRows,setSelTargetRows] =useState<retailerType[]>([])
 
-  const getShop = ()=>{
-    getShops({...params,size:pagination.pageSize,current:pagination.current})
+  const getRetailer = ()=>{
+    getRetailers({...params,size:pagination.pageSize,current:pagination.current})
     .then(res=>{
       setOriginData(res.data.data)
       var pa = res.data.pagination;
@@ -58,15 +58,15 @@ function SelectShop(props:Iprops) {
   }
 
   useEffect(()=>{
-    getShop()
+    getRetailer()
   },[pagination.current])
   useEffect(()=>{
-    setTargetData(props.shopList)
+    setTargetData(props.retailerList)
   },[])
 
   function toRight(){
     const list = selOrignRows.concat(targetData)
-    setTargetData(uniArray<shopType>(list))
+    setTargetData(uniArray<retailerType>(list))
     var leftList = originData.filter(item=>{
       var flag = selOrignRows.some(target=>target.id===item.id)
       return !flag;
@@ -76,7 +76,7 @@ function SelectShop(props:Iprops) {
 
   function toLeft(){
     const list = selTargetRows.concat(originData)
-    setOriginData(uniArray<shopType>(list))
+    setOriginData(uniArray<retailerType>(list))
     var rightList = targetData.filter(item=>{    
       var flag = selTargetRows.some(target=>target.id===item.id)      
       return !flag;
@@ -84,18 +84,18 @@ function SelectShop(props:Iprops) {
     setTargetData(rightList)
   }
 
-  return ( <div className="SelectShop">
+  return ( <div className="SelectRetailer">
     <div className="content">
       <div className='origin'>
-        <Card type='inner' title="Choose Shop">
+        <Card type='inner' title="Choose Retailer">
           <div className='form'>
             <Row>
               <Col span={14}>
-                <label>Shop Name: </label>
+                <label>Retailer Name: </label>
                 <Input value={params.name} onChange={(e)=>setParams({...params,name:e.target.value})}/>
               </Col>
               <Col span={10}>
-                <label>Shop Style: </label>
+                <label>Retailer Style: </label>
                 <Input value={params.type} onChange={(e)=>setParams({...params,type:e.target.value})}/>
               </Col>
             </Row>
@@ -105,7 +105,7 @@ function SelectShop(props:Iprops) {
                 <Input value={params.address} onChange={(e)=>setParams({...params,address:e.target.value})}/>
               </Col>
               <Col span={10}>
-                <Button style={{marginLeft:65}} onClick={()=>getShop()}>搜索</Button>
+                <Button style={{marginLeft:65}} onClick={()=>getRetailer()}>搜索</Button>
               </Col>
             </Row>
             <Table 
@@ -131,7 +131,7 @@ function SelectShop(props:Iprops) {
           <Button onClick={()=>toLeft()}>&lt;&lt;Cancel</Button>
       </div>
       <div className='target'>
-        <Card type='inner' title="Selected Shop:">
+        <Card type='inner' title="Selected Retailer:">
         <Table 
             rowKey="id"
              rowSelection={{
@@ -148,14 +148,14 @@ function SelectShop(props:Iprops) {
       </div>
     </div>
     <div className='footer'>
-      <Button onClick={()=>props.setShowShop(false)}>Cancel</Button>
+      <Button onClick={()=>props.setShowRetailer(false)}>Cancel</Button>
  
       <Button type='primary' onClick={()=>{  
-        props.setShopList(targetData);
-        props.setShowShop(false)
+        props.setRetailerList(targetData);
+        props.setShowRetailer(false)
       }}>Confirm</Button>
     </div>
   </div> );
 }
 
-export default SelectShop;
+export default SelectRetailer;

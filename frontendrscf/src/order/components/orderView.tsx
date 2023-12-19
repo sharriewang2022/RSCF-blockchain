@@ -14,7 +14,7 @@ const baseOrderInfo =
   "endTime": dayjs().format("YYYY-MM-DD HH:mm:ss"),
   "orderLogan": 'Order Action',
   "showHome": "1",
-  "homePic": `url(${homePic})`,
+  "homePic": {homePic},
   "banner": `url(${banner})`,
   "showType": 1,
   "target": 1,

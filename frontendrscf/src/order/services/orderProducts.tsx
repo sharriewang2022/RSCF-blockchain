@@ -16,7 +16,7 @@ function OrderProducts(props:Iprops) {
   const [showSelectProduct,setShowSelectProduct] = useState(false) 
   //order product
   const [actionProductList,setActionProductList] =useState<any>([]) 
-  //product list
+  //select product list
   const [selProductList,setSelProductList] =useState<any>([])
  
   // activity products list
@@ -84,11 +84,11 @@ const columns = [
     setSelProductList(list)
   },[selProductList])
  
-  async function chooseFinish (){
+  async function chooseDone (){
     // add order actitivy to server and then get activityId
     const activity =  await addOrderAction(props.orderActionInfo)
-    var orderPurchaseId = activity.data.data.insertId; 
-    // order products with id
+    var orderPurchaseId = activity.data.data.OrderId; 
+    // add selected  products of order with id
     var list = actionProductList.map((item:any)=>addOrderChainProduct({...item,orderPurchaseId})) 
     // several promise
     const gplist = await Promise.all(list)
@@ -103,18 +103,18 @@ const columns = [
     }
   }
   
-  return ( <div className="SelectProducts">
+  return ( <div className="SelectProducts" >
     <p style={{textAlign:'center'}}>
-      <Button type='primary' onClick={()=>setShowSelectProduct(true)}>Choose Product:</Button>
+      <Button style={{backgroundColor:"#87CEFA"}} type='primary' onClick={()=>setShowSelectProduct(true)}>Choose Product</Button>
     </p>
    <Table rowKey="ProductID" pagination={false} dataSource={actionProductList} columns={columns}/>
-   {showSelectProduct&&<SelectProduct 
+   {showSelectProduct && <SelectProduct 
       selectProductList={selProductList} 
       setShowSelectProduct={setShowSelectProduct} 
       setSelectProductList={setSelProductList}></SelectProduct>} 
    <p>
-     <Button onClick={()=>props.setCurrent(0)}>Edit Product</Button>  
-     <Button onClick={()=>chooseFinish()}>Done</Button>
+     <Button style={{backgroundColor:"#87CEFA"}} onClick={()=>props.setCurrent(0)}>Edit Product</Button>  
+     <Button style={{backgroundColor:"#87CEFA"}} onClick={()=>chooseDone()}>Done</Button>
    </p>
   </div> );
 }

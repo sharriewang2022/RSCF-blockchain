@@ -1,21 +1,21 @@
 import  {Table} from  'antd'
 import { useState,useEffect } from 'react'
-import  {getTag} from '../../api/orderApi';
+import  {getOrderMark} from '../../api/orderApi';
 import {Modal} from 'antd'
 import type { ColumnsType } from 'antd/es/table';
-import type { TagType } from "../../util/variableTypes";
+import type { OrderMarkType } from "../../util/variableTypes";
  
 interface Iprops{
-  setShowTag:Function
-  tagType:number
-  setTag:Function
+  setShowOrderMark:Function
+  orderMarkType:number
+  setOrderMark:Function
 }
  
-const columns:ColumnsType<TagType> =  [
+const columns:ColumnsType<OrderMarkType> =  [
   { title: 'Name',
   dataIndex: 'name'},
   { title: 'Picture',
-  dataIndex: 'pic',
+  dataIndex: 'picture',
   render:(img:string)=><img src={img} width='32' alt=""/>
  },
  {
@@ -24,35 +24,35 @@ const columns:ColumnsType<TagType> =  [
   render:(type:number)=><span>{Number(type)===1?'Order':'Action'}</span>
  }
 ]
-function SelectTag(props:Iprops) {
-  const [selOrigin,setSelOrigin] = useState<TagType[]>([])
-  const [tagList,setTagList] = useState<TagType[]>([])
+function SelectOrderMark(props:Iprops) {
+  const [selOrigin,setSelOrigin] = useState<OrderMarkType[]>([])
+  const [orderMarkList,setOrderMarkList] = useState<OrderMarkType[]>([])
   const [pagination,setPagination] = useState({current:1,pageSize:5,total:1})
 
   const handleOk = () => {
-    props.setTag(selOrigin[0])
-    props.setShowTag(false)
+    props.setOrderMark(selOrigin[0])
+    props.setShowOrderMark(false)
   };
  
   const handleCancel = () => {
-    props.setShowTag(false)   
+    props.setShowOrderMark(false)   
   };
  
-  const getTags = ()=>{
-    getTag({type:props.tagType,current:pagination.current,size:pagination.pageSize})
+  const getOrderMarks = ()=>{
+    getOrderMark({type:props.orderMarkType,current:pagination.current,size:pagination.pageSize})
     .then(res=>{
-      setTagList(res.data.data)
+      setOrderMarkList(res.data.data)
       var pa = res.data.pagination;
       setPagination({current:Number(pa.current),pageSize:pa.size,total:pa.total})
     })
   }
  
   useEffect(()=>{
-    getTags()
-  },[pagination.current,props.tagType])
+    getOrderMarks()
+  },[pagination.current,props.orderMarkType])
 
   //modelDialog
-  return ( <Modal title="Choose tag" open={true} onOk={handleOk} onCancel={handleCancel}>
+  return ( <Modal title="Choose orderMark" open={true} onOk={handleOk} onCancel={handleCancel}>
   <Table 
   rowSelection={{
     type: 'radio',
@@ -67,8 +67,8 @@ function SelectTag(props:Iprops) {
     setPagination({...pagination,current:Number(pa.current)})
   }}
   pagination={pagination} 
-  columns={columns} dataSource={tagList} />
+  columns={columns} dataSource={orderMarkList} />
 </Modal> );
 }
 
-export default SelectTag;
+export default SelectOrderMark;

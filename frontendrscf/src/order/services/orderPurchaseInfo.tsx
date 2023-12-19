@@ -33,7 +33,7 @@ function OrderPurchaseInfo(props:Iprops) {
       </p>
       <p>
         <span> Order Time: </span>
-        <span>{dayjs(orderActionInfo.startTime).format(DATETIME_FORMAT)} 到 {dayjs(orderActionInfo.endTime).format(DATETIME_FORMAT)}</span>
+        <span>{dayjs(orderActionInfo.startTime).format(DATETIME_FORMAT)} to {dayjs(orderActionInfo.endTime).format(DATETIME_FORMAT)}</span>
       </p>
       <p>
         <span> Order Specific: </span>

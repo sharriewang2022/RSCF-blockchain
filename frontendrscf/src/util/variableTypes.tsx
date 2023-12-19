@@ -49,36 +49,31 @@ export type ActitivyProType = ProductType&{
     order?:number
 }
 
-export interface TagType{
+export interface OrderMarkType{
     id?:number|string
     name?:string
-    pic?:string
+    picture?:string
     type?:number
     current?:number
     size?:number
 }
 export interface OrderPurchaseType {
     id?:number|string
-    name?:string
-    startTime?:string
-    endTime?:string
-    state?:number|string
-    current?:number
-    order?:string
+    userName?:string
+    orderName?:string
+    orderStartTime?:string
+    orderEndTime?:string
     products?:string
-    shop?:string
-    orderLogan?:string
-    orderIntroduction?:string
-    preTime?:string
+    retailer?:string
+    orderDescription?:string
+    orderPreTime?:string
     showHome?:string
-    tag?:string|number
-    target?:number
+    orderMark?:string|number
     limitBuy?:number
     deliverWay?:number
     pickTime?:string
-    homePic?:string
-    banner?:string
-    showType?:number
+    homePic?:any
+    orderType?:number
 }
 
 export interface UserType {
