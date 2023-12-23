@@ -164,8 +164,8 @@ function SelectProduct(props:Iprops) {
       </div>
     </div>
     <div className='footer'>
-      <Button onClick={()=>props.setShowSelectProduct(false)}>Cancel</Button>
-      <Button type='primary' onClick={()=>{
+      <Button style={{backgroundColor:"#87CEFA"}} onClick={()=>props.setShowSelectProduct(false)}>Cancel</Button>
+      <Button style={{backgroundColor:"#87CEFA"}} onClick={()=>{
         props.setSelectProductList(targetData);
         props.setShowSelectProduct(true)
       }}>Confirm</Button>

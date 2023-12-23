@@ -15,23 +15,23 @@ const columns: ColumnsType<OrderPurchaseType> = [
     dataIndex: "id",
   },
   {
-    title: "Order Activity Name",
-    dataIndex: "name",
+    title: "Order Name",
+    dataIndex: "orderName",
   },
   {
     title: "Order start time",
-    dataIndex: "startTime",
+    dataIndex: "orderStartTime",
     // dayjs(time) change string to date
     render: (time: string) => dayjs(time).format(DATETIME_FORMAT),
   },
   {
     title: "Order end time",
-    dataIndex: "endTime",
+    dataIndex: "orderEndTime",
     render: (time: string) => dayjs(time).format(DATETIME_FORMAT),
   },
   {
     title: "Order state",
-    dataIndex: "state",
+    dataIndex: "orderState",
     // state valuse： 0 1 2 3  
     render: (state: number) => ORDERPURCHASE_STATE[state],
   },
@@ -44,18 +44,18 @@ const columns: ColumnsType<OrderPurchaseType> = [
 ];
 const baseParams = {
   order: "asc",
-  state: "",
+  orderState: "",
   id: "",
-  name: "",
+  orderName: "",
   products: "",
-  shop: "",
-  startTime: "",
-  endTime: "",
+  retailer: "",
+  orderStartTime: "",
+  orderEndTime: "",
 };
 
 function OrderPurchase() {
  
-  const [pagination, setpagination] = useState({ total: 1, current: 1 });
+  const [pagination, setpagination] = useState({ total: 1, currentPage: 1 });
   // default parameters
   const [params, setParams] = useState<OrderPurchaseType>(baseParams);
   const [orderPurchaseList, setOrderPurchaseList] = useState<OrderPurchaseType[]>([]);
@@ -68,21 +68,20 @@ function OrderPurchase() {
 
   //get order info
   function getOrderChain() {
-    getOrderPurchase({ ...params, current: pagination.current }).then((res) => {      
+    getOrderPurchase({ ...params, currentPage: pagination.currentPage }).then((res) => {      
       setOrderPurchaseList(res.data.data);
       var p = res.data.pagination;
-      setpagination({ current: Number(p.current), total: p.total });
+      setpagination({ currentPage: Number(p.currentPage), total: p.total });
       console.log(res.data.data);
     });
   }
 
   useEffect(() => {
     getOrderChain();
-  }, [pagination.current]);
+  }, [pagination.currentPage]);
 
   //listen
   useEffect(() => {
-   
     // if params changed and  == baseParams, then send request
     if (params === baseParams) {
       // params is new and get order bill lists
@@ -112,7 +111,7 @@ function OrderPurchase() {
         <Table
           size="small"
           onChange={(pa: any) => {
-            setpagination({ ...pagination, current: pa.current });
+            setpagination({ ...pagination, currentPage: pa.currentPage });
           }}
           pagination={pagination}
           rowKey="id"

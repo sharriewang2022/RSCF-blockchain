@@ -9,22 +9,20 @@ import banner from "../../images/banner.jpg";
  
 const baseOrderInfo = 
 {   
-  "name": "Order Activity",
-  "startTime": dayjs().format("YYYY-MM-DD HH:mm:ss"),
-  "endTime": dayjs().format("YYYY-MM-DD HH:mm:ss"),
-  "orderLogan": 'Order Action',
+  "orderName": "Order Activity",
+  "orderStartTime": dayjs().format("YYYY-MM-DD HH:mm:ss"),
+  "orderEndTime": dayjs().format("YYYY-MM-DD HH:mm:ss"),
   "showHome": "1",
   "homePic": {homePic},
-  "banner": `url(${banner})`,
   "showType": 1,
   "target": 1,
   "limitBuy": 999,
-  "shop": '829,824',
+  "retailer": '99',
   "deliverWay": 1,
   "pickTime": dayjs(new Date(Date.now()+1000*60*60*24)+"").format("YYYY-MM-DD HH:mm:ss"),
   "products": "586,587,588",
-  "preTime":  dayjs(new Date(Date.now()-1000*60*60*24)+"").format("YYYY-MM-DD HH:mm:ss"),
-  "tag": 1,
+  "orderPreTime":  dayjs(new Date(Date.now()-1000*60*60*24)+"").format("YYYY-MM-DD HH:mm:ss"),
+  "orderMark": 1,
   "state": 1
 }
 

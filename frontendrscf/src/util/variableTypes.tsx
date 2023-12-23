@@ -63,6 +63,7 @@ export interface OrderPurchaseType {
     orderName?:string
     orderStartTime?:string
     orderEndTime?:string
+    orderStatus?:string
     products?:string
     retailer?:string
     orderDescription?:string
@@ -74,6 +75,7 @@ export interface OrderPurchaseType {
     pickTime?:string
     homePic?:any
     orderType?:number
+    currentPage?:number
 }
 
 export interface UserType {

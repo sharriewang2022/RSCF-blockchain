@@ -20,6 +20,7 @@ interface retailerType{
   type?:string
   address?:string
 }
+
 function CreateOrderActionInfo(props: Iprops) {
 
   const [retailerList,setRetailerList] = useState<retailerType[]>([])
@@ -149,25 +150,7 @@ function CreateOrderActionInfo(props: Iprops) {
         {/* showOrderMark is true and send setShowOrderMark() */}
         {showOrderMark && <SelectOrderMark setShowOrderMark={setShowOrderMark} orderMarkType={orderMarkType} setOrderMark={setOrderMark}/>}      
       </Card>
-      <Card type="inner" title="Order Rule" >
-      <p>
-          <span className="label">Time: </span>
-          <span>
-            <DatePicker
-              onChange={(value, str) => {
-                setOrderActionInfo({
-                  ...orderActionInfo,
-                  preTime: str,
-                 
-                });
-              }}
-              format={DATE_FORMAT}
-              value={orderActionInfo.orderPreTime ? dayjs(orderActionInfo.orderPreTime ) : null                
-               }
-            />
-          </span>
-        </p>    
-       
+      <Card type="inner" title="Order Rule" >    
         <p>
           <span className="label">Order Amount: </span>
           <span>            
@@ -214,7 +197,7 @@ function CreateOrderActionInfo(props: Iprops) {
                 });
               }}
               format={DATE_FORMAT}
-              value={  orderActionInfo.pickTime ? dayjs(orderActionInfo.pickTime ) : null                
+              value={ orderActionInfo.orderPreTime ? dayjs(orderActionInfo.orderPreTime ) : null                
                }
             />
           </span>
