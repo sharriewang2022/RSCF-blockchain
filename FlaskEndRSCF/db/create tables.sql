@@ -81,7 +81,7 @@ CREATE TABLE Category(
   PRIMARY KEY (ID) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
- 
+--drop table OrderHead;
 CREATE TABLE OrderHead(
   ID Int(30) NOT NULL AUTO_INCREMENT,
   OrderID Varchar(50) NOT NULL,
@@ -94,6 +94,7 @@ CREATE TABLE OrderHead(
   DeliverWay Varchar(50) DEFAULT NULL,
   orderPreTime date DEFAULT NULL,
   pickTime date DEFAULT NULL,
+  products Varchar(2000) NULL,
   BlockchainHash Varchar(2000) NULL,
   Description Varchar(50) NOT NULL,   
   CreateDate date DEFAULT NULL,
@@ -101,12 +102,15 @@ CREATE TABLE OrderHead(
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+--drop table OrderProduct
 CREATE TABLE OrderProduct(
   ID Int(30) NOT NULL AUTO_INCREMENT,
   OrderID Varchar(50) NOT NULL,
   ProductID Varchar(50) NOT NULL,
+  ProductName Varchar(200) NOT NULL,
   UserName Varchar(50) DEFAULT NULL,
-  ProductNumber Int(30),
+  ProductNumber Numeric(30),
+  ProductItem Varchar(50) DEFAULT NULL,
   ProductPrice Numeric(30,2),
   BlockchainHash Varchar(2000) NULL,
   Description Varchar(50) NOT NULL,   
