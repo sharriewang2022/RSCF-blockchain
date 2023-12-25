@@ -37,11 +37,11 @@ def addOrder():
     """add order head"""
     orderId = uuid.uuid1()   
     orderName = request.json.get("orderName", "").strip()  
-    orderAmount = request.json.get("orderAmount", "").strip()
+    orderAmount = request.json.get("orderAmount", "0")
     OrderType = request.json.get("orderType", "").strip()
     OrderStatus = request.json.get("orderStatus", "").strip()
     UserName = request.json.get("UserName", "").strip()
-    UnitPrice = request.json.get("unitPrice", "").strip()
+    UnitPrice = request.json.get("unitPrice", "0")
     description = request.json.get("orderDescription", "").strip()
     blockchainHash = request.json.get("blockchainHash", "").strip()
     createDate = datetime.today().date()
@@ -56,7 +56,7 @@ def addOrder():
         else: 
             addOrderSql = "INSERT INTO orderHead(OrderID, OrderName, OrderAmount, OrderType,"\
                 "OrderStatus, UserName, UnitPrice, BlockchainHash, Description, CreateDate) "\
-                "VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{})".format(
+                "VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(
                     orderId, orderName, orderAmount, OrderType, OrderStatus,
                     UserName, UnitPrice, blockchainHash, description, createDate)
             mySqlDB.executeMysqldb(addOrderSql)            
@@ -84,7 +84,7 @@ def addOrderProductItem():
     if productID : # if "", the false  
         addOrderProductItemSql = "INSERT INTO orderProduct(orderId, ProductID, ProductName, ProductItem,"\
             "UserName, ProductNumber, ProductPrice, BlockchainHash, Description, CreateDate) "\
-            "VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}'".format(
+            "VALUES('{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}', '{}')".format(
                 orderId, productID, productName, productItem,
                 userName, productNumber, productPrice, blockchainHash, description, createDate)
         mySqlDB.executeMysqldb(addOrderProductItemSql)
@@ -96,21 +96,20 @@ def addOrderProductItem():
 
 
 @OrderBP.route("/order/updateOrder", methods=['POST'])
-def UpdateOrder(id):  
+def updateOrder():  
     """update order"""
     orderId = request.json.get("orderId", "").strip()  
     newOrderName = request.json.get("orderName", "").strip()  
-    newOrderAmount = request.json.get("orderAmount", "").strip()
+    newOrderAmount = request.json.get("orderAmount")
     newOrderType = request.json.get("orderType", "").strip()
     newOrderStatus = request.json.get("orderStatus", "").strip()
     newUserName = request.json.get("UserName", "").strip()
-    newUnitPrice = request.json.get("unitPrice", "").strip()
+    newUnitPrice = request.json.get("orderUnitPrice")
     newDescription = request.json.get("orderDescription", "").strip()
     newProducts = request.json.get("products", "").strip()
 
-    if orderId and newOrderName and newOrderAmount and newOrderType\
-        and newOrderStatus and newProductID and newUserName and newUnitPrice:
- 
+    if orderId \
+        and newProducts : 
             queryOrderByIdSql = "SELECT * FROM orderHead WHERE orderId = '{}'".format(orderId)
             resQueryID = mySqlDB.selectMysqldb(queryOrderByIdSql)
             print("Order {} query info   ==>> {}".format(id, resQueryID))
@@ -118,7 +117,7 @@ def UpdateOrder(id):
             if not resQueryID: # no this order id
                 return jsonify({"code": 7005, "msg": "The order ID does not exist"})             
     
-            updateOrderSql = "UPDATE orderProduct SET orderName = '{}', OrderAmount = '{}', OrderType = '{}', "\
+            updateOrderSql = "UPDATE orderHead SET orderName = '{}', OrderAmount = '{}', OrderType = '{}', "\
                 "OrderStatus = '{}', UserName = '{}', UnitPrice = '{}', "\
                 "description = '{}', products = '{}' "\
                 "WHERE id = {}".format(newOrderName, newOrderAmount, newOrderType,
