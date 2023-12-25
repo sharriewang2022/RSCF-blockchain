@@ -41,5 +41,5 @@ export function addOrderAction(data:OrderPurchaseType){
 }
  
 export function UpdateOrderAction(data:OrderPurchaseType){
-  return request.put("/order/updateOrder",data)
+  return request.post("/order/updateOrder",data)
 }

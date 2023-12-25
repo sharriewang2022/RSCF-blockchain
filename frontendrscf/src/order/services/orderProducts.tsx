@@ -18,6 +18,9 @@ function OrderProducts(props:Iprops) {
   const [orderProductList,setOrderProductList] =useState<any>([]) 
   //set select product list
   const [selProductList,setSelProductList] =useState<any>([])
+
+  const [orderAmount,setOrderAmount] =useState<number>(0)
+  const [orderUnitPrice,setOrderUnitPrice] =useState<number>(0)
  
   //products list in one order
 const columns = [
@@ -63,6 +66,11 @@ const columns = [
 ]
 
   useEffect(()=>{
+    // the total order products amount
+    var orderAmountVar: number = 0
+    // the total order products price
+    var orderUnitPriceVar: number = 0
+
     var list = selProductList.map((item:any)=>{
       var obj = {...item};
       // delete product according to its id
@@ -71,11 +79,15 @@ const columns = [
       obj.ProductName = item.ProductName;
       obj.ProductPrice = item.ProductPrice;
       obj.ProductNumber = item.ProductNumber;
-      obj.ProductItems = item.ProductItems
+      obj.ProductItems = item.ProductItems;
       obj.stock = 999;
       obj.order = 0;
+      orderAmountVar = orderAmountVar + item.ProductNumber *1;
+      orderUnitPriceVar = orderUnitPriceVar + (item.ProductPrice * item.ProductNumber);
       return obj;
     }) 
+    setOrderAmount(orderAmountVar)
+    setOrderUnitPrice(orderUnitPriceVar)
     setOrderProductList(list)
     setSelProductList(list)
   },[selProductList])
@@ -91,8 +103,8 @@ const columns = [
     // several gplist  join together
     var products = gplist.map(item=>item.data.productID).join(",")
     //  update order products
-    const result = await UpdateOrderAction({id:orderId,products})
-    if(result.data.code===0){
+    const result = await UpdateOrderAction({...props.orderActionInfo, orderId, products, orderAmount, orderUnitPrice})
+    if(result.data.code===200){
       props.setCurrent(2);
     }else{
       console.log("fail")

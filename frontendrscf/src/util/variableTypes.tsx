@@ -60,10 +60,13 @@ export interface OrderMarkType{
 export interface OrderPurchaseType {
     id?:number|string
     userName?:string
+    orderId?:string
     orderName?:string
     orderStartTime?:string
     orderEndTime?:string
     orderStatus?:string
+    orderAmount?:number
+    orderUnitPrice?:number
     products?:string
     retailer?:string
     orderDescription?:string
