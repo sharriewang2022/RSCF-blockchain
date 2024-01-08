@@ -32,7 +32,7 @@ export const getUserList = () =>
 
 // login({name:"abc",password:"des"})
 // .then(res=>{
-//   res.data.
+//   res.data.code
 // })
 
 

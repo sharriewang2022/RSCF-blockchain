@@ -49,7 +49,7 @@ function CreateOrderActionInfo(props: Iprops) {
             <Input
               value={orderActionInfo.orderName}
               onChange={(e) => {
-                setOrderActionInfo({ ...orderActionInfo, name: e.target.value });
+                setOrderActionInfo({ ...orderActionInfo, orderName: e.target.value });
               }}
             />
           </span>
@@ -61,8 +61,8 @@ function CreateOrderActionInfo(props: Iprops) {
               onChange={(value, str) => {
                 setOrderActionInfo({
                   ...orderActionInfo,
-                  startTime: str[0],
-                  endTime: str[1],
+                  orderStartTime: str[0],
+                  orderEndTime: str[1],
                 });
               }}
               format={DATE_FORMAT}
@@ -193,7 +193,7 @@ function CreateOrderActionInfo(props: Iprops) {
               onChange={(value, str) => {
                 setOrderActionInfo({
                   ...orderActionInfo,
-                  pickTime: str,                 
+                  orderPreTime: str,                 
                 });
               }}
               format={DATE_FORMAT}

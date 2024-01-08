@@ -95,6 +95,10 @@ const columns = [
   async function chooseDone (){
     // add order actitivy to server and then get activityId
     const orderData =  await addOrderAction(props.orderActionInfo)
+    if(orderData.data.code != 200){
+      window.alert(orderData.data.msg)
+      return
+    }
     var orderId = orderData.data.orderId; 
     // add selected  products of order with id
     var list = orderProductList.map((item:any)=>addOrderChainProduct({...item,orderId})) 

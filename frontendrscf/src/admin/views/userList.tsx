@@ -3,17 +3,17 @@ import qs from 'qs';
 import { Table } from 'antd';
 import type { ColumnsType, TablePaginationConfig } from 'antd/es/table';
 import type { FilterValue, SorterResult } from 'antd/es/table/interface';
+import { getUserList } from '../../api/adminApi';
 
 interface DataType {
-  name: {
-    first: string;
-    last: string;
+  userId: string;
+  userName: {
+    firstName: string;
+    lastName: string;
   };
-  gender: string;
   email: string;
-  login: {
-    uuid: string;
-  };
+  telephone: number;
+  role: string;
 }
 
 interface TableParams {
@@ -26,18 +26,9 @@ interface TableParams {
 const columns: ColumnsType<DataType> = [
   {
     title: 'User Name',
-    dataIndex: 'name',
+    dataIndex: 'userName',
     sorter: true,
-    render: (name) => `${name.first} ${name.last}`,
-    width: '20%',
-  },
-  {
-    title: 'Gender',
-    dataIndex: 'gender',
-    filters: [
-      { text: 'Male', value: 'male' },
-      { text: 'Female', value: 'female' },
-    ],
+    render: (userName) => `${userName.firstName}`,
     width: '20%',
   },
   {
@@ -51,17 +42,19 @@ const columns: ColumnsType<DataType> = [
   {
     title: 'Role',
     dataIndex: 'role',
+    filters: [
+      { text: 'Administrator', value: 'Administrator' },
+      { text: 'Supplier', value: 'Supplier' },
+      { text: 'Manufacturer', value: 'Manufacturer' },
+      { text: 'Distributer', value: 'Distributer' },
+      { text: 'Retailer', value: 'Retailer' },
+      { text: 'Customer', value: 'Customer' },
+    ],
   },
 ];
 
-const getRandomuserParams = (params: TableParams) => ({
-  results: params.pagination?.pageSize,
-  page: params.pagination?.current,
-  ...params,
-});
-
 const UserList: React.FC = () => {
-  const [data, setData] = useState<DataType[]>();
+  const [userData, setUserData] = useState<DataType[]>();
   const [loading, setLoading] = useState(false);
   const [tableParams, setTableParams] = useState<TableParams>({
     pagination: {
@@ -70,54 +63,82 @@ const UserList: React.FC = () => {
     },
   });
 
-  const fetchData = () => {
+  const getUserTableData = async () => {
     setLoading(true);
-    fetch(`https://randomuser.me/api?${qs.stringify(getRandomuserParams(tableParams))}`)
-      .then((res) => res.json())
-      .then(({ results }) => {
-        setData(results);
-        setLoading(false);
-        setTableParams({
-          ...tableParams,
-          pagination: {
-            ...tableParams.pagination,
-            total: 200,
-            // 200 is mock data, you should read it from server
-            // total: data.totalCount,
-          },
-        });
-      });
-  };
+    var userList = await getUserList();
+   
+    var userTableDataList:Array<DataType>= [];
+ 
+    if(userList.data.code == 200){
+      userList.data.data.map((item:any)=>{
+        var obj : DataType = {
+          userId:'',
+          userName: {firstName:'', lastName:''},
+          email: '',
+          telephone: 0,
+          role:'Administrator'
+        };
+        obj.userId = item.UserID
+        obj.userName.firstName = item.UserName
+        obj.userName.lastName = item.UserName
+        obj.email = item.Email
+        obj.telephone = item.Telephone        
+        if(item.RoleID == '3001') {
+          obj.role = 'Administrator'
+        }else if(item.RoleID == '3002'){
+          obj.role = 'Supplier'
+        }else if(item.RoleID == '3003'){
+          obj.role = 'Manufacturer'
+        }else if(item.RoleID == '3004'){
+          obj.role = 'Distributer'
+        }else if(item.RoleID == '3005'){
+          obj.role = 'Retailer'
+        }else {
+          obj.role = 'Customer'
+        }
+        userTableDataList.push(obj)        
+      }) 
+    }
+   
+    setUserData(userTableDataList);
+    setLoading(false);
+    setTableParams({
+      ...tableParams,
+      pagination: {
+        ...tableParams.pagination,
+        total: userTableDataList.length,
+      },
+    });
+  }
 
   useEffect(() => {
-    fetchData();
+    getUserTableData();
   }, [JSON.stringify(tableParams)]);
 
   const handleTableChange = (
-    // pagination: TablePaginationConfig,
-    // filters: Record<string, FilterValue>,
-    // sorter: SorterResult<DataType>,
-    pagination: any,
-    filters: any,
-    sorter: any,
+    pagination: TablePaginationConfig,
+    filters: Record<string, FilterValue>,
+    sorter: SorterResult<DataType>,
+    // pagination: any,
+    // filters: any,
+    // sorter: any,
   ) => {     
     setTableParams({
       pagination,
       filters,
       ...sorter,
     });
-
     // `dataSource` is useless since `pageSize` changed
     if (pagination && pagination.pageSize !== tableParams.pagination?.pageSize) {
-      setData([]);
+      setUserData([]);
     }
   };
 
   return (
     <Table
       columns={columns}
-      rowKey={(record) => record.login.uuid}
-      dataSource={data}
+      rowKey={(record) => record.userId}
+      dataSource={userData}
       pagination={tableParams.pagination}
       loading={loading}
       onChange={handleTableChange}

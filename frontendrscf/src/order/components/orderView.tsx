@@ -5,7 +5,6 @@ import CreateOrderActionFinish from '../services/createOrderActionFinish';
 import SelectProducts from '../services/orderProducts';
 import CreateOrderActionInfo from '../services/orderActionInfo'; 
 import homePic from "../../images/homePic.jpg";
-import banner from "../../images/banner.jpg";
  
 const baseOrderInfo = 
 {   
