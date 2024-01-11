@@ -13,11 +13,10 @@ OrderBP = Blueprint("OrderBP", __name__)
 @OrderBP.route("/order/allOrders", methods=["GET"])
 def getAllOrders():
     """all order info"""
-    sql = "SELECT * FROM orderProduct"
+    sql = "SELECT * FROM orderHead"
     data = mySqlDB.selectMysqldb(sql)
     print("all orders' data == >> {}".format(data))
     return jsonify({"code": 200, "data": data, "msg": "success"})
-
 
 
 @OrderBP.route("/order/getSomeOrder/<string:orderId>", methods=["GET"])
@@ -89,7 +88,7 @@ def addOrderProductItem():
                 userName, productNumber, productPrice, blockchainHash, description, createDate)
         mySqlDB.executeMysqldb(addOrderProductItemSql)
         print("Add order SQL ==>> {}".format(addOrderProductItemSql))
-        return jsonify({"code": 200, "productID": productID, "msg": "The order product details are added successfully！"})
+        return jsonify({"code": 200, "productName": productName, "msg": "The order product details are added successfully！"})
     else:
         return jsonify({"code": 7001, "msg": "productID could not be null"})
     
@@ -103,7 +102,7 @@ def updateOrder():
     newOrderAmount = request.json.get("orderAmount")
     newOrderType = request.json.get("orderType", "").strip()
     newOrderStatus = request.json.get("orderStatus", "").strip()
-    newUserName = request.json.get("UserName", "").strip()
+    newUserName = request.json.get("userName", "").strip()
     newUnitPrice = request.json.get("orderUnitPrice")
     newDescription = request.json.get("orderDescription", "").strip()
     newProducts = request.json.get("products", "").strip()
@@ -120,7 +119,7 @@ def updateOrder():
             updateOrderSql = "UPDATE orderHead SET orderName = '{}', OrderAmount = '{}', OrderType = '{}', "\
                 "OrderStatus = '{}', UserName = '{}', UnitPrice = '{}', "\
                 "description = '{}', products = '{}' "\
-                "WHERE id = {}".format(newOrderName, newOrderAmount, newOrderType,
+                "WHERE orderId = '{}'".format(newOrderName, newOrderAmount, newOrderType,
                 newOrderStatus, newUserName, newUnitPrice, newDescription, newProducts, orderId)
             mySqlDB.executeMysqldb(updateOrderSql)
             print("update order SQL ==>> {}".format(updateOrderSql))
