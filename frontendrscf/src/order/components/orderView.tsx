@@ -22,7 +22,7 @@ const baseOrderInfo =
   "products": "586,587,588",
   "orderPreTime":  dayjs(new Date(Date.now()-1000*60*60*24)+"").format("YYYY-MM-DD HH:mm:ss"),
   "orderMark": 1,
-  "state": 1
+  "state": 1,
 }
 
 function OrderView() {  

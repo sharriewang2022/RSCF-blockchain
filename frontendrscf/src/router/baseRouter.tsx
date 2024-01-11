@@ -2,9 +2,11 @@ import React from 'react';
 import LoginView from "../login/components/loginView";
 import AdminView from "../admin/views/adminView";
 import ProductView from "../product/components/productView";
-import ProductList from "../product/components/productList";
+import ProductListView from "../product/components/productListView";
 import CategoryView from "../category/components/categoryView";
+import CategoryListView from "../category/components/categoryListView";
 import OrderView from "../order/components/orderView";
+import OrderListView from "../order/components/orderListView";
 import Private from '../util/private'
 import LazyLoad from "../util/LazyLoad"
 import DashView from '../admin/views/dashView';
@@ -28,11 +30,13 @@ const baseRouter = [
     {path:'/register', element:<RegisterView/>},
     {path:'/sysManage', element:<ManageView/>},
     {path:'/prodcut', element:<ProductView/>},
-    {path:'/prodcut/ProduceList', element:<ProductList/>},
+    {path:'/productListView', element:<ProductListView/>},
     {path:'/file', element:<UploadFileView/>},
     {path:'/trackProduct', element:<TrackProductView/>},
     {path:'/category', element:<CategoryView/>},
-    {path:'/order', element:<OrderView/>}
+    {path:'/categoryList', element:<CategoryListView/>},    
+    {path:'/order', element:<OrderView/>},
+    {path:'/orderListView', element:<OrderListView/>},
 ];
 
 export default baseRouter;

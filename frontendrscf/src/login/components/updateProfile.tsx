@@ -159,7 +159,6 @@ export default  function UpdateProfile(props: any) {
             //  if(snapshot.exists()){
             setCUserName(currentUser.userName)
             setCrole(currentUser.role ? currentUser.role : "no Role found")
-            setCAddr(currentUser.waddress ? currentUser.waddress : "no address found")
         }else {
             setErr(0)
             setOpenErr(true)

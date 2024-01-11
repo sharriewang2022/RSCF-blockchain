@@ -15,7 +15,7 @@ export interface CategoryType {
 
 export interface ProductType {
     ID?:number|string
-    productId?:string
+    productId:string
     productName?:string
     price?:number
     amount?:number

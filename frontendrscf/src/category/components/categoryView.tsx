@@ -124,10 +124,13 @@ export class CategoryView extends Component<categoryProps, categoryState> {
     }       
   }
 
+  openCategoryListView () {
+
+  }
+
   render() {
     return (
-      <div style ={{margin:10}}>
-        <h3>Category</h3>
+      <div style ={{margin:10, backgroundColor:"#EDF5E1"}}>
         <form className="row g-3" onSubmit={this.onSubmit}>
           <div className="col-md-6">
             <label htmlFor="inputCategoryName" className="form-label">Category Name: </label>
@@ -192,9 +195,9 @@ export class CategoryView extends Component<categoryProps, categoryState> {
             </div>
           </div> */}
           <div className="col-12">
-            <button type="submit" className="btn btn-primary buttonMargin"            
+            <button type="submit" className="btn btn-primary buttonMargin" style ={{backgroundColor:"#C0D9D9"}}           
                 value="Add Category" >Add</button>
-            <button className="btn btn-primary">List</button>
+            <button className="btn btn-primary" onClick={()=> window.open("./#/categoryList", "_blank")}>Category List</button>
           </div>
         </form>  
       </div>

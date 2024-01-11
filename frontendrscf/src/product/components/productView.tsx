@@ -48,7 +48,7 @@ function ProductView () {
   }
 
   function getProductsList(){
-    navigate('./productList');
+    window.open("./#/productListView", "_blank")
   }
 
   return (

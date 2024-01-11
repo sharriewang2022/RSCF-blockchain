@@ -43,12 +43,12 @@ const columns: ColumnsType<DataType> = [
     title: 'Role',
     dataIndex: 'role',
     filters: [
-      { text: 'Administrator', value: 'Administrator' },
-      { text: 'Supplier', value: 'Supplier' },
-      { text: 'Manufacturer', value: 'Manufacturer' },
-      { text: 'Distributer', value: 'Distributer' },
-      { text: 'Retailer', value: 'Retailer' },
-      { text: 'Customer', value: 'Customer' },
+      { text: 'Administrator', value: 'administrator' },
+      { text: 'Supplier', value: 'supplier' },
+      { text: 'Manufacturer', value: 'manufacturer' },
+      { text: 'Distributer', value: 'distributer' },
+      { text: 'Retailer', value: 'retailer' },
+      { text: 'Customer', value: 'customer' },
     ],
   },
 ];
@@ -63,8 +63,16 @@ const UserList: React.FC = () => {
     },
   });
 
+  const getRandomuserParams = (params: TableParams) => ({
+    results: params.pagination?.pageSize,
+    page: params.pagination?.current,
+    ...params,
+  });
+  
+
   const getUserTableData = async () => {
     setLoading(true);
+    
     var userList = await getUserList();
    
     var userTableDataList:Array<DataType>= [];
@@ -84,22 +92,22 @@ const UserList: React.FC = () => {
         obj.email = item.Email
         obj.telephone = item.Telephone        
         if(item.RoleID == '3001') {
-          obj.role = 'Administrator'
+          obj.role = 'administrator'
         }else if(item.RoleID == '3002'){
-          obj.role = 'Supplier'
+          obj.role = 'supplier'
         }else if(item.RoleID == '3003'){
-          obj.role = 'Manufacturer'
+          obj.role = 'manufacturer'
         }else if(item.RoleID == '3004'){
-          obj.role = 'Distributer'
+          obj.role = 'distributer'
         }else if(item.RoleID == '3005'){
-          obj.role = 'Retailer'
+          obj.role = 'retailer'
         }else {
-          obj.role = 'Customer'
+          obj.role = 'customer'
         }
         userTableDataList.push(obj)        
       }) 
     }
-   
+
     setUserData(userTableDataList);
     setLoading(false);
     setTableParams({
@@ -116,12 +124,12 @@ const UserList: React.FC = () => {
   }, [JSON.stringify(tableParams)]);
 
   const handleTableChange = (
-    pagination: TablePaginationConfig,
-    filters: Record<string, FilterValue>,
-    sorter: SorterResult<DataType>,
-    // pagination: any,
-    // filters: any,
-    // sorter: any,
+    // pagination: TablePaginationConfig,
+    // filters: Record<string, FilterValue>,
+    // sorter: SorterResult<DataType>,
+    pagination: any,
+    filters: any,
+    sorter: any,
   ) => {     
     setTableParams({
       pagination,

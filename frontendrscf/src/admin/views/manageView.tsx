@@ -4,7 +4,7 @@ import {useAuth} from '../../contexts/authContext';
 import {useNavigate} from "react-router-dom"; 
 import "../../css/navbar.css";
 import {About} from "../components/about";
-import UserList from "./userList";
+import UserList from "./userListView";
 
 // Button Link is on the top. could use in product:add product; product List
 export function ManageView(props:any){
@@ -51,8 +51,6 @@ export function ManageView(props:any){
           <Nav onSelect={() => setIcon(prev => !prev)}>
               <Nav.Link href="./#/register" >Add User</Nav.Link>
               <Nav.Link href="./#/product" >Permission</Nav.Link>
-              {/* <Nav.Link onClick = {handleOpen} >About</Nav.Link> */}
-              {/* drop menu */}
               < NavDropdown title = "other">
                 <NavDropdown.Item onClick = {handleOpen}>About</NavDropdown.Item>
                 <NavDropdown.Item onClick = {handlelogout} >Logout</NavDropdown.Item>

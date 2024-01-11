@@ -10,21 +10,19 @@ interface resultCategoryType{
 
 /* get all category list */
 // export const getCategoryList = () => request.get("/category/allCategorys")
-export async function getCategoryList(){
+export const getCategoryList = async ()  => {
   sessionStorage.setItem("categoryName", "");
-  var resultData : CategoryType[] = [];
-  await request.get("/category/allCategory").then((res:AxiosResponse<resultCategoryType>)=>{
-    if(res.data !== undefined ){
-      if(res.data.code===200){     
-        resultData = res.data.categoryInfo;       
-      }else{        
-        console.log(res.data.msg + "");
-      }         
-    }else{
-      console.log( "The category could not be added");
+  let resultData : CategoryType[] = [];
+  let res = await request.get("/category/allCategory")
+
+  if(res.data !== undefined ){
+    if(res.data.code===200){    
+      resultData = res.data.categoryInfo; 
     }
-  }) 
-  return resultData;
+  }else{
+    console.log( "The category could not be searched");
+  }
+    return resultData;
 }
 
 export async function AddCategoryToDataBase(categoryParam: CategoryType){

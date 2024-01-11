@@ -105,9 +105,14 @@ const columns = [
     // several promise
     const gplist = await Promise.all(list)
     // several gplist  join together
-    var products = gplist.map(item=>item.data.productID).join(",")
+    var products = gplist.map(item=>item.data.productName).join(",")
+    // var userName = localStorage.getItem('username')
+    var userName = sessionStorage.getItem("userName")
+    if(userName == null){
+      userName ='';
+    }
     //  update order products
-    const result = await UpdateOrderAction({...props.orderActionInfo, orderId, products, orderAmount, orderUnitPrice})
+    const result = await UpdateOrderAction({...props.orderActionInfo, orderId, products, orderAmount, orderUnitPrice, userName})
     if(result.data.code===200){
       props.setCurrent(2);
     }else{
