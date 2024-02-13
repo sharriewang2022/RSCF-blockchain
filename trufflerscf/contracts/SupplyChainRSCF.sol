@@ -41,6 +41,8 @@ contract SupplyChainRSCF {
         uint256 id;
         address owner;
         string name;
+        string manufacturer;
+        string supplier;
         uint256 currentLocation;
         uint256 date;
         mapping(uint256 => string) Locations;
@@ -51,6 +53,8 @@ contract SupplyChainRSCF {
         uint256 id,
         address owner,
         string name,
+        string manufacturer,
+        string supplier,
         uint currentLocation,
         uint256 date
     );
@@ -66,21 +70,23 @@ contract SupplyChainRSCF {
     }
 
     //main methods
-    function addProduct(string memory _name)  public returns (bool){
+    function addProduct(uint256 _id, string memory _name, string memory _manufacturer, string memory _supplier)  public returns (bool){
 
         require(bytes(_name).length > 0);
         productCount++;
         //TypeError: Types in storage containing (nested) mappings cannot be assigned to
         // Products[productCount] = Product(productCount, msg.sender, _name, 0, block.timestamp);
         Product storage newProduct = ProductMap[productCount];
-        newProduct.id= productCount;
+        newProduct.id= _id;
         newProduct.owner = msg.sender;
         newProduct.name = _name;
+        newProduct.supplier = _supplier;
+        newProduct.manufacturer = _manufacturer;
         newProduct.currentLocation = 0;
         newProduct.date = block.timestamp;
         newProduct.Locations[productCount] = "0";
         productAdded[productCount] = true;
-        emit ProductAdded(productCount, msg.sender, _name, 0, block.timestamp);
+        emit ProductAdded(_id, msg.sender, _name, _manufacturer, _supplier,0, block.timestamp);
         return true;
     }
 
