@@ -16,7 +16,7 @@ interface BlockProviderProps {
 }
 
 interface BlockContextData {
-  addProduct: (name:string) => any;
+  addProduct: (productId:string, name:string, manufacturer:string, supplier:string) => any;
   account: any;
   productCount:() => any;
   updateLocation:(location: string, id: string, address: string) => {};
@@ -56,7 +56,7 @@ export function BlockProvider({children}:BlockProviderProps){
     }
   },[])
   
-  // re-register MetaMask provider whenever network changes
+  // register MetaMask provider when network changes
   useEffect(() => {
     loadWeb3()
     if(window.ethereum){
@@ -98,11 +98,11 @@ export function BlockProvider({children}:BlockProviderProps){
         }
       }
 
-      //react connect blockchain contract
+      //react connect blockchain smart contract
       //1.Load web3 after has a wallet; 
       //2.(Optional) put web3 object and the accounts from web3.eth.getAccounts() to setState
       //3.Create contract instance with the address from deployment.  can deploy the contract dynamically from the app but more complicated.
-      //4.Add the contract to your state
+      //4.Add the contract to the state
       //Call methods on the contract
       async function loadBlockChainData(){
         window.ethereum.enable();  
@@ -115,10 +115,10 @@ export function BlockProvider({children}:BlockProviderProps){
         // const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         setAccount(accounts[0]);
         web3.eth.defaultAccount = accounts[0];
-        console.log(accounts[0]);
+        console.log("accounts[0]" + accounts[0]);
         // Get the network ID
         const currentNetworkId = parseInt(await window.ethereum.request({ method: 'net_version' }));
-        console.log(currentNetworkId)
+        console.log("currentNetworkId" + currentNetworkId);
         // Get the network data from the contract JSON
         const networkId = await web3.eth.net.getId();
         const chainId = await web3.eth.getChainId();
@@ -127,49 +127,13 @@ export function BlockProvider({children}:BlockProviderProps){
         // const contractAddress = supplyJson.networks["5777"].address;
         // const contractAddress = supplyJson.networks[networkId].address; //supplyJson.networks[42]        
 
-        //get smart contract in supplyChain.json. parameters: (contractABI, contractAddress）
-        
-        
-        // productContractAbi.options.gas = 500000
-
-        // const nonceAbi = [
-        //   {
-        //   inputs: [{ internalType: 'address', name: '', type: 'address' }],
-        //   name: 'nonces',
-        //   outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-        //   stateMutability: 'view',
-        //   type: 'function',
-        //   },
-        //   {
-        //     "inputs": [
-        //       {
-        //         "internalType": "uint256",
-        //         "name": "_id",
-        //         "type": "uint256"
-        //       }
-        //     ],
-        //     "name": "fetchInfo",
-        //     "outputs": [
-        //       {
-        //         "internalType": "string",
-        //         "name": "",
-        //         "type": "string"
-        //       }
-        //     ],
-        //     "stateMutability": "view",
-        //     "type": "function"
-        //   },
-        //   ] as const;
+        //get smart contract in supplyChain.json. parameters: (contractABI, contractAddress）       
+        // productContractAbi.options.gas = 500000       
         // const productContractAbi = new web3.eth.Contract(nonceAbi, contractAddress); --can work
         const productContractAbi = new web3.eth.Contract(supplyChainAbi, contractAddress);
-        // productContractAbi.methods.fetchInfo("e").call();
         setSupplyChainABI(productContractAbi)
    
-        console.log(productContractAbi)    
-
-        // call the  `name` method. which is a view method.
-        // let result = await productContractAbi.methods.
-        // console.info("contract name result: ", result);           
+        console.log(productContractAbi)           
       }
 
       // async function loadBlockChainData(){
@@ -205,7 +169,7 @@ export function BlockProvider({children}:BlockProviderProps){
       // this.contract = this.contract.connect(this.signer);  
       // }
 
-      function addProduct(name:string){
+      function addProduct(productId:string, name:string, manufacturer:string, supplier:string){
         if(supplyChainABI == undefined){
           return;
         }
@@ -213,6 +177,7 @@ export function BlockProvider({children}:BlockProviderProps){
         // call smart contract method.
         // (contract.methods.transfer as any)('0xe4beef667408b99053dc147ed19592ada0d77f59', 12)  
         return supplyChainABI.methods.addProduct(name).send({from : account})
+        // return supplyChainABI.methods.addProduct(productId, name, manufacturer, supplier).send({from : account})
           .on('transactionHash', function(hash:any){
             console.log("supplyChainABI addProduct transactionHash:" + hash)
           })

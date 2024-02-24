@@ -62,10 +62,11 @@ const validationSchema = yup.object({
         borderColor: "#C0D9D9 !important",
         color:"#87CEFA !important"
       },
+
       button: {
         backgroundColor: "#C0D9D9",
         color: "#05386B",
-        textTransform: "none",  //not change all to capital
+        textTransform: "none",  //not change to capital
         justifySelf:"center",
         marginTop: "20px",
         marginleft: "100px",
@@ -190,7 +191,6 @@ function LoginView() {
               <Grid item xs = {12} style = {{
                   fontSize: "70px",
               }}>
-              <i className="fas fa-sign-in-alt" ></i>
               </Grid>
 
               <Grid item xs = {12}>

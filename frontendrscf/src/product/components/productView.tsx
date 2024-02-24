@@ -38,8 +38,9 @@ function ProductView () {
 
   async function handleFormSubmit(e:React.FormEvent<HTMLFormElement>) {
     e.preventDefault();  
-    if(formData.productName){
-      addProduct(formData.productName);
+    if(formData.productName && formData.manufacturer && formData.supplier){
+      formData.productId = Math.random()+"";
+      addProduct(formData.productId, formData.productName, formData.manufacturer, formData.supplier);
     }  
     const message = await AddProductToDataBase(formData); 
     if(message){
@@ -94,6 +95,7 @@ function ProductView () {
               value={formData.productItems}
               onChange={handleFormChange}
             />
+            <Form.Label><span style={{color: 'red'}}>*</span></Form.Label>
         </Form.Group>
         <Form.Group className="input-group flex-nowrap mb-3" controlId="formCategory"> 
             <Form.Label className="labelMargin">Category: </Form.Label>
@@ -109,6 +111,7 @@ function ProductView () {
               value={formData.manufacturer}
               onChange={handleFormChange}
             />
+            <Form.Label><span style={{color: 'red'}}>*</span></Form.Label>
         </Form.Group>
         <Form.Group className="input-group flex-nowrap mb-3" controlId="formSupplier"> 
             <Form.Label className="labelMargin">Supplier: </Form.Label>
@@ -116,10 +119,11 @@ function ProductView () {
               value={formData.supplier}
               onChange={handleFormChange}
             />
+            <Form.Label><span style={{color: 'red'}}>*</span></Form.Label>
         </Form.Group>
         <Form.Group className="input-group flex-nowrap mb-3" controlId="formSpecific"> 
             <Form.Label className="labelMargin">Discription: </Form.Label>
-            <Form.Control className="form-control rounded-3" name="specific" type="text" placeholder="" required
+            <Form.Control className="form-control rounded-3" name="specific" type="text" placeholder="" 
               value={formData.specific}
               onChange={handleFormChange}
             />
@@ -127,17 +131,13 @@ function ProductView () {
         <Form.Group className="input-group flex-nowrap mb-3" controlId="formProductName" >  
             <Form.Label className="labelMargin">Product ID: </Form.Label>
             <Form.Control className="form-control rounded-3" name="productId" 
-              type="text" placeholder="product ID" required readOnly
+              type="text" placeholder="product ID" readOnly
               value={formData.productId}
               onChange={handleFormChange}
             />
         </Form.Group>
         <Form.Group className="input-group flex-nowrap mb-3" controlId="formBlockchainHash"> 
             <Form.Label className="labelMargin">Blockchain Hash: </Form.Label>
-              {/* <Form.Control name="blockchainHash" type="text" placeholder="" required
-              value={formData.blockchainHash}
-              onChange={handleFormChange}
-            /> */}
             <Form.Control className="form-control rounded-3" name="blockchainHash" type="text" 
               placeholder="" readOnly
               value={formData.blockchainHash}

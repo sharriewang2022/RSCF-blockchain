@@ -38,8 +38,19 @@ const useStyles = makeStyles((theme) => ({
     },
 
     notchedOutline:{
-        borderWidth:"none !important",
-        border:"none !important"
+        borderWidth: "2px",
+        borderColor: "#C0D9D9 !important",
+        color:"#87CEFA !important"
+    },
+
+    button: {
+        marginLeft: "10px",
+        backgroundColor: "#C0D9D9",
+        color: "#05386B",
+        textTransform: "none",  //not change to capital
+        "&:hover" :{
+            backgroundColor:"#87CEFA",
+        }
     },
 
     divide: {
@@ -47,10 +58,6 @@ const useStyles = makeStyles((theme) => ({
         height:"70px",
     }        
 }))
-
-// const Transition = React.forwardRef(function Transition(props, ref) {
-//     return <Slide direction="up" ref={ref} {...props} />;
-//   });
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
@@ -112,9 +119,9 @@ function FetchLocation(props: any){
         }
         })}
        </Grid>
-   </DialogContent>
-   <DialogActions >
-     <Button onClick={handleClose} size = "small" style = {{
+    </DialogContent>
+    <DialogActions >
+      <Button onClick={handleClose} size = "small" style = {{
          backgroundColor: "#5cdb95",
          color: "#05386B",         
      }}>
@@ -141,16 +148,12 @@ function TrackProductView(){
     const [err,setErr] = useState("");
     const [openErr,setOpenErr] = useState(false);
     const [locations,setLocations] = useState(["Enter Product ID first"]);
-    //const qrRef = useRef<typeof QrReader>(null!);
-
-    async function handleScan(){
-        // qrRef.current.openImageDialog();
-    }
+    
     async function handleFetchInfo(id: string){
         try {
             if(!id || id ==="Search Product ID"){
-                window.alert("Please enter Product ID")
-                throw("Please enter Product ID")
+                window.alert("Need Product ID")
+                throw("Need Product ID")
             }
             const dataRaw = await trackProduct(id)
             const Address = await fetchOwner(id)
@@ -171,7 +174,7 @@ function TrackProductView(){
                 setDate(fullDate)
             }
             else {
-                throw("No Product registed with entered ID.")
+                throw("There is no such product ID.")
             }
         }
         catch(error){
@@ -181,83 +184,63 @@ function TrackProductView(){
     }
 
     const style = useStyles();
-
     const [open, setOpen] = useState(false);
-
     const handleClickOpen = () => {
         setOpen(true);
     };
 
     return(
-        <Grid container spacing = {3} style = {{
-            transform:"translateY(10%)",
-            border: "5px solid #05386B",
-        }}>
+        <div style = {{
+            position:"absolute",
+            top:"10",
+            left:"0",
+            bottom:"0",
+            right:"0",
+            height:"100%",
+            width:"100%",
+          }}>
         {openErr &&<Snackbar open={openErr} autoHideDuration={6000} onClose={()=>handleClose}>
         <Alert onClose={handleClose} severity="error">
             {err}
         </Alert>
         </Snackbar>}
-        <Grid item xs = {12}>
-        <Container>
-        <Grid container alignContent = "center" alignItems = "center">
-        <Grid item xs = {10} >
+
+        <Container style = {{ marginTop: "50px",  marginLeft: "100px"}}>
+        <div>
         <TextField
-        // fullWidth
-        type = "number"
-        placeholder="Search Product ID"
-        variant= "outlined"
-        size = "small"
-        margin = "none"
+            id = "productID"
+            name = "productID"
+            type = "text"
+            placeholder="Searched Product ID"
+            variant= "outlined"
+            size = "small"
+            
+            style = {{
+                width:"600px",                
+                border: "0px solid #05386B",
+                color:"#EDF5E1"
+            }}
 
-        style = {{
-            background:"#5cdb95",
-            border: "5px solid #05386B",
-            color:"05386B"
-        }}
+            InputProps={{
+                classes : {
+                    notchedOutline:style.notchedOutline,
+                    input:style.input
+                },
+                inputProps: { min: 0}
+            }} 
+            
+            onChange = {(e) => setId(e.target.value)}
+        />
 
-    InputProps={{
-        classes : {
-            notchedOutline:style.notchedOutline,
-            input:style.input
-        },
-        inputProps: { min: 0}
-    }} onChange = {(e) => setId(e.target.value)}
-    />
-    </Grid>
-
-    <Grid item xs = {10} style = {{
-        // border:"5px solid #05386B",
-        borderLeft:"none"
-    }}>
-    {/* <Grid container justifyContent = 'center' alignItems = "center"> */}
-    <Button className="fas fa-search" style = {{
-        fontSize:"25px",
+    <Button className = {style.button} style = {{
+        fontSize:"15px",
         color: "#05386B",
         transform:"translateY(30%)",
         cursor: "pointer"
-        }} onClick = {() => {handleFetchInfo(id)}}><i className="fas fa-qrcode" style = {{
-            color:"#05386B",
-            fontSize:"12px"
-        }}></i>Search</Button></Grid>
-    {/* </Grid> */}
-        </Grid>
-    </Container>
-    </Grid>
+        }} onClick = {() => {handleFetchInfo(id)}}>Search
+    </Button>
+    </div>
 
-    {/* <Grid container justifyContent = "center">
-             <span style = {{marginTop:"7px" ,color: "#05386B" ,fontWeight:"650"}}>OR</span>
-         </Grid>
-         <Grid container justifyContent = "center" >
-         <Button size = "small"><i className="fas fa-qrcode" style = {{
-                    color:"#05386B",
-                    fontSize:"15px"
-                }}></i><div style = {{
-                    fontSize:"16px",
-                    color:"#05386B",
-                    marginLeft:"2px",
-                }} onClick = {handleScan}>Scan QR</div></Button></Grid> */}
-    
     <Grid item xs = {12}>
         <Grid container justifyContent = "center" alignItems = "center">
         <Box style = {{
@@ -316,7 +299,7 @@ function TrackProductView(){
             <h6 style = {{
         cursor: "pointer",
 
-    }} onClick ={handleClickOpen}>Tap to know every location</h6>
+    }} onClick ={handleClickOpen}>Search more locations</h6>
             </Grid>
             </Grid>
         </Grid>
@@ -324,7 +307,12 @@ function TrackProductView(){
     </Box>
     </Grid>
     </Grid>
-    </Grid>)
+    
+    </Container>
+
+    </div>
+    
+    )
 }
 
 export default TrackProductView;
