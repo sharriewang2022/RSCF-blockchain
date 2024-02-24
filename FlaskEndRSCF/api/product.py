@@ -91,15 +91,15 @@ def addProduct():
     """add product"""
     productId = uuid.uuid1()
     productName = request.json.get("productName", "").strip()  
-    productNumber = request.json.get("productNumber", "").strip()
-    productPrice = request.json.get("productPrice", "").strip()
+    productNumber = request.json.get("amount", "").strip()
+    productPrice = request.json.get("price", "").strip()
     productItems = request.json.get("productItems", "").strip()
-    categoryID = request.json.get("categoryID", "").strip() 
-    supplierID = request.json.get("supplierID", "").strip()
-    manufacturerID = request.json.get("manufacturerID", "").strip()
-    description = request.json.get("description", "").strip()
+    categoryID = request.json.get("category", "").strip() 
+    supplierID = request.json.get("supplier", "").strip()
+    manufacturerID = request.json.get("manufacturer", "").strip()
+    description = request.json.get("specific", "").strip()
     # blockchainHash = request.json.get("blockchainHash", "").strip()
-    blockchainHash = "undefined"
+    blockchainHash = ""
     # createDate = datetime.now().date
     # createDate = datetime.date.today()
     createDate = datetime.today().date()
