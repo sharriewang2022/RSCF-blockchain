@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: MIT
-pragma experimental ABIEncoderV2;
 pragma solidity >=0.4.22 <0.9.0;
 
 contract SupplyChainRSCF {
@@ -26,105 +25,123 @@ contract SupplyChainRSCF {
         }
         return string(bstr);
     }
-    function append(string memory a, string memory b, string memory c) internal pure returns (string memory) {
-    return string(abi.encodePacked(a, ',', b, ',', c));
-}
 
-   uint256 public productCount =0;
+    function append(string memory a, string memory b, string memory c, string memory d, string memory e, string memory f) internal pure returns (string memory) {
+        return string(abi.encodePacked(a, ',', b, ',', c, ',', d, ',', e, ',', f));
+    }
+
+    uint256 public productCount =0;
    
-   //mapping: key--value
-   mapping(uint256 => Product) public ProductMap;
-   mapping(uint => bool) public productAdded;
-   Product[] public Products;
+    //mapping: key--value
+    mapping(string => Product) public ProductMap;
+    mapping(string => bool) public productAdded;
+    Product[] public Products;
+    //store all locations
+    mapping(string => string[]) productId_locations;
 
     struct Product {
-        uint256 id;
+        string productId;
         address owner;
-        string name;
+        string productName;
         string manufacturer;
         string supplier;
-        uint256 currentLocation;
+        string currentLocation;
         uint256 date;
-        mapping(uint256 => string) Locations;
     }
 
     //following is events
     event ProductAdded( 
-        uint256 id,
+        string productId,
         address owner,
-        string name,
+        string productName,
         string manufacturer,
         string supplier,
-        uint currentLocation,
+        string currentLocation,
         uint256 date
     );
 
-    event locationChanged(uint256 id, string currentLocation);
+    event locationChanged(string productId, string currentLocation);
 
-    event Info( string info);
+    event Info(string info);
 
     //following is modifiers
-    modifier owner_only(uint _id){
-        require(msg.sender == Products[_id].owner);
+    modifier owner_only(string memory _productId){
+        require(msg.sender == ProductMap[_productId].owner);
         _;
     }
 
-    //main methods
-    function addProduct(uint256 _id, string memory _name, string memory _manufacturer, string memory _supplier)  public returns (bool){
+    string public productOutput;
+    function proOutput() public view returns(string memory){
+      return productOutput;
+    }
 
-        require(bytes(_name).length > 0);
+    //main methods
+    function addProduct(string memory _productId, string memory _productName, string memory _manufacturer, string memory _supplier, string memory _currentLocation)  public returns (bool){
+
+        require(bytes(_productName).length > 0);
         productCount++;
         //TypeError: Types in storage containing (nested) mappings cannot be assigned to
         // Products[productCount] = Product(productCount, msg.sender, _name, 0, block.timestamp);
-        Product storage newProduct = ProductMap[productCount];
-        newProduct.id= _id;
+        Product memory newProduct;
+        newProduct.productId= _productId;
         newProduct.owner = msg.sender;
-        newProduct.name = _name;
+        newProduct.productName = _productName;
         newProduct.supplier = _supplier;
         newProduct.manufacturer = _manufacturer;
-        newProduct.currentLocation = 0;
+        newProduct.currentLocation = _currentLocation;
         newProduct.date = block.timestamp;
-        newProduct.Locations[productCount] = "0";
-        productAdded[productCount] = true;
-        emit ProductAdded(_id, msg.sender, _name, _manufacturer, _supplier,0, block.timestamp);
+        productAdded[_productId] = true;       
+        ProductMap[_productId] = newProduct;
+        Products.push(newProduct);
+        productId_locations[_productId].push(_currentLocation);
+        productOutput = "Product Added Successfully";        
+        emit ProductAdded(_productId, msg.sender, _productName, _manufacturer, _supplier, _currentLocation, block.timestamp);
         return true;
     }
+ 
 
-    function changeLocation( string memory _location  , uint256 _id, address _new_owner) public owner_only(_id){
-
-        //  Product storage _product = Products[_id];
-         Product storage _product = Products[_id];
-        require(productAdded[_id] == true, "This product does not exist");
-         _product.currentLocation++;
-         _product.Locations[_product.currentLocation] = _location;
-         _product.owner = _new_owner;
-        //  Products[_id] = _product;
-
-         emit locationChanged( _id, _location);
-
+    function getProducts() public view returns (Product[] memory) {
+        return Products;
     }
 
-    function fetchInfo( uint256 _id)public view returns(string memory) {
+    function changeLocation(string memory _location , string memory _productId, address _new_owner) public owner_only(_productId){
+
+        //  Product storage _product = Products[_id];
+         Product storage _product = ProductMap[_productId];
+        require(productAdded[_productId] == true, "This product does not exist");
+         _product.owner = _new_owner; 
+         emit locationChanged(_productId, _location);
+    }
+
+    function fetchProductInfo(string memory _productId)public view returns(string memory) {
 
         string memory _info  = append(
-            Products[_id].name,
-            Products[_id].Locations[Products[_id].currentLocation],
-           uint2str(Products[_id].date));
+            _productId,
+            ProductMap[_productId].productName,
+            ProductMap[_productId].manufacturer,
+            ProductMap[_productId].supplier,
+            ProductMap[_productId].currentLocation,
+            uint2str(ProductMap[_productId].date));
         return _info;
     }
 
-     function fetchAddress( uint _id) public view returns (address){
-        
-        address str = Products[_id].owner;
+     function fetchAddress(string memory _producId) public view returns (address){        
+        address str = ProductMap[_producId].owner;
         return str;
     }
 
-    function fetchAllLocation( uint _id) public view returns (string[15] memory){
-        uint cLocat = Products[_id].currentLocation;
-        string[15] memory temp;
-        for( uint i = 0 ; i <=cLocat;i++){
-            temp[i] = Products[_id].Locations[i];
+    function fetchAllLocation(string memory _producId) public view returns (string[15] memory){
+        // string memory currLocation = ProductMap[_producId].currentLocation;
+        string[15] memory allLocations;
+        for( uint i = 0; i <= productId_locations[_producId].length; i++){
+            allLocations[i] = productId_locations[_producId][i];
         }
-        return temp;
+        return allLocations;
     }
+
+    function compareStringValue(string memory s1, string  memory s2) public pure returns (bool) {
+        bytes memory a1=bytes(s1);
+        bytes memory b2=bytes(s2);
+        return keccak256((a1)) == keccak256((b2));
+    }      
 }
