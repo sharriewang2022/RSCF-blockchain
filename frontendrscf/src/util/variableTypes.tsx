@@ -25,6 +25,7 @@ export interface ProductType {
     manufacturer?:string
     supplier?:string
     specific?:string
+    currentLocation?:string
     size?:number
     current?:number
 }

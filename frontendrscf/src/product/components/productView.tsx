@@ -24,6 +24,7 @@ function ProductView () {
     manufacturer: '',
     supplier: '',
     specific:'',
+    currentLocation:'',
     // createDate: Date
   })
 
@@ -37,10 +38,13 @@ function ProductView () {
   }
 
   async function handleFormSubmit(e:React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();  
+    e.preventDefault();
+    if(!formData.currentLocation){  
+      formData.currentLocation = "unsure";
+    }
     if(formData.productName && formData.manufacturer && formData.supplier){
       formData.productId = Math.random()+"";
-      addProduct(formData.productId, formData.productName, formData.manufacturer, formData.supplier);
+      addProduct(formData.productId, formData.productName, formData.manufacturer, formData.supplier, formData.currentLocation);
     }  
     const message = await AddProductToDataBase(formData); 
     if(message){

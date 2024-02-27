@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import Web3, {Contract} from "web3";
 // import { ethers } from 'ethers';
-// import SupplyChainRSCF from '../abis/SupplyChainRSCF.json'
 import web3Load from "../trace/metamask/web3Load"
 import { Web3Provider } from '@ethersproject/providers';
 import { SMART_CONTRACT_ADDRESS } from '../config/sysConfig';
@@ -16,7 +15,7 @@ interface BlockProviderProps {
 }
 
 interface BlockContextData {
-  addProduct: (productId:string, name:string, manufacturer:string, supplier:string) => any;
+  addProduct: (productId:string, productName:string, manufacturer:string, supplier:string, currentLocation:string) => any;
   account: any;
   productCount:() => any;
   updateLocation:(location: string, id: string, address: string) => {};
@@ -169,15 +168,14 @@ export function BlockProvider({children}:BlockProviderProps){
       // this.contract = this.contract.connect(this.signer);  
       // }
 
-      function addProduct(productId:string, name:string, manufacturer:string, supplier:string){
+      function addProduct(productId:string, productName:string, manufacturer:string, supplier:string, currentLocation:string){
         if(supplyChainABI == undefined){
           return;
         }
         console.info("contract addProduct result: ", supplyChainABI);     
         // call smart contract method.
         // (contract.methods.transfer as any)('0xe4beef667408b99053dc147ed19592ada0d77f59', 12)  
-        return supplyChainABI.methods.addProduct(name).send({from : account})
-        // return supplyChainABI.methods.addProduct(productId, name, manufacturer, supplier).send({from : account})
+        return supplyChainABI.methods.addProduct(productId, productName, manufacturer, supplier, currentLocation).send({from : account})
           .on('transactionHash', function(hash:any){
             console.log("supplyChainABI addProduct transactionHash:" + hash)
           })
@@ -194,7 +192,7 @@ export function BlockProvider({children}:BlockProviderProps){
       } 
 
       function trackProduct(id:string){
-        return supplyChainABI.methods.fetchInfo(id).call()
+        return supplyChainABI.methods.fetchProductInfo(id).call()
           .then(function(balance){
             console.log("supplyChainABI fetchInfo:" + balance)
           }).catch(function(error){
