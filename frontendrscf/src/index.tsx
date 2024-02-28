@@ -10,6 +10,7 @@ import sysStore from './store/sysStore'
 import { Provider } from 'react-redux';
 import {BlockProvider} from "./contexts/blockContext";
 import {AuthProvider} from "./contexts/authContext";
+import {ChatbotProvider} from "./trace/components/chatbot/redux/chatbotProvider";
 import Compose from "./util/compose";
 
 

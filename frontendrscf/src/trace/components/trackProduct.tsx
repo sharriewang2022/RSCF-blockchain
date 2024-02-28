@@ -5,6 +5,7 @@ import {useBlock} from "../../contexts/blockContext";
 // import QrReader from 'react-qr-reader';
 import { TransitionProps } from '@material-ui/core/transitions';
 
+
 import {
   Container,
   Typography,
@@ -183,6 +184,10 @@ function TrackProductView(){
         }
     }
 
+    async function chatbotStart(id: string){
+        window.open("./#/chatbotAppView", "_blank")  
+    }
+
     const style = useStyles();
     const [open, setOpen] = useState(false);
     const handleClickOpen = () => {
@@ -232,13 +237,21 @@ function TrackProductView(){
             onChange = {(e) => setId(e.target.value)}
         />
 
-    <Button className = {style.button} style = {{
-        fontSize:"15px",
-        color: "#05386B",
-        transform:"translateY(30%)",
-        cursor: "pointer"
-        }} onClick = {() => {handleFetchInfo(id)}}>Search
-    </Button>
+        <Button className = {style.button} style = {{
+            fontSize:"15px",
+            color: "#05386B",
+            transform:"translateY(30%)",
+            cursor: "pointer"
+            }} onClick = {() => {handleFetchInfo(id)}}>Search
+        </Button>
+
+        <Button className = {style.button} style = {{
+            fontSize:"15px",
+            color: "#05386B",
+            transform:"translateY(30%)",
+            cursor: "pointer"
+            }} onClick = {() => {chatbotStart(id)}}>Chatbot
+        </Button>
     </div>
 
     <Grid item xs = {12}>

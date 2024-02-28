@@ -13,6 +13,7 @@ import DashView from '../admin/views/dashView';
 import Dashboard from '../dashboard/Dashboard';
 import UploadFileView from "../drmDocument/components/uploadFile";
 import TrackProductView from "../trace/components/trackProduct";
+import ChatbotAppView from "../trace/chatbot/chatbotAppView";
 import RegisterView from "../admin/views/registerView";
 import {ManageView} from "../admin/views/manageView";
 
@@ -30,8 +31,9 @@ const baseRouter = [
     {path:'/register', element:<RegisterView/>},
     {path:'/sysManage', element:<ManageView/>},
     {path:'/prodcut', element:<ProductView/>},
-    {path:'/productListView', element:<ProductListView/>},
+    {path:'/ChatbotAppView', element:<ChatbotAppView/>},
     {path:'/file', element:<UploadFileView/>},
+    {path:'/trackProduct', element:<TrackProductView/>},
     {path:'/trackProduct', element:<TrackProductView/>},
     {path:'/category', element:<CategoryView/>},
     {path:'/categoryList', element:<CategoryListView/>},    

@@ -1,8 +1,8 @@
 import React from "react";
-import { IMessageOptions } from "react-chatbot-kit/build/src/interfaces/IMessages";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../redux/store";
-import { addAge, addName } from "../redux/features/messages-slice";
+import {IMessageOptions} from "react-chatbot-kit/build/src/interfaces/IMessages";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "./redux/chatbotStore";
+import {addProductName, addManufacturer} from "./redux/features/messages-slice";
 
 const ActionProvider = ({
   createChatBotMessage,
@@ -25,15 +25,16 @@ const ActionProvider = ({
   children: any;
 }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const handleGotIt = () => {
-    const botMessage = createChatBotMessage("Enter your Name", {});
+  const handleInputReportID = () => {
+    const botMessage = createChatBotMessage("Please enter your product ID", {});
 
     setState((prev: any) => ({
       ...prev,
       messages: [...prev.messages, botMessage],
     }));
   };
-  const handleUserInput = (age?: number) => {
+
+  const handleInputProductProblem = (productId?: string) => {
     setState(
       (prev: {
         messages: {
@@ -48,20 +49,31 @@ const ActionProvider = ({
       }) => {
         let botMessage;
         if (
-          prev.messages[prev.messages.length - 2].message === "Enter your Name"
+          prev.messages[prev.messages.length - 2].message === "Please report the product problem"
         ) {
-          dispatch(addName(prev.messages[prev.messages.length - 1].message));
-          botMessage = createChatBotMessage("Enter your Age", {
-            widget: "ageDropdown",
+          dispatch(addProductName(prev.messages[prev.messages.length - 1].message));
+          botMessage = createChatBotMessage("Please report the product problem", {
+            widget: "reportProblem",
           });
           return {
             ...prev,
             messages: [...prev.messages, botMessage],
           };
-        } else if (age) {
-          dispatch(addAge(age.toString()));
+        } else if (
+          prev.messages[prev.messages.length - 2].message === "Please enter the product ID"
+        ) {
+          dispatch(addProductName(prev.messages[prev.messages.length - 1].message));
+          botMessage = createChatBotMessage("Please enter the product ID", {
+            widget: "productIDinput",
+          });
+          return {
+            ...prev,
+            messages: [...prev.messages, botMessage],
+          };
+        }else if (productId) {
+          dispatch(addManufacturer(productId));
           botMessage = createChatBotMessage(
-            "Thank you. In 5 seconds, bot will exit.",
+            "In 5 seconds, bot will exit.",
             {}
           );
           return {
@@ -74,13 +86,14 @@ const ActionProvider = ({
       }
     );
   };
+
   return (
     <div>
       {React.Children.map(children, (child) => {
         return React.cloneElement(child, {
           actions: {
-            handleGotIt,
-            handleUserInput,
+            handleInputReportID,
+            handleInputProductProblem,
           },
         });
       })}

@@ -6,15 +6,16 @@ const MessageParser = ({
 }: {
   children: any;
   actions: {
-    handleGotIt: () => void;
-    handleUserInput: () => void;
+    handleInputReportID: () => void;
+    handleInputProductProblem: () => void;
   };
 }) => {
   const parse = (message: string) => {
-    if (message.includes("got it!")) {
-      actions.handleGotIt();
+    message = message.toLocaleLowerCase();
+    if (message.includes("problem")) {
+      actions.handleInputProductProblem();
     } else {
-      actions.handleUserInput();
+      actions.handleInputReportID();
     }
   };
 
