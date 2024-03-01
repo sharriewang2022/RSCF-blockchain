@@ -4,14 +4,13 @@ import IConfig from "react-chatbot-kit/build/src/interfaces/IConfig";
 import ReportProblem from "./widgetsOption/reportProblem";
 import ProductDropdown from "./widgetsOption/productDropdown";
 import ProductIDinput from "./widgetsOption/productIDinput";
-
-import reactImg from "./react.svg";
+import reactImg from "../../images/banner.jpg";
 
 const ChatbotConfig: IConfig = {
   botName: "Retail Supply Chain System Bot",
   initialMessages: [
-    createChatBotMessage(`Welcome to Supply Chain System!`, {
-      widget: "reportProblem",
+    createChatBotMessage(`Welcome to Retail Supply Chain System!`, {
+      widget: "ProductIDinput",
     }),
   ],
   customStyles: {
@@ -23,7 +22,8 @@ const ChatbotConfig: IConfig = {
     },
   },
   customComponents: {
-    botAvatar: (props: any) => <img src={reactImg} alt="bot" {...props} />,
+    botAvatar: (props: any) => <img className="react-chatbot-kit-chat-bot-avatar-container"
+                                    src={reactImg} alt="bot" {...props} />,
   },
   widgets: [
     {

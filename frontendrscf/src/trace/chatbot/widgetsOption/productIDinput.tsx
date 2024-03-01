@@ -16,7 +16,7 @@ const ProductIDinput: React.FC<any> = (props) => {
   const options = [
     {
       name: "Please enter the product ID",
-      handler: props.actionProvider.handleGotIt,
+      handler: props.actionProvider.handleInputReportID,
       id: 1,
     },
   ];

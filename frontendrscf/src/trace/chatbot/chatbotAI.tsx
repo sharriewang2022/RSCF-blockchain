@@ -55,18 +55,22 @@ const StyledChat = styled.div`
   }
 `;
 
-const ChatbotAI = () => {
+function ChatbotAI(){
   const [isOpened, setIsOpened] = useState<boolean>(false);
   const navigate = useNavigate();
-  const count = useAppSelector((state) => state.messageReducer.count);
+ 
+  //  const count = useAppSelector((state) => state.messageReducer.count);
+  const count = 2; 
+    
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {
     const interval = setInterval(() => {
       if (count > 0) {
         dispatch(decrementCount());
-      } else if (count === 0) {
-        navigate("/success");
       }
+      //  else if (count === 0) {
+      //   navigate("/success");
+      // }
     }, 1000);
     return () => {
       clearInterval(interval);
@@ -75,9 +79,9 @@ const ChatbotAI = () => {
   return (
     <StyledChat>
       <div className="intro">
-        <h1>Enter into Supply Chain System for Tracking Infomation</h1>
+        <h2>Enter the Chatbot in Retail Supply Chain System  for Tracking Infomation</h2>
         <button onClick={() => setIsOpened((prev) => !prev)}>
-          Start Now!
+          Start
         </button>
       </div>
       {isOpened && (

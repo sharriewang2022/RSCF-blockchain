@@ -2,10 +2,14 @@ import { Suspense, lazy } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 import { AnimatePresence } from "framer-motion";
+import ChatbotAI from "./chatbotAI";
+import ChatbotSuccess from "./chatbotSuccess";
+import ErrorPage from "./chatbotError";
 
-const ChatbotAI = lazy(() => import("./chatbotAI"));
-const ChatbotSuccess = lazy(() => import("./chatbotSuccess"));
-const ErrorPage = lazy(() => import("./chatbotError"));
+// lazy load 
+// const ChatbotAI = lazy(() => import("./chatbotAI"));
+// const ChatbotSuccess = lazy(() => import("./chatbotSuccess"));
+// const ErrorPage = lazy(() => import("./chatbotError"));
 
 const GlobalStyle = createGlobalStyle`
   :root{
@@ -93,7 +97,7 @@ const ChatbotAppView = () => {
       <Suspense
         fallback={
           <div
-            className="loader-container"
+            className="chatbot-loader-container"
             style={{
               height: "100vh",
               width: "100vw",
@@ -101,7 +105,7 @@ const ChatbotAppView = () => {
               placeItems: "center",
             }}
           >
-            <span className="loader"></span>
+            <span className="chatbot-loader-container"></span>
           </div>
         }
       >

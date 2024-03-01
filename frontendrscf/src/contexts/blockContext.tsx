@@ -192,11 +192,17 @@ export function BlockProvider({children}:BlockProviderProps){
       } 
 
       function trackProduct(id:string){
+        if(supplyChainABI == undefined){
+          return;
+        }
+        console.info("product ID: ", id);    
+        console.info("contract trackProduct result: ", supplyChainABI);     
+        // call smart contract method to get product information         
         return supplyChainABI.methods.fetchProductInfo(id).call()
           .then(function(balance){
-            console.log("supplyChainABI fetchInfo:" + balance)
+            console.log("supplyChainABI fetchProductInfo:" + balance)
           }).catch(function(error){
-            console.log("supplyChainABI fetchInfo error:" + error)
+            console.log("supplyChainABI fetchProductInfo error:" + error)
           })
         
 

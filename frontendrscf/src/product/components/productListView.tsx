@@ -15,6 +15,12 @@ interface TableParams {
 
 const columns: ColumnsType<ProductType> = [
   {
+    title: 'Product ID',
+    dataIndex: 'productId',
+    sorter: true,
+    width: '20%',
+  },
+  {
     title: 'Product Name',
     dataIndex: 'productName',
     sorter: true,

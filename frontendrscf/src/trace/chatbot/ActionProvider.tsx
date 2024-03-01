@@ -2,7 +2,7 @@ import React from "react";
 import {IMessageOptions} from "react-chatbot-kit/build/src/interfaces/IMessages";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "./redux/chatbotStore";
-import {addProductName, addManufacturer} from "./redux/features/messages-slice";
+import {addProductName, addManufacturer,reportProductProblem, addProductId} from "./redux/features/messages-slice";
 
 const ActionProvider = ({
   createChatBotMessage,
@@ -25,16 +25,25 @@ const ActionProvider = ({
   children: any;
 }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const handleInputReportID = () => {
-    const botMessage = createChatBotMessage("Please enter your product ID", {});
 
+  const handleInputReportID = () => {
+    const botMessage = createChatBotMessage("Please enter the product ID", {});
     setState((prev: any) => ({
       ...prev,
       messages: [...prev.messages, botMessage],
     }));
   };
 
-  const handleInputProductProblem = (productId?: string) => {
+  // const handleInputProductProblem = () => {
+  //   const botMessage = createChatBotMessage("Please report the product problem", {});
+  //   setState((prev: any) => ({
+  //     ...prev,
+  //     messages: [...prev.messages, botMessage],
+  //   }));
+  // };
+
+  const handleInputProductProblem = () => {
+    // const botMessage = createChatBotMessage("Please report the product problem", {});
     setState(
       (prev: {
         messages: {
@@ -48,30 +57,32 @@ const ActionProvider = ({
         }[];
       }) => {
         let botMessage;
+        let lastMessage = prev.messages[prev.messages.length - 2].message;
+        console.log("chatbot message:"+ lastMessage);
         if (
-          prev.messages[prev.messages.length - 2].message === "Please report the product problem"
+          lastMessage === "Please report the product problem"
         ) {
-          dispatch(addProductName(prev.messages[prev.messages.length - 1].message));
-          botMessage = createChatBotMessage("Please report the product problem", {
+          dispatch(reportProductProblem(prev.messages[prev.messages.length - 1].message));
+          botMessage = createChatBotMessage("Please wait, administrator will connect with you later!", {
             widget: "reportProblem",
           });
           return {
             ...prev,
             messages: [...prev.messages, botMessage],
           };
-        } else if (
-          prev.messages[prev.messages.length - 2].message === "Please enter the product ID"
-        ) {
-          dispatch(addProductName(prev.messages[prev.messages.length - 1].message));
-          botMessage = createChatBotMessage("Please enter the product ID", {
-            widget: "productIDinput",
-          });
+        } else if (lastMessage.includes("id:") || lastMessage === "Please enter the product ID") {
+          dispatch(addProductId(prev.messages[prev.messages.length - 1].message));
+          // botMessage = createChatBotMessage("Please report the product problem", {
+          //   widget: "reportProblem",
+          // }); 
+          botMessage = createChatBotMessage("Please report the product problem", {}); 
           return {
             ...prev,
             messages: [...prev.messages, botMessage],
           };
-        }else if (productId) {
-          dispatch(addManufacturer(productId));
+        }else if  (
+          prev.messages[prev.messages.length - 2].message === "Over"
+        ){
           botMessage = createChatBotMessage(
             "In 5 seconds, bot will exit.",
             {}

@@ -12,7 +12,7 @@ const MessageParser = ({
 }) => {
   const parse = (message: string) => {
     message = message.toLocaleLowerCase();
-    if (message.includes("problem")) {
+    if (message.includes("id:")) {
       actions.handleInputProductProblem();
     } else {
       actions.handleInputReportID();
