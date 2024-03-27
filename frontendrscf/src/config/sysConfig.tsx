@@ -22,6 +22,7 @@ export const IPFS_HOST = "http://localhost";
 export const IPFS_PORT = 5001;
 
 //Ganache contract address
-export const SMART_CONTRACT_ADDRESS ="0xE471f62BFb1595176e4F1a96bC2801041Ba1D4c0";
+export const SMART_CONTRACT_ADDRESS ="0xE28e7A59beAe10634111d87971B7Fd4bf0114841";
+
 
 export const fileSizeLimit = 5;

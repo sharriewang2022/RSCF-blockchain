@@ -76,12 +76,12 @@ contract SupplyChainRSCF {
     }
 
     //main methods
-    function addProduct(string memory _productId, string memory _productName, string memory _manufacturer, string memory _supplier, string memory _currentLocation)  public returns (bool){
+    function addProduct(string memory _productId, string memory _productName, 
+        string memory _manufacturer, string memory _supplier, 
+        string memory _currentLocation)  public returns (bool){
 
         require(bytes(_productName).length > 0);
         productCount++;
-        //TypeError: Types in storage containing (nested) mappings cannot be assigned to
-        // Products[productCount] = Product(productCount, msg.sender, _name, 0, block.timestamp);
         Product memory newProduct;
         newProduct.productId= _productId;
         newProduct.owner = msg.sender;

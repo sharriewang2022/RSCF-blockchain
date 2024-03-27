@@ -1,11 +1,11 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import Web3, {Contract} from "web3";
-// import { ethers } from 'ethers';
 import web3Load from "../trace/metamask/web3Load"
 import { Web3Provider } from '@ethersproject/providers';
 import { SMART_CONTRACT_ADDRESS } from '../config/sysConfig';
 import { supplyChainAbiType } from '../util/smartContractTypeforJson';
 import supplyChainjson from '../abis/SupplyChainRSCF.json';
+import { ethers } from "ethers";
 import * as fs from "fs";
 import path from 'path';
 
@@ -43,7 +43,12 @@ export function BlockProvider({children}:BlockProviderProps){
   // const [smartContract ,setSmartContract] = useState<any>();
   const [isMetamask, setIsMetamask] = useState(false);
   const [web3,setWeb3] = useState<any>();
+  const [contractList, setContractList] = useState();
+  const [contacts, setContacts] = useState([]);
+  const [contract, setContract] = useState<ethers.Contract>();
+  const [provider, setProvider] = useState<ethers.providers.JsonRpcProvider>();
 
+  //register MetaMask provider
   useEffect(() => {
     web3Load()
     if(window.ethereum){
@@ -80,156 +85,196 @@ export function BlockProvider({children}:BlockProviderProps){
         }
       )
     }
+    const loadProvider = async () => {
+      let contractAddress = SMART_CONTRACT_ADDRESS;
+      const url = "http://localhost:7545";
+      const provider = new ethers.providers.JsonRpcProvider(url);
+      const contract = new ethers.Contract(
+          contractAddress,
+          supplyChainjson.abi,
+          provider
+      );
+      setContract(contract);
+      setProvider(provider);
+      };
+      loadProvider();
   }, []);
+ 
+  async function loadWeb3() {
+    if (window.ethereum) {
+      setIsMetamask(true)
+      window.web3 = new Web3(window.ethereum)
+      // await window.ethereum.enable()
+    }
+    else if (window.web3) {
+      setIsMetamask(true)
+      window.web3 = new Web3(window.web3.currentProvider)
+    }
+    else {          
+      window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!');          
+    }
+  }
 
-    async function loadWeb3() {
-        if (window.ethereum) {
-          setIsMetamask(true)
-          window.web3 = new Web3(window.ethereum)
-          // await window.ethereum.enable()
-        }
-        else if (window.web3) {
-          setIsMetamask(true)
-          window.web3 = new Web3(window.web3.currentProvider)
-        }
-        else {          
-          window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!');          
-        }
-      }
+  //react connect blockchain smart contract
+  //1.Load web3 after has a wallet; 
+  //2.(Optional) put web3 object and the accounts from web3.eth.getAccounts() to setState
+  //3.Create contract instance with the address from deployment.  can deploy the contract dynamically from the app but more complicated.
+  //4.Add the contract to the state
+  //Call methods on the contract
+  async function loadBlockChainData(){
+    window.ethereum.enable();  
+    // const web3 = new Web3(window.web3.currentProvider);
+    // const web3 = new Web3(window.ethereum);
+    const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
+    const accounts = await web3.eth.getAccounts()
+    setWeb3(web3)
+    // Get the accounts from MetaMask      
+    // const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    setAccount(accounts[0]);
+    web3.eth.defaultAccount = accounts[0];
+    console.log("accounts[0]:" + accounts[0]);
+    // Get the network ID
+    const currentNetworkId = parseInt(await window.ethereum.request({ method: 'net_version' }));
+    // Get the network data from the contract JSON
+    const networkId = await web3.eth.net.getId();
+    const chainId = await web3.eth.getChainId();
+    // console.log("networkId:" + networkId);
+    // console.log("chainId:" + chainId);
+    const contractAddress = SMART_CONTRACT_ADDRESS;
+    // const contractAddress = supplyJson.networks["5777"].address;
+    // const contractAddress = supplyJson.networks[networkId].address; //supplyJson.networks[42]        
 
-      //react connect blockchain smart contract
-      //1.Load web3 after has a wallet; 
-      //2.(Optional) put web3 object and the accounts from web3.eth.getAccounts() to setState
-      //3.Create contract instance with the address from deployment.  can deploy the contract dynamically from the app but more complicated.
-      //4.Add the contract to the state
-      //Call methods on the contract
-      async function loadBlockChainData(){
-        window.ethereum.enable();  
-        // const web3 = new Web3(window.web3.currentProvider);
-        // const web3 = new Web3(window.ethereum);
-        const web3 = new Web3(Web3.givenProvider || "http://localhost:7545")
-        const accounts = await web3.eth.getAccounts()
-        setWeb3(web3)
-        // Get the accounts from MetaMask      
-        // const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        setAccount(accounts[0]);
-        web3.eth.defaultAccount = accounts[0];
-        console.log("accounts[0]" + accounts[0]);
-        // Get the network ID
-        const currentNetworkId = parseInt(await window.ethereum.request({ method: 'net_version' }));
-        console.log("currentNetworkId" + currentNetworkId);
-        // Get the network data from the contract JSON
-        const networkId = await web3.eth.net.getId();
-        const chainId = await web3.eth.getChainId();
+    //get smart contract in supplyChain.json. parameters: (contractABI, contractAddress）            
+    //const productContractAbi = new web3.eth.Contract(nonceAbi, contractAddress); --can work
+    const productContractAbi = new web3.eth.Contract(supplyChainAbi, contractAddress);
+    setSupplyChainABI(productContractAbi)       
+  }
 
-        const contractAddress = SMART_CONTRACT_ADDRESS;
-        // const contractAddress = supplyJson.networks["5777"].address;
-        // const contractAddress = supplyJson.networks[networkId].address; //supplyJson.networks[42]        
+  // async function loadBlockChainData(){
+  //   const web3 = window.web3
+  //   setWeb3(web3)
+  //   const accounts = await web3.eth.getAccounts()
+  //   setAccount(accounts[0])
+  //   const networkId = await web3.eth.net.getId()
+  //   console.log(networkId)
+  //   const supplyAbi = new web3.eth.Contract(supply)
+  //   const networkData = supplyAbi.networks[networkId]
+  //   const chainABI =   new web3.eth.Contract(supply.abi,networkData.address,{ transactionConfirmationBlocks: 1,gasPrice :200000000000})
+  //   setSupplyChainABI(chainABI)
+  //   console.log(chainABI)    
+  
+  // if (currentNetworkId !== chainId) {
+  //   try {
+  //     await window.ethereum.request({
+  //       method: 'wallet_switchEthereumChain',
+  //       params: [{ chainId: `0x${addresses.chainId.toString(16)}` }],
+  //     });
+  //   } catch (error:any) {
+  //     console.error('Error switching network:', error);
+  //     if (error.code === 4902) {
+  //       console.error(`Please add the mumbai network to your MetaMask wallet`, {
+  //         type: 'error',
+  //       });
+  //     } else {
+  //       console.error('User rejected the request.');
+  //     }
+  //   }
+  // }
+  // this.contract = this.contract.connect(this.signer);  
+  // }
 
-        //get smart contract in supplyChain.json. parameters: (contractABI, contractAddress）       
-        // productContractAbi.options.gas = 500000       
-        // const productContractAbi = new web3.eth.Contract(nonceAbi, contractAddress); --can work
-        const productContractAbi = new web3.eth.Contract(supplyChainAbi, contractAddress);
-        setSupplyChainABI(productContractAbi)
-   
-        console.log(productContractAbi)           
-      }
+  async function addProduct(productId:string, productName:string, manufacturer:string, supplier:string, currentLocation:string){
+    if(supplyChainABI == undefined){
+      return;
+    }
+    const b =  await supplyChainABI.methods.proOutput().send({from:account});
+    console.info("Ganache  proOutput: ", b);  
+    const a =  await supplyChainABI.methods.getProducts().send({from:account});
+    console.info("Ganache  getProducts: ", a);  
+    //   console.info("Ganache  contract: ", contract);  
+    // if(contract && provider && account){   
+    //   console.info("Ganache  account: ", account);  
+    //   console.info("Ganache  contract: ", contract);     
+    //   const signer = contract.connect(provider.getSigner());
+    //   const dataResult = signer.fetchProductInfo(productId);  
+    //   console.info("signer.fetchProductInfo: ", dataResult);             
+    //   // const output =await contract.getProducts().call({from:account})
+    //   const output =await signer.getProducts()
+    //   console.info("signer.output: ", output); 
+    //   const productInfo =await contract.fetchProductInfo(productId).call({from:account})
+    //   .then(function(balance: string){
+    //     console.log("supplyChainABI fetchProductInfo:" + balance)
+    //   }).catch(function(error: string){
+    //     console.log("supplyChainABI fetchProductInfo error:" + error)
+    //   })    
+    // };
+  
+    // contract.methods.transfer   
+    return supplyChainABI.methods.addProduct(productId, productName, manufacturer, supplier, currentLocation).send({from : account})
+      .on('transactionHash', function(hash:any){
+        console.log("supplyChainABI addProduct transactionHash:" + hash)
+      })
+      .on('receipt', function(receipt:any){
+        console.log("supplyChainABI addProduct receipt:" + receipt)
+      })
+      .on('error', function(error:any){
+        console.log("supplyChainABI addProduct error:" + error)
+      })
+  }
 
-      // async function loadBlockChainData(){
-      //   const web3 = window.web3
-      //   setWeb3(web3)
-      //   const accounts = await web3.eth.getAccounts()
-      //   setAccount(accounts[0])
-      //   const networkId = await web3.eth.net.getId()
-      //   console.log(networkId)
-      //   const supplyAbi = new web3.eth.Contract(supply)
-      //   const networkData = supplyAbi.networks[networkId]
-      //   const chainABI =   new web3.eth.Contract(supply.abi,networkData.address,{ transactionConfirmationBlocks: 1,gasPrice :200000000000})
-      //   setSupplyChainABI(chainABI)
-      //   console.log(chainABI)    
-      
-      // if (currentNetworkId !== chainId) {
-      //   try {
-      //     await window.ethereum.request({
-      //       method: 'wallet_switchEthereumChain',
-      //       params: [{ chainId: `0x${addresses.chainId.toString(16)}` }],
-      //     });
-      //   } catch (error:any) {
-      //     console.error('Error switching network:', error);
-      //     if (error.code === 4902) {
-      //       console.error(`Please add the mumbai network to your MetaMask wallet`, {
-      //         type: 'error',
-      //       });
-      //     } else {
-      //       console.error('User rejected the request.');
-      //     }
-      //   }
-      // }
-      // this.contract = this.contract.connect(this.signer);  
-      // }
+  function updateLocation(location: string, id: string, address: string){
+    return supplyChainABI.methods.changeLocation(location,id,address).send({from : account})
+  } 
 
-      function addProduct(productId:string, productName:string, manufacturer:string, supplier:string, currentLocation:string){
-        if(supplyChainABI == undefined){
-          return;
-        }
-        console.info("contract addProduct result: ", supplyChainABI);     
-        // call smart contract method.
-        // (contract.methods.transfer as any)('0xe4beef667408b99053dc147ed19592ada0d77f59', 12)  
-        return supplyChainABI.methods.addProduct(productId, productName, manufacturer, supplier, currentLocation).send({from : account})
-          .on('transactionHash', function(hash:any){
-            console.log("supplyChainABI addProduct transactionHash:" + hash)
-          })
-          .on('receipt', function(receipt:any){
-            console.log("supplyChainABI addProduct receipt:" + receipt)
-          })
-          .on('error', function(error:any){
-            console.log("supplyChainABI addProduct error:" + error)
-          })
-      }
+  function trackProduct(id:string){
+    if(supplyChainABI == undefined){
+      return;
+    }
+    console.info("product ID: ", id);    
+    console.info("contract trackProduct result: ", supplyChainABI);  
 
-      function updateLocation(location: string, id: string, address: string){
-        return supplyChainABI.methods.changeLocation(location,id,address).send({from : account})
-      } 
+    const addr = 'metamask-account-address';
+    // const balance = web3.eth.getBalance(addr)
+    const contracts = new web3.eth.Contract(supplyChainjson.abi, SMART_CONTRACT_ADDRESS)
+    setContractList(contracts)
+    const counter = contracts.methods.fetchProductInfo(id).send({from : account})
+    const getProducts = contracts.methods.getProducts().call();
+    // for (var i = 1; i <= counter; i++) {
+    //   const contact = contracts.methods.contacts[i].call();
+    //   console.log(contact)
+    // }   
+    // call smart contract method to get product information         
+    return supplyChainABI.methods.fetchProductInfo(id).call()
+      .then(function(balance){
+        console.log("supplyChainABI fetchProductInfo:" + balance)
+      }).catch(function(error){
+        console.log("supplyChainABI fetchProductInfo error:" + error)
+      }) 
+  }
 
-      function trackProduct(id:string){
-        if(supplyChainABI == undefined){
-          return;
-        }
-        console.info("product ID: ", id);    
-        console.info("contract trackProduct result: ", supplyChainABI);     
-        // call smart contract method to get product information         
-        return supplyChainABI.methods.fetchProductInfo(id).call()
-          .then(function(balance){
-            console.log("supplyChainABI fetchProductInfo:" + balance)
-          }).catch(function(error){
-            console.log("supplyChainABI fetchProductInfo error:" + error)
-          })
-        
+  function productCount(){
+    return supplyChainABI.methods.productCount().call()
+  }
 
-      }
-      function productCount(){
-        return supplyChainABI.methods.productCount().call()
-      }
+  function fetchOwner(id:string){
+    return supplyChainABI.methods.fetchAddress(id).call()
+  }
 
-      function fetchOwner(id:string){
-        return supplyChainABI.methods.fetchAddress(id).call()
-      }
-
-      function fetchLocations(id:string){
-        return supplyChainABI.methods.fetchAllLocation(id).call()
-      }
-      const value = {
-        addProduct,
-        account,
-        productCount,
-        updateLocation,
-        trackProduct,
-        fetchOwner,
-        fetchLocations
-      }
-      return(
-          <blockContext.Provider value = {value}>
-            {children}
-          </blockContext.Provider>
-      ) 
+  function fetchLocations(id:string){
+    return supplyChainABI.methods.fetchAllLocation(id).call()
+  }
+  const value = {
+    addProduct,
+    account,
+    productCount,
+    updateLocation,
+    trackProduct,
+    fetchOwner,
+    fetchLocations
+  }
+  return(
+      <blockContext.Provider value = {value}>
+        {children}
+      </blockContext.Provider>
+  ) 
 }

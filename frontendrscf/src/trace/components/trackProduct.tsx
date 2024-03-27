@@ -1,11 +1,12 @@
-import React,{useRef ,useState} from "react";
+import React,{useEffect ,useState} from "react";
+import supplyChainjson from '../../abis/SupplyChainRSCF.json';
+import {ethers} from "ethers";
 import {makeStyles} from "@material-ui/core/styles";
 import {useAuth} from "../../contexts/authContext";
 import {useBlock} from "../../contexts/blockContext";
+import { SMART_CONTRACT_ADDRESS } from '../../config/sysConfig';
 // import QrReader from 'react-qr-reader';
 import { TransitionProps } from '@material-ui/core/transitions';
-
-
 import {
   Container,
   Typography,
@@ -22,7 +23,6 @@ import {
   Slide,
   Hidden,
 } from '@material-ui/core';
-
 import MuiAlert from '@material-ui/lab/Alert';
 
 function Alert(props:any) {
@@ -70,7 +70,7 @@ const Transition = React.forwardRef(function Transition(
 });
 
 function FetchLocation(props: any){
-    const style = useStyles()
+    const style = useStyles()      
 
     const handleClose = () => {
        props.setOpen(false);
@@ -133,12 +133,6 @@ function FetchLocation(props: any){
 }
 
 function TrackProductView(){
-    const handleClose = (event: React.MouseEvent, reason:string) => {
-        if (reason === 'clickaway') {
-          return;
-        }
-        setOpenErr(false)
-      };
     const [id,setId] = useState("");
     const {trackProduct, fetchOwner, fetchLocations} = useBlock();
     const {addressToName} = useAuth();
@@ -149,6 +143,69 @@ function TrackProductView(){
     const [err,setErr] = useState("");
     const [openErr,setOpenErr] = useState(false);
     const [locations,setLocations] = useState(["Enter Product ID first"]);
+    const [contract, setContract] = useState<ethers.Contract>();
+    const [provider, setProvider] = useState<ethers.providers.JsonRpcProvider>();
+
+    useEffect(() => {
+        const loadProvider = async () => {
+        let contractAddress = SMART_CONTRACT_ADDRESS;
+        // let contractAddress = "0x6517C303e314842baE7e6A345e2A855Ef352d0F1";
+        const url = "http://localhost:7545";
+        const provider = new ethers.providers.JsonRpcProvider(url);
+        const contract = new ethers.Contract(
+            contractAddress,
+            supplyChainjson.abi,
+            provider
+        );
+        setContract(contract);
+        setProvider(provider);
+        // console.log(contract);
+        };
+        loadProvider();
+    }, []);
+
+    const trackProductInfo = async (productID:string) => {
+        try {
+            if(!id || id ==="Search Product ID"){
+                window.alert("Need Product ID")
+                throw("Need Product ID")
+            }
+            var dataResult
+            if(contract && provider){
+                const signer = contract.connect(provider.getSigner());
+                dataResult = signer.fetchProductInfo(productID);                
+                console.log("Track Product Info:" + dataResult); 
+                // const output = await contract.proOutput();
+                const productInfo = await contract.ProductMap();
+                // fetchProductInfo(productID);
+                console.log("Track Product Info:" + productInfo); 
+                console.log("Track Product Info:" );
+                // dataResult = await contract.fetchProductInfo(productID).call();
+                // console.log("Track data Info:" + dataResult);                 
+            }            
+            if(dataResult){
+                const data = dataResult.split(",")
+                if(data[0]){ 
+                    setOwner("")
+                    setName(data[0])
+                    setCLoc(data[1])
+                    const temp = new Date(data[2]*1000)
+                    const dat = temp.getDate();
+                    var month = temp.getMonth();
+                    var year = temp.getFullYear();
+                    var fullDate = dat + "/" +(month + 1) + "/" + year;
+                    setDate(fullDate)
+                } else {
+                    throw("There is no such product ID.")
+                }
+            }
+        }
+        catch(error){
+            console.log(error);
+            setOpenErr(true)
+        }
+        
+    };
     
     async function handleFetchInfo(id: string){
         try {
@@ -183,6 +240,13 @@ function TrackProductView(){
             setOpenErr(true)
         }
     }
+
+    const handleClose = (event: React.MouseEvent, reason:string) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        setOpenErr(false)
+    };
 
     async function chatbotStart(id: string){
         window.open("./#/chatbotAppView", "_blank")  
