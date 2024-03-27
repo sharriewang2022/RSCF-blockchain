@@ -214,6 +214,20 @@ def getDecryptedFilefromIPFS(hashCode):
         return api.cat(hashCode)      
     except IPFSCantConnectException as ce:
         print(str(ce))
+
+def decode(txt_file):
+    ordered = sorted((int(a), b) for a, b in map(str.split, txt_file))
+    widthSameLine = 1   
+    lastItemIndex = 0  
+    words = []
+    while last < len(ordered):
+        words.append(ordered[last][1])
+        width += 1
+        last += width
+    return  " ".join(words)
+
+ 
+ 
     
 
 #Test encryption of image
@@ -231,6 +245,8 @@ def main():
         print(encryp['Hash'])
         print(original['Hash'])
         print(decryp['Hash'])
+        txt_file ="D:\coding_qual_input.txt"
+        print(decode(txt_file))
     except IPFSCantConnectException as ce:
         print(str(ce))
     #Remove files

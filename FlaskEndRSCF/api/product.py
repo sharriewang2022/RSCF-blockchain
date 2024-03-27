@@ -89,7 +89,7 @@ def getSomeProduct(productId):
 @ProductBP.route("/product/addProduct", methods=['POST'])
 def addProduct():
     """add product"""
-    productId = uuid.uuid1()
+    productId = request.json.get("productId", "").strip() 
     productName = request.json.get("productName", "").strip()  
     productNumber = request.json.get("amount", "").strip()
     productPrice = request.json.get("price", "").strip()
